@@ -22,6 +22,7 @@ android {
     }
 }
 
+
 // facebook login
 repositories{
     mavenCentral()
@@ -43,6 +44,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     testCompile 'junit:junit:4.12'
     compile project(':culturalevents-release')
+
     //facebook login
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 }

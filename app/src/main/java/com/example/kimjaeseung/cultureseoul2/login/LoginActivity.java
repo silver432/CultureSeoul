@@ -31,9 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         callbackManager = CallbackManager.Factory.create();
-
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
@@ -54,7 +52,6 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
     }
 
     @OnClick({R.id.login_gotomain})
@@ -66,8 +63,4 @@ public class LoginActivity extends AppCompatActivity {
                 break;
         }
     }
-
-
-
-
 }
