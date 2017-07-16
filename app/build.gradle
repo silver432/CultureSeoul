@@ -5,19 +5,26 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.example.kimjaeseung.cultureseoul2"
-        minSdkVersion 19
+        minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
+
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+// facebook login
+repositories{
+    mavenCentral()
 }
 
 dependencies {
@@ -36,4 +43,6 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     testCompile 'junit:junit:4.12'
     compile project(':culturalevents-release')
+    //facebook login
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 }
