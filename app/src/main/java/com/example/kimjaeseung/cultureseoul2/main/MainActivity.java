@@ -4,16 +4,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 
 import com.example.kimjaeseung.cultureseoul2.R;
-import com.example.kimjaeseung.cultureseoul2.community.CommunityFragment;
+import com.example.kimjaeseung.cultureseoul2.attendance.AttandanceFragment;
+import com.example.kimjaeseung.cultureseoul2.performance.PerformanceFragment;
 import com.example.kimjaeseung.cultureseoul2.home.HomeFragment;
-import com.example.kimjaeseung.cultureseoul2.profile.ProfileFragment;
+import com.example.kimjaeseung.cultureseoul2.community.CommunityFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         switchFragment(HomeFragment.getInstance());
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -41,11 +42,14 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.main_bottomnavigation_home:
                     switchFragment(HomeFragment.getInstance());
                     return true;
+                case R.id.main_bottomnavigation_performance:
+                    switchFragment(PerformanceFragment.getInstance());
+                    return true;
                 case R.id.main_bottomnavigation_community:
                     switchFragment(CommunityFragment.getInstance());
                     return true;
-                case R.id.main_bottomnavigation_profile:
-                    switchFragment(ProfileFragment.getInstance());
+                case R.id.main_bottomnavigation_attendance:
+                    switchFragment(AttandanceFragment.getInstance());
                     return true;
             }
             return false;

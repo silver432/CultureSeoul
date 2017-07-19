@@ -6,9 +6,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Home"/>
-    <kr.go.seoul.culturalevents.CulturalEventButtonTypeA
+    <kr.go.seoul.culturalevents.CulturalEventTypeMini
         android:id="@+id/home_button_culturalevent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="main Timeline"
+        />
 
 </LinearLayout>

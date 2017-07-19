@@ -1,4 +1,4 @@
-package com.example.kimjaeseung.cultureseoul2.community;
+package com.example.kimjaeseung.cultureseoul2.performance;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -14,13 +14,13 @@ import com.example.kimjaeseung.cultureseoul2.R;
  * Created by heo04 on 2017-07-12.
  */
 
-public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.ViewHolder>
+public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.ViewHolder>
 {
-    private static final String TAG = CommunityAdapter.class.getSimpleName();
+    private static final String TAG = PerformanceAdapter.class.getSimpleName();
 
     private int mNumberItems;
 
-    public CommunityAdapter(int numberOfItems)
+    public PerformanceAdapter(int numberOfItems)
     {
         mNumberItems = numberOfItems;
     }
