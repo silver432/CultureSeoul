@@ -44,6 +44,8 @@ public class PerformanceFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mPerformanceList.setLayoutManager(layoutManager);
 
+        mPerformanceList.setHasFixedSize(true);
+
         mAdapter = new PerformanceAdapter(NUM_LIST_ITEMS);
         mPerformanceList.setAdapter(mAdapter);
 
