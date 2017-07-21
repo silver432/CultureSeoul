@@ -6,10 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,17 +78,22 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
     class ViewHolder extends RecyclerView.ViewHolder
     {
         TextView listItemNumberView;
+        ImageView listItemImageView;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
 
-            listItemNumberView = (TextView) itemView.findViewById(R.id.tv_item_number);
+            listItemNumberView = (TextView) itemView.findViewById(R.id.tv_item_title);
+            listItemImageView = (ImageView) itemView.findViewById(R.id.tv_item_image);
         }
 
         public void bind(CultureEvent cultureEvent)
         {
             listItemNumberView.setText(cultureEvent.getTitle());
+            //listItemImageView.setImageBitmap(cultureEvent.getMainImg());
+
+            Picasso.with(itemView.getContext()).load(cultureEvent.getMainImg().toLowerCase()).into(listItemImageView);
         }
     }
 }
