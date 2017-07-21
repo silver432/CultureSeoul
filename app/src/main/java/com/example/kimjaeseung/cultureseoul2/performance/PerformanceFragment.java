@@ -86,7 +86,7 @@ public class PerformanceFragment extends Fragment
 
         CultureService cultureService = retrofit.create(CultureService.class);
         Call<CultureEventOutWrapper> callCultureEvent = cultureService.getCultureEvents(
-                "74776b4f6873696c34364a6368704d", "json", "SearchConcertDetailService", 1, 10, "94040"
+                "74776b4f6873696c34364a6368704d", "json", "SearchConcertDetailService", 1, 10, ""
         );
         callCultureEvent.enqueue(new Callback<CultureEventOutWrapper>()
         {
