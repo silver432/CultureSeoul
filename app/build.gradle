@@ -47,4 +47,9 @@ dependencies {
 
     //facebook login
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+
+    // network
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.okhttp3:okhttp:3.5.0'
 }

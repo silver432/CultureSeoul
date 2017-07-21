@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.kimjaeseung.cultureseoul2.R;
+import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by heo04 on 2017-07-12.
@@ -19,6 +23,8 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
     private static final String TAG = PerformanceAdapter.class.getSimpleName();
 
     private int mNumberItems;
+
+    private List<CultureEvent> cultureEventList = new ArrayList<>();
 
     public PerformanceAdapter(int numberOfItems)
     {
@@ -46,16 +52,26 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
     public void onBindViewHolder(ViewHolder holder, int position)
     {
         Log.d(TAG, "#" + position);
-        holder.bind(position);
+        holder.bind(cultureEventList.get(position));
     }
 
     /* 데이터 소스의 아이템 개수를 반환 */
     @Override
     public int getItemCount()
     {
-        return mNumberItems;
+        return cultureEventList.size();
     }
 
+    public void setItemList(List<CultureEvent> list)
+    {
+        cultureEventList.clear();
+        cultureEventList.addAll(list);
+    }
+
+    public void notifyAdapter()
+    {
+        notifyDataSetChanged();
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder
     {
@@ -68,9 +84,9 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
             listItemNumberView = (TextView) itemView.findViewById(R.id.tv_item_number);
         }
 
-        void bind(int listIndex)
+        public void bind(CultureEvent cultureEvent)
         {
-            listItemNumberView.setText(String.valueOf(listIndex));
+            listItemNumberView.setText(cultureEvent.getTitle());
         }
     }
 }
