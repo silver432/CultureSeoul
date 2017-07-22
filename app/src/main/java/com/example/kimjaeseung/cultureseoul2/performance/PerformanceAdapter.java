@@ -24,13 +24,22 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
 {
     private static final String TAG = PerformanceAdapter.class.getSimpleName();
 
-    private int mNumberItems;
-
     private List<CultureEvent> cultureEventList = new ArrayList<>();
 
-    public PerformanceAdapter(int numberOfItems)
+    private Context mContext;
+    private PerformanceAdapterOnClickHandler mPerformanceHandler;
+    private CultureEvent mCultureEvent;
+    private int mPosition;
+
+    public interface PerformanceAdapterOnClickHandler
     {
-        mNumberItems = numberOfItems;
+        void onClick(CultureEvent cultureEvent);
+    }
+
+    public PerformanceAdapter(Context context, PerformanceAdapterOnClickHandler handler)
+    {
+        mContext = context;
+        mPerformanceHandler = handler;
     }
 
     /* RecyclerView를 ViewHolder객체로 인스턴스화 */
@@ -75,25 +84,40 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
         notifyDataSetChanged();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         TextView listItemNumberView;
         ImageView listItemImageView;
 
-        public ViewHolder(View itemView)
+
+        public ViewHolder(final View itemView)
         {
             super(itemView);
 
             listItemNumberView = (TextView) itemView.findViewById(R.id.tv_item_title);
             listItemImageView = (ImageView) itemView.findViewById(R.id.tv_item_image);
+
+            itemView.setOnClickListener(this);  // 클릭 이벤트
         }
 
         public void bind(CultureEvent cultureEvent)
         {
-            listItemNumberView.setText(cultureEvent.getTitle());
-            //listItemImageView.setImageBitmap(cultureEvent.getMainImg());
+            listItemNumberView.setText(cultureEvent.getTitle());    // 공연 제목
 
-            Picasso.with(itemView.getContext()).load(cultureEvent.getMainImg().toLowerCase()).into(listItemImageView);
+            Picasso.with(itemView.getContext()) // 공연 이미지
+                    .load(cultureEvent.getMainImg().toLowerCase())
+                    .placeholder(R.drawable.bubble_50dp)
+                    .error(R.drawable.smile_50dp)
+                    .resize(120, 120)
+                    .into(listItemImageView);
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            int position = getAdapterPosition();
+            mCultureEvent = cultureEventList.get(position);
+            mPerformanceHandler.onClick(mCultureEvent);
         }
     }
 }

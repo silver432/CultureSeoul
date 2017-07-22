@@ -1,6 +1,7 @@
 package com.example.kimjaeseung.cultureseoul2.performance;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,14 +30,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by kimjaeseung on 2017. 7. 11..
  */
 
-public class PerformanceFragment extends Fragment
+public class PerformanceFragment extends Fragment implements PerformanceAdapter.PerformanceAdapterOnClickHandler
 {
     private final static String TAG = "PerformanceFragment";
     private static final int NUM_LIST_ITEMS = 100;
     private PerformanceAdapter mAdapter;
 
-    @Bind(R.id.performance_list)
-    RecyclerView mPerformanceList;
+    @Bind(R.id.performance_list) RecyclerView mPerformanceList;
 
     public PerformanceFragment()
     {
@@ -52,7 +52,6 @@ public class PerformanceFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
     {
-
         View view = inflater.inflate(R.layout.fragment_performance, container, false);
 
         ButterKnife.bind(this, view);
@@ -69,7 +68,7 @@ public class PerformanceFragment extends Fragment
         mPerformanceList.setLayoutManager(layoutManager);
         mPerformanceList.setHasFixedSize(true);
 
-        mAdapter = new PerformanceAdapter(NUM_LIST_ITEMS);
+        mAdapter = new PerformanceAdapter(this.getContext(), this);
         mPerformanceList.setAdapter(mAdapter);
 
         loadData();
@@ -112,5 +111,13 @@ public class PerformanceFragment extends Fragment
                 loadData();
             }
         });
+    }
+
+    @Override
+    public void onClick(CultureEvent cultureEvent)
+    {
+        Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
+        startToDetailActivity.putExtra("key", cultureEvent);
+        startActivity(startToDetailActivity);
     }
 }

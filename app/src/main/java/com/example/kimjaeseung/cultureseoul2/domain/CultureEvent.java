@@ -3,9 +3,10 @@ package com.example.kimjaeseung.cultureseoul2.domain;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class CultureEvent
+public class CultureEvent implements Serializable
 {
 
     @SerializedName("CULTCODE")
