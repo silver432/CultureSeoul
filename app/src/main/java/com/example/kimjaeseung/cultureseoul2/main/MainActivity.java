@@ -6,6 +6,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 
@@ -14,12 +15,14 @@ import com.example.kimjaeseung.cultureseoul2.attendance.AttandanceFragment;
 import com.example.kimjaeseung.cultureseoul2.performance.PerformanceFragment;
 import com.example.kimjaeseung.cultureseoul2.home.HomeFragment;
 import com.example.kimjaeseung.cultureseoul2.community.CommunityFragment;
+import com.google.firebase.FirebaseApp;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
-    private final static String TAG = "MainActivity";
+    private final static String TAG = MainActivity.class.getSimpleName();
+    private String selectPage;
 
     @Bind(R.id.main_bottomnavigation) BottomNavigationView bottomNavigationView;
 
@@ -29,7 +32,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        switchFragment(HomeFragment.getInstance());
+        selectPage=getIntent().getStringExtra("select_page");
+        if (selectPage!=null){
+            if (selectPage.equals(CommunityFragment.class.getSimpleName())) switchFragment(CommunityFragment.getInstance());
+        }else switchFragment(HomeFragment.getInstance());
+
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
     }
 
