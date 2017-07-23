@@ -86,30 +86,35 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
-        TextView listItemNumberView;
         ImageView listItemImageView;
+        TextView listItemTitleView;
+        TextView listItemDateView;
 
 
         public ViewHolder(final View itemView)
         {
             super(itemView);
 
-            listItemNumberView = (TextView) itemView.findViewById(R.id.tv_item_title);
-            listItemImageView = (ImageView) itemView.findViewById(R.id.tv_item_image);
+            listItemImageView = (ImageView) itemView.findViewById(R.id.iv_item_image);
+            listItemTitleView = (TextView) itemView.findViewById(R.id.tv_item_title);
+            listItemDateView = (TextView) itemView.findViewById(R.id.tv_item_date);
 
             itemView.setOnClickListener(this);  // 클릭 이벤트
         }
 
         public void bind(CultureEvent cultureEvent)
         {
-            listItemNumberView.setText(cultureEvent.getTitle());    // 공연 제목
-
             Picasso.with(itemView.getContext()) // 공연 이미지
-                    .load(cultureEvent.getMainImg().toLowerCase())
-                    .placeholder(R.drawable.bubble_50dp)
-                    .error(R.drawable.smile_50dp)
-                    .resize(120, 120)
-                    .into(listItemImageView);
+                .load(cultureEvent.getMainImg().toLowerCase())
+                .placeholder(R.drawable.bubble_50dp)
+                .error(R.drawable.smile_50dp)
+                .resize(120, 120)
+                .into(listItemImageView);
+
+            listItemTitleView.setText(cultureEvent.getTitle());    // 공연 제목
+
+            listItemDateView.setText(cultureEvent.getStartDate() + " ~ " + cultureEvent.getEndDate());
+
         }
 
         @Override

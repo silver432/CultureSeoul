@@ -4,7 +4,6 @@ package com.example.kimjaeseung.cultureseoul2.domain;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class CultureEvent implements Serializable
 {
@@ -18,9 +17,9 @@ public class CultureEvent implements Serializable
     @SerializedName("TITLE")
     private String title;
     @SerializedName("STRTDATE")
-    private Date startDate;
+    private String startDate;
     @SerializedName("END_DATE")
-    private Date endDate;
+    private String endDate;
     @SerializedName("TIME")
     private String time;
     @SerializedName("PLACE")
@@ -62,7 +61,7 @@ public class CultureEvent implements Serializable
     {
     }
 
-    public CultureEvent(long cultCode, long subjCode, String codeName, String title, Date startDate, Date endDate, String time, String place, String orgLink, String mainImg, String homePage, String useTrgt, String useFee, String sponsor, String inquiry, String support, String etcDesc, String ageLimit, String isFree, String ticket, String program)
+    public CultureEvent(long cultCode, long subjCode, String codeName, String title, String startDate, String endDate, String time, String place, String orgLink, String mainImg, String homePage, String useTrgt, String useFee, String sponsor, String inquiry, String support, String etcDesc, String ageLimit, String isFree, String ticket, String program)
     {
         this.cultCode = cultCode;
         this.subjCode = subjCode;
@@ -127,22 +126,22 @@ public class CultureEvent implements Serializable
         this.title = title;
     }
 
-    public Date getStartDate()
+    public String getStartDate()
     {
         return startDate;
     }
 
-    public void setStartDate(Date startDate)
+    public void setStartDate(String startDate)
     {
         this.startDate = startDate;
     }
 
-    public Date getEndDate()
+    public String getEndDate()
     {
         return endDate;
     }
 
-    public void setEndDate(Date endDate)
+    public void setEndDate(String endDate)
     {
         this.endDate = endDate;
     }
