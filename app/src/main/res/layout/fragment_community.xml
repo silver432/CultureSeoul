@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ListView
-        android:id="@+id/community_chatromm_listview"
+        android:id="@+id/community_listview_chatroom"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="wrap_content"
+        android:padding="5dp"/>
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/community_chatroom_fab"
         android:layout_width="wrap_content"

@@ -1,6 +1,7 @@
 package com.example.kimjaeseung.cultureseoul2.community;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -17,12 +18,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by kimjaeseung on 2017. 7. 22..
@@ -36,14 +39,11 @@ public class ChatActivity extends Activity{
     @Bind(R.id.community_chat_button)
     Button chatButton;
 
-    private String chat_room_name, chat_user_name;
-    private ArrayAdapter<String> arrayAdapter;
-    private ArrayList<String> room = new ArrayList<>();
 
     private DatabaseReference reference;
-    private String key;
-    private String chat_user;
-    private String chat_message;
+    private ChatAdapter mAdapter;
+
+    ChatRoomData chatRoomData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,48 +51,41 @@ public class ChatActivity extends Activity{
         setContentView(R.layout.activity_community_chat);
         ButterKnife.bind(this);
 
-        chat_user_name = getIntent().getExtras().get("chat_user_name").toString();
-        chat_room_name = getIntent().getExtras().get("chat_room_name").toString();
+        initView();
+        initFirebaseDatabase();
+    }
+    private void initView(){
+        Intent intent = getIntent();
+        chatRoomData=(ChatRoomData)intent.getSerializableExtra("room_information");
 
-        setTitle(chat_room_name + " 채팅방");
+        setTitle(chatRoomData.getRoomName() + " 채팅방");
 
-        reference = FirebaseDatabase.getInstance().getReference().child(chat_room_name);
-
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, room);
-        chatListView.setAdapter(arrayAdapter);
-
-        chatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String, Object> map = new HashMap<String, Object>();
-                key = reference.push().getKey();
-
-                reference.updateChildren(map);
-
-                DatabaseReference root = reference.child(key);
-
-                Map<String, Object> objectMap = new HashMap<String, Object>();
-
-                objectMap.put("name", chat_user_name);
-                objectMap.put("message", chatEditText.getText().toString());
-
-                root.updateChildren(objectMap);
-
-                chatEditText.setText("");
-            }
-        });
-
+        mAdapter = new ChatAdapter(this,R.layout.community_listitem_chat);
+        chatListView.setAdapter(mAdapter);
+    }
+    private void initFirebaseDatabase(){
+        reference = FirebaseDatabase.getInstance().getReference(chatRoomData.getFirebaseKey());
         reference.addChildEventListener(new ChildEventListener() {
             @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                chatConversation(dataSnapshot);
+                ChatData chatData = dataSnapshot.getValue(ChatData.class);
+                chatData.firebaseKey = dataSnapshot.getKey();
+                mAdapter.add(chatData);
+                chatListView.smoothScrollToPosition(mAdapter.getCount());
             }
 
             @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                chatConversation(dataSnapshot);
+
             }
 
             @Override public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                String firebaseKey=dataSnapshot.getKey();
+                int count = mAdapter.getCount();
+                for (int i=0;i<count;i++){
+                    if (mAdapter.getItem(i).firebaseKey.equals(firebaseKey)){
+                        mAdapter.remove(mAdapter.getItem(i));
+                        break;
+                    }
+                }
             }
 
             @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {
@@ -103,18 +96,24 @@ public class ChatActivity extends Activity{
 
             }
         });
-
     }
-    private void chatConversation(DataSnapshot dataSnapshot) {
-        Iterator i = dataSnapshot.getChildren().iterator();
+    @OnClick({R.id.community_chat_button})
+    public void mOnClick(View v){
+        switch (v.getId()){
+            case R.id.community_chat_button:
+                Calendar calendar = Calendar.getInstance();
+                long now = calendar.getTimeInMillis();
 
-        while (i.hasNext()) {
-            chat_message = (String) ((DataSnapshot) i.next()).getValue();
-            chat_user = (String) ((DataSnapshot) i.next()).getValue();
+                ChatData chatData = new ChatData();
+                chatData.userPhoto=R.drawable.smile_50dp;
+                chatData.message=chatEditText.getText().toString();
+                chatData.userName="Default User";
+                chatData.time=now;
 
-            arrayAdapter.add(chat_user + " : " + chat_message);
+                reference.push().setValue(chatData);
+
+                chatEditText.setText("");
+                break;
         }
-
-        arrayAdapter.notifyDataSetChanged();
     }
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kimjaeseung.cultureseoul2.R;
@@ -31,9 +32,10 @@ public class ChatAdapter extends ArrayAdapter<ChatData> {
             convertView = inflater.inflate(R.layout.community_listitem_chat, null);
 
             viewHolder = new ViewHolder();
-            viewHolder.mTxtUserName = (TextView) convertView.findViewById(R.id.community_tv_username);
-            viewHolder.mTxtMessage = (TextView) convertView.findViewById(R.id.community_tv_message);
-            viewHolder.mTxtTime = (TextView) convertView.findViewById(R.id.community_tv_time);
+            viewHolder.userPhoto = (ImageView) convertView.findViewById(R.id.community_iv_userphoto);
+            viewHolder.userName = (TextView) convertView.findViewById(R.id.community_tv_username);
+            viewHolder.userMessage = (TextView) convertView.findViewById(R.id.community_tv_message);
+            viewHolder.userTime = (TextView) convertView.findViewById(R.id.community_tv_time);
 
             convertView.setTag(viewHolder);
         } else {
@@ -41,17 +43,19 @@ public class ChatAdapter extends ArrayAdapter<ChatData> {
         }
 
         ChatData chatData = getItem(position);
-        viewHolder.mTxtUserName.setText(chatData.userName);
-        viewHolder.mTxtMessage.setText(chatData.message);
-        viewHolder.mTxtTime.setText(mSimpleDateFormat.format(chatData.time));
+        viewHolder.userPhoto.setImageResource(chatData.userPhoto);
+        viewHolder.userName.setText(chatData.userName);
+        viewHolder.userMessage.setText(chatData.message);
+        viewHolder.userTime.setText(mSimpleDateFormat.format(chatData.time));
 
         return convertView;
     }
 
     private class ViewHolder {
-        private TextView mTxtUserName;
-        private TextView mTxtMessage;
-        private TextView mTxtTime;
+        private ImageView userPhoto;
+        private TextView userName;
+        private TextView userMessage;
+        private TextView userTime;
     }
 }
 

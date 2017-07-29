@@ -34,8 +34,14 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         selectPage=getIntent().getStringExtra("select_page");
         if (selectPage!=null){
-            if (selectPage.equals(CommunityFragment.class.getSimpleName())) switchFragment(CommunityFragment.getInstance());
-        }else switchFragment(HomeFragment.getInstance());
+            if (selectPage.equals(CommunityFragment.class.getSimpleName())) {
+                switchFragment(CommunityFragment.getInstance());
+                bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_community);
+            }
+        }else {
+            switchFragment(HomeFragment.getInstance());
+            bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_home);
+        }
 
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
     }

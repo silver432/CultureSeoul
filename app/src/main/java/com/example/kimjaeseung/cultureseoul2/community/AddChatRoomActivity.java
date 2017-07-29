@@ -18,6 +18,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by kimjaeseung on 2017. 7. 22..
@@ -26,27 +27,62 @@ import butterknife.ButterKnife;
 public class AddChatRoomActivity extends Activity {
     @Bind(R.id.community_et_chatroomname)
     EditText chatRoomName;
-    @Bind(R.id.community_btn_chatrommcreate)
+    @Bind(R.id.community_btn_chatroomcreate)
     Button chatRoomCreateButton;
+    @Bind(R.id.community_et_meetlocation)
+    EditText meetLocation;
+    @Bind(R.id.community_et_meetpeople)
+    EditText meetPeople;
+    @Bind(R.id.community_et_meettime)
+    EditText meetTime;
 
-    private DatabaseReference reference= FirebaseDatabase.getInstance()
-            .getReference().getRoot();
+    ChatRoomData mChatRoomData;
+
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mDatabaseReference;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community_addchatroom);
         ButterKnife.bind(this);
 
-        chatRoomCreateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String, Object> map = new HashMap<String, Object>();
-                map.put(chatRoomName.getText().toString(), "");
-                reference.updateChildren(map);
-                Intent intent=new Intent(AddChatRoomActivity.this,MainActivity.class);
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mDatabaseReference = mFirebaseDatabase.getReference("room");
+
+
+//        chatRoomCreateButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Map<String, Object> map = new HashMap<String, Object>();
+//                map.put(chatRoomName.getText().toString(), "");
+//                reference.updateChildren(map);
+//                Intent intent=new Intent(AddChatRoomActivity.this,MainActivity.class);
+//                intent.putExtra("select_page",CommunityFragment.class.getSimpleName());
+//                startActivity(intent);
+//            }
+//        });
+    }
+    @OnClick({R.id.community_btn_chatroomcreate})
+    public void mOnClick(View v){
+        switch (v.getId()){
+            case R.id.community_btn_chatroomcreate:
+                mChatRoomData = new ChatRoomData();
+                mChatRoomData.setPerformanceImage(R.drawable.ic_launcher);
+                mChatRoomData.setRoomLocation(meetLocation.getText().toString());
+                mChatRoomData.setRoomName(chatRoomName.getText().toString());
+                mChatRoomData.setRoomPeople(meetPeople.getText().toString());
+                mChatRoomData.setRoomTime(meetTime.getText().toString());
+                mChatRoomData.setRoomState("모집");
+
+                mDatabaseReference.push().setValue(mChatRoomData);
+
+                Intent intent = new Intent(AddChatRoomActivity.this,MainActivity.class);
+//                intent.putExtra("room_information",mChatRoomData);
                 intent.putExtra("select_page",CommunityFragment.class.getSimpleName());
                 startActivity(intent);
-            }
-        });
+                break;
+        }
     }
+
 }
