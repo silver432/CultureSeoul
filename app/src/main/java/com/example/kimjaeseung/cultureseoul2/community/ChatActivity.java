@@ -76,6 +76,7 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
             @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ChatData chatData = dataSnapshot.getValue(ChatData.class);
                 chatData.firebaseKey = dataSnapshot.getKey();
+                chatDataList.add(chatData);
                 mAdapter.addItem(chatData);
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
@@ -87,9 +88,10 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
 
             @Override public void onChildRemoved(DataSnapshot dataSnapshot) {
                 String firebaseKey=dataSnapshot.getKey();
-                int count = mAdapter.getItemCount();
+                int count = chatDataList.size();
                 for (int i=0;i<count;i++){
                     if (chatDataList.get(i).firebaseKey.equals(firebaseKey)){
+                        chatDataList.remove(i);
                         mAdapter.removeItem(i);
                         mAdapter.notifyDataSetChanged();
                         break;

@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/community_iv_chatroom"
-        android:src="@mipmap/ic_launcher_round"
-        android:layout_width="50dp"
-        android:layout_height="match_parent" />
+        android:layout_margin="5dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp" />
     <LinearLayout
         android:orientation="vertical"
+        android:layout_toRightOf="@id/community_iv_chatroom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/community_tv_roomname"
+            android:maxLines="2"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <LinearLayout
@@ -20,27 +24,32 @@
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/community_tv_roomlocation"
+                android:textSize="16sp"
+                android:layout_margin="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/community_tv_roomtime"
+                android:textSize="16sp"
+                android:layout_margin="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/community_tv_roompeople"
+                android:textSize="16sp"
+                android:layout_margin="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/community_tv_roomstate"
-            android:text="모집"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/community_tv_roompeople"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/community_tv_roomstate"
+        android:text="모집"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

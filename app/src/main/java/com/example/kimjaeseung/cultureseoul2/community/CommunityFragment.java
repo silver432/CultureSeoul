@@ -102,18 +102,6 @@ public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatR
         mAdapter = new ChatRoomAdapter(this.getContext(), this);
         mRecyclerView.setAdapter(mAdapter);
         floatingActionButton.attachToRecyclerView(mRecyclerView);
-//        mAdapter = new ChatRoomAdapter(this.getContext(), R.layout.community_listitem_chatroom);
-//        mListView.setAdapter(mAdapter);
-//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                ChatRoomData chatRoomData = (ChatRoomData) parent.getItemAtPosition(position);
-//                Intent intent = new Intent(getContext(),ChatActivity.class);
-//                intent.putExtra("room_information",chatRoomData);
-//                startActivity(intent);
-//            }
-//        });
-//        floatingActionButton.attachToListView(mListView);
     }
 
     private void initFirebaseDatabase() {
@@ -125,12 +113,9 @@ public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatR
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ChatRoomData chatRoomData = dataSnapshot.getValue(ChatRoomData.class);
                 chatRoomData.setFirebaseKey(dataSnapshot.getKey());
+                chatRoomDataList.add(chatRoomData);
                 mAdapter.addItem(chatRoomData);
-//                mAdapter.setItemList(chatRoomDataList);
                 mAdapter.notifyDataSetChanged();
-                mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
-//                mAdapter.add(chatRoomData);
-//                mListView.smoothScrollToPosition(mAdapter.getCount());
             }
 
             @Override
@@ -141,21 +126,15 @@ public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatR
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 String firebaseKey = dataSnapshot.getKey();
-                int count = mAdapter.getItemCount();
+                int count = chatRoomDataList.size();
                 for (int i = 0; i < count; i++) {
                     if (chatRoomDataList.get(i).getFirebaseKey().equals(firebaseKey)) {
+                        chatRoomDataList.remove(i);
                         mAdapter.removeItem(i);
-//                        mAdapter.setItemList(chatRoomDataList);
                         mAdapter.notifyDataSetChanged();
                         break;
                     }
                 }
-//                for (int i=0;i<count;i++){
-//                    if (mAdapter.getItemId(i).getFirebaseKey().equals(firebaseKey)){
-//                        mAdapter.remove(mAdapter.getItem(i));
-//                        break;
-//                    }
-//                }
             }
 
             @Override
