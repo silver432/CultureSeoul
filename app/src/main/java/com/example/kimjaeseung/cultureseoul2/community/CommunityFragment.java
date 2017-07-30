@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -40,14 +41,16 @@ import butterknife.OnClick;
  * Created by kimjaeseung on 2017. 7. 11..
  */
 
-public class CommunityFragment extends Fragment {
+public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatRoomAdapterOnClickHandler {
     private final static String TAG = CommunityFragment.class.getSimpleName();
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     private ChildEventListener mChildEventListener;
     private ChatRoomAdapter mAdapter;
-    @Bind(R.id.community_listview_chatroom) ListView mListView;
+    List<ChatRoomData> chatRoomDataList = new ArrayList<>();
+    @Bind(R.id.community_chatroom_recyclerview)
+    RecyclerView mRecyclerView;
 
     @Bind(R.id.community_chatroom_fab)
     FloatingActionButton floatingActionButton;
@@ -91,31 +94,43 @@ public class CommunityFragment extends Fragment {
         mDatabaseReference.removeEventListener(mChildEventListener);
     }
 
-    private void initView(){
-        mAdapter = new ChatRoomAdapter(this.getContext(), R.layout.community_listitem_chatroom);
-        mListView.setAdapter(mAdapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ChatRoomData chatRoomData = (ChatRoomData) parent.getItemAtPosition(position);
-                Intent intent = new Intent(getContext(),ChatActivity.class);
-                intent.putExtra("room_information",chatRoomData);
-                startActivity(intent);
-            }
-        });
-        floatingActionButton.attachToListView(mListView);
+    private void initView() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+
+        mAdapter = new ChatRoomAdapter(this.getContext(), this);
+        mRecyclerView.setAdapter(mAdapter);
+        floatingActionButton.attachToRecyclerView(mRecyclerView);
+//        mAdapter = new ChatRoomAdapter(this.getContext(), R.layout.community_listitem_chatroom);
+//        mListView.setAdapter(mAdapter);
+//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                ChatRoomData chatRoomData = (ChatRoomData) parent.getItemAtPosition(position);
+//                Intent intent = new Intent(getContext(),ChatActivity.class);
+//                intent.putExtra("room_information",chatRoomData);
+//                startActivity(intent);
+//            }
+//        });
+//        floatingActionButton.attachToListView(mListView);
     }
 
-    private void initFirebaseDatabase(){
+    private void initFirebaseDatabase() {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference("room");
-        mChildEventListener=new ChildEventListener() {
+
+        mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ChatRoomData chatRoomData = dataSnapshot.getValue(ChatRoomData.class);
                 chatRoomData.setFirebaseKey(dataSnapshot.getKey());
-                mAdapter.add(chatRoomData);
-                mListView.smoothScrollToPosition(mAdapter.getCount());
+                mAdapter.addItem(chatRoomData);
+//                mAdapter.setItemList(chatRoomDataList);
+                mAdapter.notifyDataSetChanged();
+                mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
+//                mAdapter.add(chatRoomData);
+//                mListView.smoothScrollToPosition(mAdapter.getCount());
             }
 
             @Override
@@ -125,14 +140,22 @@ public class CommunityFragment extends Fragment {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                String firebaseKey=dataSnapshot.getKey();
-                int count = mAdapter.getCount();
-                for (int i=0;i<count;i++){
-                    if (mAdapter.getItem(i).getFirebaseKey().equals(firebaseKey)){
-                        mAdapter.remove(mAdapter.getItem(i));
+                String firebaseKey = dataSnapshot.getKey();
+                int count = mAdapter.getItemCount();
+                for (int i = 0; i < count; i++) {
+                    if (chatRoomDataList.get(i).getFirebaseKey().equals(firebaseKey)) {
+                        mAdapter.removeItem(i);
+//                        mAdapter.setItemList(chatRoomDataList);
+                        mAdapter.notifyDataSetChanged();
                         break;
                     }
                 }
+//                for (int i=0;i<count;i++){
+//                    if (mAdapter.getItemId(i).getFirebaseKey().equals(firebaseKey)){
+//                        mAdapter.remove(mAdapter.getItem(i));
+//                        break;
+//                    }
+//                }
             }
 
             @Override
@@ -144,7 +167,15 @@ public class CommunityFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
         };
         mDatabaseReference.addChildEventListener(mChildEventListener);
+    }
+
+    @Override
+    public void onClick(ChatRoomData chatRoomData) {
+        Intent intent = new Intent(getContext(), ChatActivity.class);
+        intent.putExtra("room_information", chatRoomData);
+        startActivity(intent);
     }
 }

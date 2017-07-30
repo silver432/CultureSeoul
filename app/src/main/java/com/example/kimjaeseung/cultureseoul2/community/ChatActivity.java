@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -31,15 +34,16 @@ import butterknife.OnClick;
  * Created by kimjaeseung on 2017. 7. 22..
  */
 
-public class ChatActivity extends Activity{
-    @Bind(R.id.community_chat_listview)
-    ListView chatListView;
+public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnClickHandler{
+    @Bind(R.id.community_chat_recyclerview)
+    RecyclerView mRecyclerView;
     @Bind(R.id.community_chat_edittext)
     EditText chatEditText;
     @Bind(R.id.community_chat_button)
     Button chatButton;
 
 
+    List<ChatData> chatDataList=new ArrayList<>();
     private DatabaseReference reference;
     private ChatAdapter mAdapter;
 
@@ -60,8 +64,11 @@ public class ChatActivity extends Activity{
 
         setTitle(chatRoomData.getRoomName() + " 채팅방");
 
-        mAdapter = new ChatAdapter(this,R.layout.community_listitem_chat);
-        chatListView.setAdapter(mAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new ChatAdapter(this, this);
+        mRecyclerView.setAdapter(mAdapter);
     }
     private void initFirebaseDatabase(){
         reference = FirebaseDatabase.getInstance().getReference(chatRoomData.getFirebaseKey());
@@ -69,8 +76,9 @@ public class ChatActivity extends Activity{
             @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ChatData chatData = dataSnapshot.getValue(ChatData.class);
                 chatData.firebaseKey = dataSnapshot.getKey();
-                mAdapter.add(chatData);
-                chatListView.smoothScrollToPosition(mAdapter.getCount());
+                mAdapter.addItem(chatData);
+                mAdapter.notifyDataSetChanged();
+                mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
             }
 
             @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -79,10 +87,11 @@ public class ChatActivity extends Activity{
 
             @Override public void onChildRemoved(DataSnapshot dataSnapshot) {
                 String firebaseKey=dataSnapshot.getKey();
-                int count = mAdapter.getCount();
+                int count = mAdapter.getItemCount();
                 for (int i=0;i<count;i++){
-                    if (mAdapter.getItem(i).firebaseKey.equals(firebaseKey)){
-                        mAdapter.remove(mAdapter.getItem(i));
+                    if (chatDataList.get(i).firebaseKey.equals(firebaseKey)){
+                        mAdapter.removeItem(i);
+                        mAdapter.notifyDataSetChanged();
                         break;
                     }
                 }
@@ -115,5 +124,10 @@ public class ChatActivity extends Activity{
                 chatEditText.setText("");
                 break;
         }
+    }
+
+    @Override
+    public void onClick(ChatData chatData) {
+
     }
 }

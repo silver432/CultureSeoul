@@ -2,11 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ListView
-        android:id="@+id/community_chat_listview"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/community_chat_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/community_chat_layout"/>
+        android:layout_above="@+id/community_chat_layout">
+    </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
         android:id="@+id/community_chat_layout"
