@@ -36,10 +36,11 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
         void onClick(CultureEvent cultureEvent);
     }
 
-    public PerformanceAdapter(Context context, PerformanceAdapterOnClickHandler handler)
+    public PerformanceAdapter(Context context, PerformanceAdapterOnClickHandler handler, List<CultureEvent> cultureEventList)
     {
         mContext = context;
         mPerformanceHandler = handler;
+        this.cultureEventList = cultureEventList;
     }
 
     /* RecyclerView를 ViewHolder객체로 인스턴스화 */
@@ -108,7 +109,7 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
                 .load(cultureEvent.getMainImg().toLowerCase())
                 .placeholder(R.drawable.bubble_50dp)
                 .error(R.drawable.smile_50dp)
-                .resize(120, 120)
+                .fit()
                 .into(listItemImageView);
 
             listItemTitleView.setText(cultureEvent.getTitle());    // 공연 제목
@@ -125,4 +126,13 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
             mPerformanceHandler.onClick(mCultureEvent);
         }
     }
+    /* text 검색 filter */
+    public void setFilter(List<CultureEvent> newList)
+    {
+        cultureEventList = new ArrayList<>();
+        cultureEventList.addAll(newList);
+        notifyDataSetChanged();
+    }
+
+
 }
