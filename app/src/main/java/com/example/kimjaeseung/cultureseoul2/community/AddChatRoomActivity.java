@@ -7,12 +7,16 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.main.MainActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,13 +71,18 @@ public class AddChatRoomActivity extends Activity {
     public void mOnClick(View v){
         switch (v.getId()){
             case R.id.community_btn_chatroomcreate:
+                long now = System.currentTimeMillis();
+                Date date = new Date(now);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String day = simpleDateFormat.format(date);
+
                 mChatRoomData = new ChatRoomData();
                 mChatRoomData.setPerformanceImage(R.drawable.ic_launcher);
                 mChatRoomData.setRoomLocation(meetLocation.getText().toString());
                 mChatRoomData.setRoomName(chatRoomName.getText().toString());
                 mChatRoomData.setRoomPeople(meetPeople.getText().toString());
                 mChatRoomData.setRoomTime(meetTime.getText().toString());
-                mChatRoomData.setRoomState("모집");
+                mChatRoomData.setRoomDay(day);
 
                 mDatabaseReference.push().setValue(mChatRoomData);
 

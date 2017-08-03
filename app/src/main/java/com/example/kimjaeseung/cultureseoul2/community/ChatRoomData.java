@@ -14,25 +14,8 @@ public class ChatRoomData implements Serializable{
     private String roomName;
     private String roomLocation;
     private String roomTime;
-    private String roomState;
+    private String roomDay;
     private String roomPeople;
-
-
-    public int getPerformanceImage() {
-        return performanceImage;
-    }
-
-    public void setPerformanceImage(int performanceImage) {
-        this.performanceImage = performanceImage;
-    }
-
-    public String getRoomLocation() {
-        return roomLocation;
-    }
-
-    public void setRoomLocation(String roomLocation) {
-        this.roomLocation = roomLocation;
-    }
 
     public String getFirebaseKey() {
         return firebaseKey;
@@ -40,6 +23,14 @@ public class ChatRoomData implements Serializable{
 
     public void setFirebaseKey(String firebaseKey) {
         this.firebaseKey = firebaseKey;
+    }
+
+    public int getPerformanceImage() {
+        return performanceImage;
+    }
+
+    public void setPerformanceImage(int performanceImage) {
+        this.performanceImage = performanceImage;
     }
 
     public String getRoomName() {
@@ -50,20 +41,12 @@ public class ChatRoomData implements Serializable{
         this.roomName = roomName;
     }
 
-    public String getRoomPeople() {
-        return roomPeople;
+    public String getRoomLocation() {
+        return roomLocation;
     }
 
-    public void setRoomPeople(String roomPeople) {
-        this.roomPeople = roomPeople;
-    }
-
-    public String getRoomState() {
-        return roomState;
-    }
-
-    public void setRoomState(String roomState) {
-        this.roomState = roomState;
+    public void setRoomLocation(String roomLocation) {
+        this.roomLocation = roomLocation;
     }
 
     public String getRoomTime() {
@@ -72,5 +55,21 @@ public class ChatRoomData implements Serializable{
 
     public void setRoomTime(String roomTime) {
         this.roomTime = roomTime;
+    }
+
+    public String getRoomDay() {
+        return roomDay;
+    }
+
+    public void setRoomDay(String roomDay) {
+        this.roomDay = roomDay;
+    }
+
+    public String getRoomPeople() {
+        return roomPeople;
+    }
+
+    public void setRoomPeople(String roomPeople) {
+        this.roomPeople = roomPeople;
     }
 }

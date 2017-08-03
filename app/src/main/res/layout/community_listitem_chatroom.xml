@@ -1,55 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
     <ImageView
         android:id="@+id/community_iv_chatroom"
+        android:layout_width="0dp"
+        android:layout_height="90dp"
         android:layout_margin="5dp"
-        android:layout_width="70dp"
-        android:layout_height="70dp" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_toRightOf="@id/community_iv_chatroom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_weight="1" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="90dp"
+        android:layout_weight="3"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/community_tv_roomname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:maxLines="2"
-            android:layout_marginTop="10dp"
-            android:textSize="18sp"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/community_tv_roomlocation"
+            android:layout_above="@+id/community_tv_line"
+            android:layout_alignParentRight="true"
+            android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <LinearLayout
+
+        <TextView
+            android:id="@+id/community_tv_line"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="90dp"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/community_tv_roomday"
+            android:layout_marginBottom="5dp"
+            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/community_tv_roomlocation"
-                android:textSize="16sp"
-                android:layout_margin="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/community_tv_roomtime"
-                android:textSize="16sp"
-                android:layout_margin="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/community_tv_roompeople"
-                android:textSize="16sp"
-                android:layout_margin="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/community_tv_roomstate"
-        android:text="모집"
-        android:layout_centerInParent="true"
-        android:layout_marginRight="10dp"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-</RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/community_tv_roomday2"
+            android:textSize="12sp" />
+        <TextView
+            android:id="@+id/community_tv_roomday2"
+            android:text="오늘"
+            android:layout_centerInParent="true"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/community_tv_roomtime"
+            android:layout_below="@+id/community_tv_roomday2"
+            android:layout_centerHorizontal="true"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/community_tv_roompeople"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp" />
+    </RelativeLayout>
+</LinearLayout>

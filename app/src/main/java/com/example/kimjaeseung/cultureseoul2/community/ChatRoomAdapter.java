@@ -79,9 +79,10 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
         private ImageView mPerformanceImage;
         private TextView mRoomName;
         private TextView mRoomLocation;
+        private TextView mRoomDay;
         private TextView mRoomTime;
-        private TextView mRoomState;
         private TextView mRoomPeople;
+        private TextView mLine;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -90,18 +91,20 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
             mRoomName=(TextView)itemView.findViewById(R.id.community_tv_roomname);
             mRoomLocation=(TextView)itemView.findViewById(R.id.community_tv_roomlocation);
             mRoomTime=(TextView)itemView.findViewById(R.id.community_tv_roomtime);
-            mRoomState=(TextView)itemView.findViewById(R.id.community_tv_roomstate);
+            mRoomDay=(TextView)itemView.findViewById(R.id.community_tv_roomday);
             mRoomPeople=(TextView)itemView.findViewById(R.id.community_tv_roompeople);
+            mLine=(TextView)itemView.findViewById(R.id.community_tv_line);
 
             itemView.setOnClickListener(this);
         }
         public void bind(ChatRoomData chatRoomData){
             mPerformanceImage.setImageResource(chatRoomData.getPerformanceImage());
             mRoomName.setText(chatRoomData.getRoomName());
-            mRoomPeople.setText(chatRoomData.getRoomPeople());
-            mRoomState.setText(chatRoomData.getRoomState());
+            mRoomPeople.setText("0/"+chatRoomData.getRoomPeople());
+            mRoomDay.setText(chatRoomData.getRoomDay());
             mRoomTime.setText(chatRoomData.getRoomTime());
             mRoomLocation.setText(chatRoomData.getRoomLocation());
+            mLine.setBackgroundResource(R.color.colorPrimary);
         }
 
         @Override
