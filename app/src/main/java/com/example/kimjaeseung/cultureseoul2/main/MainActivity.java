@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.attendance.AttandanceFragment;
+import com.example.kimjaeseung.cultureseoul2.performance.DetailActivity;
 import com.example.kimjaeseung.cultureseoul2.performance.PerformanceFragment;
 import com.example.kimjaeseung.cultureseoul2.home.HomeFragment;
 import com.example.kimjaeseung.cultureseoul2.community.CommunityFragment;
@@ -35,8 +36,9 @@ public class MainActivity extends AppCompatActivity {
         selectPage=getIntent().getStringExtra("select_page");
         if (selectPage!=null){
             if (selectPage.equals(CommunityFragment.class.getSimpleName())) {
-                switchFragment(CommunityFragment.getInstance());
                 bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_community);
+            }else if(selectPage.equals(PerformanceFragment.class.getSimpleName())){
+                bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_performance);
             }
         }else {
             switchFragment(HomeFragment.getInstance());

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kimjaeseung.cultureseoul2.R;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -98,7 +99,12 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
             itemView.setOnClickListener(this);
         }
         public void bind(ChatRoomData chatRoomData){
-            mPerformanceImage.setImageResource(chatRoomData.getPerformanceImage());
+            Picasso.with(itemView.getContext()) // 공연 이미지
+                    .load(chatRoomData.getPerformanceImage())
+                    .placeholder(R.drawable.bubble_50dp)
+                    .error(R.drawable.smile_50dp)
+                    .fit()
+                    .into(mPerformanceImage);
             mRoomName.setText(chatRoomData.getRoomName());
             mRoomPeople.setText("0/"+chatRoomData.getRoomPeople());
             mRoomDay.setText(chatRoomData.getRoomDay());

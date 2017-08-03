@@ -10,9 +10,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.kimjaeseung.cultureseoul2.R;
+import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
 import com.example.kimjaeseung.cultureseoul2.main.MainActivity;
+import com.example.kimjaeseung.cultureseoul2.performance.PerformanceFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -31,8 +34,6 @@ import butterknife.OnClick;
 public class AddChatRoomActivity extends Activity {
     @Bind(R.id.community_et_chatroomname)
     EditText chatRoomName;
-    @Bind(R.id.community_btn_chatroomcreate)
-    Button chatRoomCreateButton;
     @Bind(R.id.community_et_meetlocation)
     EditText meetLocation;
     @Bind(R.id.community_et_meetpeople)
@@ -40,10 +41,10 @@ public class AddChatRoomActivity extends Activity {
     @Bind(R.id.community_et_meettime)
     EditText meetTime;
 
-    ChatRoomData mChatRoomData;
-
+    private ChatRoomData mChatRoomData;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
+    private CultureEvent cultureEvent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,20 +55,10 @@ public class AddChatRoomActivity extends Activity {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference("room");
 
+        cultureEvent=(CultureEvent) getIntent().getSerializableExtra("key");
 
-//        chatRoomCreateButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Map<String, Object> map = new HashMap<String, Object>();
-//                map.put(chatRoomName.getText().toString(), "");
-//                reference.updateChildren(map);
-//                Intent intent=new Intent(AddChatRoomActivity.this,MainActivity.class);
-//                intent.putExtra("select_page",CommunityFragment.class.getSimpleName());
-//                startActivity(intent);
-//            }
-//        });
     }
-    @OnClick({R.id.community_btn_chatroomcreate})
+    @OnClick({R.id.community_btn_chatroomcreate,R.id.community_btn_select_performance})
     public void mOnClick(View v){
         switch (v.getId()){
             case R.id.community_btn_chatroomcreate:
@@ -77,9 +68,10 @@ public class AddChatRoomActivity extends Activity {
                 String day = simpleDateFormat.format(date);
 
                 mChatRoomData = new ChatRoomData();
-                mChatRoomData.setPerformanceImage(R.drawable.ic_launcher);
+//                mChatRoomData.setPerformanceImage(R.drawable.ic_launcher);
+                mChatRoomData.setPerformanceImage(cultureEvent.getMainImg().toLowerCase());
                 mChatRoomData.setRoomLocation(meetLocation.getText().toString());
-                mChatRoomData.setRoomName(chatRoomName.getText().toString());
+                mChatRoomData.setRoomName(cultureEvent.getTitle());
                 mChatRoomData.setRoomPeople(meetPeople.getText().toString());
                 mChatRoomData.setRoomTime(meetTime.getText().toString());
                 mChatRoomData.setRoomDay(day);
@@ -87,9 +79,14 @@ public class AddChatRoomActivity extends Activity {
                 mDatabaseReference.push().setValue(mChatRoomData);
 
                 Intent intent = new Intent(AddChatRoomActivity.this,MainActivity.class);
-//                intent.putExtra("room_information",mChatRoomData);
                 intent.putExtra("select_page",CommunityFragment.class.getSimpleName());
                 startActivity(intent);
+                break;
+            case R.id.community_btn_select_performance:
+                Intent intent1 = new Intent(AddChatRoomActivity.this,MainActivity.class);
+                intent1.putExtra("select_page", PerformanceFragment.class.getSimpleName());
+                intent1.putExtra("choose",AddChatRoomActivity.class.getSimpleName());
+                startActivity(intent1);
                 break;
         }
     }

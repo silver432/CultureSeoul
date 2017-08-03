@@ -45,6 +45,7 @@
         android:layout_weight="1">
         <TextView
             android:id="@+id/community_tv_roomday"
+            android:maxLines="1"
             android:layout_marginBottom="5dp"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"

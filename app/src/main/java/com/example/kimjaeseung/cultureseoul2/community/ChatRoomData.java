@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 public class ChatRoomData implements Serializable{
     private String firebaseKey;
-    private int performanceImage;
+    private String performanceImage;
     private String roomName;
     private String roomLocation;
     private String roomTime;
@@ -25,11 +25,11 @@ public class ChatRoomData implements Serializable{
         this.firebaseKey = firebaseKey;
     }
 
-    public int getPerformanceImage() {
+    public String getPerformanceImage() {
         return performanceImage;
     }
 
-    public void setPerformanceImage(int performanceImage) {
+    public void setPerformanceImage(String performanceImage) {
         this.performanceImage = performanceImage;
     }
 
