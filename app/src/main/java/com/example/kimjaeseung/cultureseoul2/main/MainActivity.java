@@ -3,6 +3,7 @@ package com.example.kimjaeseung.cultureseoul2.main;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        CoordinatorLayout.LayoutParams layoutParams=(CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewBehavior());
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         selectPage=getIntent().getStringExtra("select_page");
         if (selectPage!=null){
@@ -44,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
             switchFragment(HomeFragment.getInstance());
             bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_home);
         }
-
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
     }
 

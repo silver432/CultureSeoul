@@ -12,9 +12,10 @@
 
     <FrameLayout
         android:id="@+id/main_fragment_container"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent"/>
+
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/main_bottomnavigation"
@@ -23,6 +24,7 @@
         android:background="?android:attr/windowBackground"
         app:layout_anchor="@id/main_fragment_container"
         app:layout_anchorGravity="bottom"
+        app:layout_behavior=""
         app:menu="@menu/menu_main_bottomnavigation"/>
 
 </android.support.design.widget.CoordinatorLayout>

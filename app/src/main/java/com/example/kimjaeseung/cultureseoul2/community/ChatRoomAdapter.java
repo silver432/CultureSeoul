@@ -106,7 +106,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
                     .fit()
                     .into(mPerformanceImage);
             mRoomName.setText(chatRoomData.getRoomName());
-            mRoomPeople.setText("0/"+chatRoomData.getRoomPeople());
+            mRoomPeople.setText(chatRoomData.getRoomPeople());
             mRoomDay.setText(chatRoomData.getRoomDay());
             mRoomTime.setText(chatRoomData.getRoomTime());
             mRoomLocation.setText(chatRoomData.getRoomLocation());

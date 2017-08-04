@@ -4,20 +4,6 @@
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:text="방이름"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/community_et_chatroomname"
-            android:hint="채팅방이름"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
             android:text="모임장소"
@@ -32,13 +18,14 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <TextView
-            android:text="모임시간"
+        <Button
+            android:id="@+id/community_btn_select_day"
+            android:text="날짜선택"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/community_et_meettime"
-            android:hint="모임시간"
+        <Button
+            android:id="@+id/community_btn_select_time"
+            android:text="시간선택"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
