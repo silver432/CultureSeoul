@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
@@ -39,7 +38,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by kimjaeseung on 2017. 7. 11..
  */
 
-public class PerformanceFragment extends Fragment implements PerformanceAdapter.PerformanceAdapterOnClickHandler, SearchView.OnQueryTextListener {
+public class PerformanceFragment extends Fragment implements PerformanceAdapter.PerformanceAdapterOnClickHandler, SearchView.OnQueryTextListener
+{
     private final static String TAG = "PerformanceFragment";
     private static final int NUM_LIST_ITEMS = 100;
     private PerformanceAdapter mAdapter;
@@ -49,17 +49,20 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
     List<CultureEvent> mCultureEventLIst = new ArrayList<>();
 
 
-    public PerformanceFragment() {
+    public PerformanceFragment()
+    {
     }
 
-    public static Fragment getInstance() {
+    public static Fragment getInstance()
+    {
         PerformanceFragment performanceFragment = new PerformanceFragment();
         return performanceFragment;
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
+    {
         View view = inflater.inflate(R.layout.fragment_performance, container, false);
 
         ButterKnife.bind(this, view);
@@ -70,7 +73,8 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState)
+    {
         super.onActivityCreated(savedInstanceState);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -84,7 +88,8 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
 
     }
 
-    private void loadData() {
+    private void loadData()
+    {
         // http://openapi.seoul.go.kr:8088/sample/json/SearchConcertDetailService/1/5/23075/
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://openapi.seoul.go.kr:8088")
@@ -93,52 +98,61 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
 
         CultureService cultureService = retrofit.create(CultureService.class);
         Call<CultureEventOutWrapper> callCultureEvent = cultureService.getCultureEvents(
-                "74776b4f6873696c34364a6368704d", "json", "SearchConcertDetailService", 1, 20, ""
+                "74776b4f6873696c34364a6368704d", "json", "SearchConcertDetailService", 1, 50, ""
         );
-        callCultureEvent.enqueue(new Callback<CultureEventOutWrapper>() {
+        callCultureEvent.enqueue(new Callback<CultureEventOutWrapper>()
+        {
             @Override
-            public void onResponse(Call<CultureEventOutWrapper> call, Response<CultureEventOutWrapper> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(Call<CultureEventOutWrapper> call, Response<CultureEventOutWrapper> response)
+            {
+                if (response.isSuccessful())
+                {
                     // 성공
                     CultureEventOutWrapper result = response.body();
                     List<CultureEvent> list = result.getCultureEventWrapper().getCultureEventList();
                     mAdapter.setItemList(list); // recyclerview에 데이터 추가
                     mAdapter.notifyAdapter();   // 화면 갱신
-                } else {
+                } else
+                {
                     // 실패
                 }
             }
 
             @Override
-            public void onFailure(Call<CultureEventOutWrapper> call, Throwable t) {
+            public void onFailure(Call<CultureEventOutWrapper> call, Throwable t)
+            {
                 loadData();
             }
         });
     }
 
     @Override
-    public void onClick(CultureEvent cultureEvent) {
+    public void onClick(CultureEvent cultureEvent)
+    {
         //채팅방추가를 위해 intent 넘어옴
         String choose = getActivity().getIntent().getStringExtra("choose");
-        if (choose != null && choose.equals(AddChatRoomActivity.class.getSimpleName())) {
+        if (choose != null && choose.equals(AddChatRoomActivity.class.getSimpleName()))
+        {
             Intent intent = new Intent(getActivity(), AddChatRoomActivity.class);
             intent.putExtra("key", cultureEvent);
             startActivity(intent);
 
-        } else {
+        } else
+        {
             Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
             startToDetailActivity.putExtra("key", cultureEvent);
             startActivity(startToDetailActivity);
         }
-        getActivity().getIntent().putExtra("choose","");
+        getActivity().getIntent().putExtra("choose", "");
     }
 
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_popup, menu);
-        //getActivity().getMenuInflater().inflate(R.menu.menu_popup, menu);
+        inflater.inflate(R.menu.menu_filter, menu);
+        //getActivity().getMenuInflater().inflate(R.menu.menu_filter, menu);
         MenuItem menuItem = menu.findItem(R.id.item_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem); /* 액션바에 searchview 추가 */
         searchView.setOnQueryTextListener(this);
@@ -148,11 +162,24 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        switch(item.getItemId())
+        switch (item.getItemId())
         {
-            case R.id.item_genre:
+            case R.id.item_genre:   // 장르 필터링
                 Toast.makeText(this.getContext(), "genre", Toast.LENGTH_SHORT).show();
+
+                String newText = "클래식";
+                List<CultureEvent> newList = new ArrayList<>();
+                for (CultureEvent cultureEvent : mCultureEventLIst)
+                {
+                    String name = cultureEvent.getCodeName();
+                    if (name.contains(newText))
+                        newList.add(cultureEvent);
+                }
+
+                mAdapter.setFilter(newList);
+
                 return true;
+
             case R.id.item_period:
                 Toast.makeText(this.getContext(), "period", Toast.LENGTH_SHORT).show();
                 return true;
@@ -164,7 +191,8 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query) {
+    public boolean onQueryTextSubmit(String query)
+    {
         return false;
     }
 
@@ -186,32 +214,4 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
         return true;
     }
 
-    private void showPopupMenu(View view) {
-
-        final View mView = view;
-
-        // Create a PopupMenu, giving it the clicked view for an anchor
-        PopupMenu popupMenu = new PopupMenu(this.getActivity(), view);
-
-        // Inflate our menu resource into the PopupMenu's Menu
-        popupMenu.getMenuInflater().inflate(R.menu.menu_popup, popupMenu.getMenu());
-
-        // Set a listener so we are notified if a menu item is clicked
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch(menuItem.getItemId())
-                {
-                    case R.id.item_genre:
-                        Toast.makeText(mView.getContext(), "장르", Toast.LENGTH_SHORT).show();
-                        return true;
-                    default:
-
-                }
-                return true;
-            }
-        });
-
-        popupMenu.show();
-    }
 }
