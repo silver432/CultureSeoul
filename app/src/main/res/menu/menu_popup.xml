@@ -12,21 +12,19 @@
 
     /* 카테고리 */
     <item
-        android:id="@+id/item_category"
-        android:icon="@drawable/ic_apps_black_24dp"
-        android:title="category"
-        app:showAsAction="always">
-
-        <menu
-            android:id="@+id/menu_category">
-
-            <item
-                android:id="@+id/item_genre"
-                android:title="장르"/>
-            <item android:title="기간"/>
-
-        </menu>
-
+        android:id="@+id/item_genre"
+        app:showAsAction="never"
+        android:title="장르"
+        >
     </item>
+
+    <item
+        android:id="@+id/item_period"
+        app:showAsAction="never"
+        android:title="기간"
+        >
+    </item>
+
+
 
 </menu>

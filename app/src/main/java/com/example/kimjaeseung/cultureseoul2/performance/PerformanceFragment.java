@@ -138,6 +138,7 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_popup, menu);
+        //getActivity().getMenuInflater().inflate(R.menu.menu_popup, menu);
         MenuItem menuItem = menu.findItem(R.id.item_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem); /* 액션바에 searchview 추가 */
         searchView.setOnQueryTextListener(this);
@@ -149,9 +150,11 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
     {
         switch(item.getItemId())
         {
-            case R.id.item_category:
-                Toast.makeText(this.getContext(), "카테고리", Toast.LENGTH_SHORT).show();
-                showPopupMenu(this.getView());
+            case R.id.item_genre:
+                Toast.makeText(this.getContext(), "genre", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.item_period:
+                Toast.makeText(this.getContext(), "period", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
