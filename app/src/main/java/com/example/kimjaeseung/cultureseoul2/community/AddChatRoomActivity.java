@@ -66,11 +66,6 @@ public class AddChatRoomActivity extends Activity {
     public void mOnClick(View v){
         switch (v.getId()){
             case R.id.community_btn_chatroomcreate:
-//                long now = System.currentTimeMillis();
-//                Date date = new Date(now);
-//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//                String day = simpleDateFormat.format(date);
-
                 mChatRoomData = new ChatRoomData();
                 mChatRoomData.setPerformanceImage(cultureEvent.getMainImg().toLowerCase());
                 mChatRoomData.setRoomLocation(meetLocation.getText().toString());

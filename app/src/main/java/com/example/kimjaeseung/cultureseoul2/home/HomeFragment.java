@@ -3,20 +3,31 @@ package com.example.kimjaeseung.cultureseoul2.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEventOutWrapper;
+import com.example.kimjaeseung.cultureseoul2.login.LoginActivity;
 import com.example.kimjaeseung.cultureseoul2.network.CultureService;
 import com.example.kimjaeseung.cultureseoul2.performance.DetailActivity;
 import com.example.kimjaeseung.cultureseoul2.performance.PerformanceAdapter;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -37,6 +48,9 @@ public class HomeFragment extends Fragment implements HomeAdapter.HomeAdapterOnC
     private final static String TAG = "HomeFragment";
     private String openApiKey = "74776b4f6873696c34364a6368704d";
 
+    private FirebaseAuth mAuth;
+    private GoogleApiClient mGoogleApiClient;
+
     private static final int NUM_LIST_ITEMS = 100;
     private HomeAdapter mAdapter;
     @Bind(R.id.homeImageRecycler) RecyclerView mHomeList;
@@ -55,8 +69,12 @@ public class HomeFragment extends Fragment implements HomeAdapter.HomeAdapterOnC
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
         ButterKnife.bind(this,view);
-        //culturalEventButtonTypeA.setOpenAPIKey(openApiKey);
+        setHasOptionsMenu(true);
         culturalEventTypeMini.setOpenAPIKey(openApiKey);
+
+        //이후 예외처리
+        mAuth=FirebaseAuth.getInstance();
+
         return view;
     }
 
@@ -121,5 +139,28 @@ public class HomeFragment extends Fragment implements HomeAdapter.HomeAdapterOnC
         Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
         startToDetailActivity.putExtra("key", cultureEvent);
         startActivity(startToDetailActivity);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_home,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_home_signout:
+                signOut();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    private void signOut() {
+        // Firebase sign out
+        mAuth.signOut();
+        Log.d(TAG,"sign out");
+        Intent i = new Intent(getContext(),LoginActivity.class);
+        startActivity(i);
     }
 }

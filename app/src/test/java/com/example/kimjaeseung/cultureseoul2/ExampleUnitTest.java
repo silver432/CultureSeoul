@@ -1,7 +1,12 @@
 package com.example.kimjaeseung.cultureseoul2;
 
+import org.junit.Assert;
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 /**
@@ -11,7 +16,10 @@ import static org.junit.Assert.*;
  */
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+    public void testDateModule() throws Exception {
+
+        String yesterday = "2017-08-07";
+
+//        assertThat(result,is("내일"));
     }
 }

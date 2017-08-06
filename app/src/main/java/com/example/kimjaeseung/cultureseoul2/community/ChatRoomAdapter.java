@@ -2,6 +2,7 @@ package com.example.kimjaeseung.cultureseoul2.community;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,11 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -84,6 +88,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
         private TextView mRoomTime;
         private TextView mRoomPeople;
         private TextView mLine;
+        private TextView mRoomday2;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -93,6 +98,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
             mRoomLocation=(TextView)itemView.findViewById(R.id.community_tv_roomlocation);
             mRoomTime=(TextView)itemView.findViewById(R.id.community_tv_roomtime);
             mRoomDay=(TextView)itemView.findViewById(R.id.community_tv_roomday);
+            mRoomday2=(TextView)itemView.findViewById(R.id.community_tv_roomday2);
             mRoomPeople=(TextView)itemView.findViewById(R.id.community_tv_roompeople);
             mLine=(TextView)itemView.findViewById(R.id.community_tv_line);
 
@@ -108,6 +114,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
             mRoomName.setText(chatRoomData.getRoomName());
             mRoomPeople.setText(chatRoomData.getRoomPeople());
             mRoomDay.setText(chatRoomData.getRoomDay());
+            mRoomday2.setText(calculateDay(chatRoomData.getRoomDay()));
             mRoomTime.setText(chatRoomData.getRoomTime());
             mRoomLocation.setText(chatRoomData.getRoomLocation());
             mLine.setBackgroundResource(R.color.colorPrimary);
@@ -118,6 +125,29 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
             int position = getAdapterPosition();
             chatRoomData = chatRoomDataList.get(position);
             chatRoomAdapterOnClickHandler.onClick(chatRoomData);
+        }
+        public String calculateDay(String roomDay){
+            String mString="";
+            try {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date performanceDate = formatter.parse(roomDay);
+                Date thisDate = formatter.parse(formatter.format(new Date()));
+
+                long diff = performanceDate.getTime() - thisDate.getTime();
+                long diffDays = diff / (24 * 60 * 60 * 1000);
+
+                if (diffDays<0) mString="이전";
+                else if (diffDays==0) mString="오늘";
+                else if (diffDays==1) mString="내일";
+                else if (diffDays==2) mString="모레";
+                else mString=Long.toString(diffDays)+"일 후";
+
+                return mString;
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return mString;
+            }
         }
     }
 
