@@ -7,15 +7,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.community.AddChatRoomActivity;
@@ -132,14 +133,31 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
         getActivity().getIntent().putExtra("choose","");
     }
 
-    /* 액션바에 searchview 추가 */
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_search, menu);
-        MenuItem menuItem = menu.findItem(R.id.menu_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        inflater.inflate(R.menu.menu_popup, menu);
+        MenuItem menuItem = menu.findItem(R.id.item_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem); /* 액션바에 searchview 추가 */
         searchView.setOnQueryTextListener(this);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch(item.getItemId())
+        {
+            case R.id.item_category:
+                Toast.makeText(this.getContext(), "카테고리", Toast.LENGTH_SHORT).show();
+                showPopupMenu(this.getView());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+
     }
 
     @Override
@@ -149,10 +167,12 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
 
     /* 필터에서 텍스트 검색 처리 */
     @Override
-    public boolean onQueryTextChange(String newText) {
+    public boolean onQueryTextChange(String newText)
+    {
         newText = newText.toLowerCase();
         List<CultureEvent> newList = new ArrayList<>();
-        for (CultureEvent cultureEvent : mCultureEventLIst) {
+        for (CultureEvent cultureEvent : mCultureEventLIst)
+        {
             String name = cultureEvent.getTitle();
             if (name.contains(newText))
                 newList.add(cultureEvent);
@@ -161,5 +181,34 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
         mAdapter.setFilter(newList);
 
         return true;
+    }
+
+    private void showPopupMenu(View view) {
+
+        final View mView = view;
+
+        // Create a PopupMenu, giving it the clicked view for an anchor
+        PopupMenu popupMenu = new PopupMenu(this.getActivity(), view);
+
+        // Inflate our menu resource into the PopupMenu's Menu
+        popupMenu.getMenuInflater().inflate(R.menu.menu_popup, popupMenu.getMenu());
+
+        // Set a listener so we are notified if a menu item is clicked
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch(menuItem.getItemId())
+                {
+                    case R.id.item_genre:
+                        Toast.makeText(mView.getContext(), "장르", Toast.LENGTH_SHORT).show();
+                        return true;
+                    default:
+
+                }
+                return true;
+            }
+        });
+
+        popupMenu.show();
     }
 }
