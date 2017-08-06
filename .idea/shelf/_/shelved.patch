@@ -1,0 +1,15 @@
+Index: app/src/main/java/com/example/kimjaeseung/cultureseoul2/performance/PerformanceFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/kimjaeseung/cultureseoul2/performance/PerformanceFragment.java	(revision 0109e8a9d57c249e8ae378289aa5599da3951f5b)
++++ app/src/main/java/com/example/kimjaeseung/cultureseoul2/performance/PerformanceFragment.java	(revision )
+@@ -9,7 +9,6 @@
+ import android.support.v7.widget.LinearLayoutManager;
+ import android.support.v7.widget.RecyclerView;
+ import android.support.v7.widget.SearchView;
+-import android.util.Log;
+ import android.view.LayoutInflater;
+ import android.view.Menu;
+ import android.view.MenuInflater;
