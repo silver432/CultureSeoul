@@ -137,7 +137,8 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
             intent.putExtra("key", cultureEvent);
             startActivity(intent);
 
-        } else
+        }
+        else
         {
             Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
             startToDetailActivity.putExtra("key", cultureEvent);
