@@ -1,23 +1,19 @@
 package com.example.kimjaeseung.cultureseoul2.performance;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.example.kimjaeseung.cultureseoul2.R;
-import com.example.kimjaeseung.cultureseoul2.community.AddChatRoomActivity;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEventOutWrapper;
 import com.example.kimjaeseung.cultureseoul2.network.CultureService;
@@ -34,39 +30,42 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by kimjaeseung on 2017. 7. 11..
+ * Created by heo04 on 2017-08-09.
  */
 
-public class PerformanceFragment extends Fragment implements PerformanceAdapter.PerformanceAdapterOnClickHandler, SearchView.OnQueryTextListener
+public class PerformanceGenreFragment extends Fragment implements PerformanceAdapter.PerformanceAdapterOnClickHandler, AdapterView.OnItemSelectedListener
 {
-    private final static String TAG = "PerformanceFragment";
-    private static final int NUM_LIST_ITEMS = 100;
+    private final static String TAG = "PerformanceGenreFragment";
     private PerformanceAdapter mAdapter;
 
-    @Bind(R.id.performance_list)
+    @Bind(R.id.performance_genre_list)
     RecyclerView mPerformanceList;
     List<CultureEvent> mCultureEventLIst = new ArrayList<>();
+    String[] mGenreStr;
+    String mGenreTitle;
 
-
-    public PerformanceFragment()
+    public PerformanceGenreFragment()
     {
-    }
 
-    public static Fragment getInstance()
-    {
-        PerformanceFragment performanceFragment = new PerformanceFragment();
-        return performanceFragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_performance, container, false);
+        View view = inflater.inflate(R.layout.fragment_performance_genre, container, false);
 
         ButterKnife.bind(this, view);
 
-        setHasOptionsMenu(true);
+        // 장르 선택 스피너 생성
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinner_genre);
+        spinner.setOnItemSelectedListener(this);
+
+        // 스피너 항목 담을 array 생성
+        mGenreStr = getResources().getStringArray(R.array.array_genre);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, mGenreStr);
+
+        spinner.setAdapter(arrayAdapter);
 
         return view;
     }
@@ -83,6 +82,8 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
         mAdapter = new PerformanceAdapter(this.getContext(), this, mCultureEventLIst);
         mPerformanceList.setAdapter(mAdapter);
 
+        mGenreTitle = "클래식";    // default 장르 값
+
         loadData();
 
     }
@@ -90,25 +91,11 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
     @Override
     public void onClick(CultureEvent cultureEvent)
     {
-        //채팅방추가를 위해 intent 넘어옴
-        String choose = getActivity().getIntent().getStringExtra("choose");
-        if (choose != null && choose.equals(AddChatRoomActivity.class.getSimpleName()))
-        {
-            Intent intent = new Intent(getActivity(), AddChatRoomActivity.class);
-            intent.putExtra("key", cultureEvent);
-            startActivity(intent);
-
-        }
-        else
-        {
-            Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
-            startToDetailActivity.putExtra("key", cultureEvent);
-            startActivity(startToDetailActivity);
-        }
-        getActivity().getIntent().putExtra("choose", "");
+        Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
+        startToDetailActivity.putExtra("key", cultureEvent);
+        startActivity(startToDetailActivity);
     }
 
-    /* URL에서 json 데이터 파싱해서 불러옴 */
     private void loadData()
     {
         // http://openapi.seoul.go.kr:8088/sample/json/SearchConcertDetailService/1/5/23075/
@@ -133,7 +120,10 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
                     List<CultureEvent> list = result.getCultureEventWrapper().getCultureEventList();
                     mAdapter.setItemList(list); // recyclerview에 데이터 추가
                     mAdapter.notifyAdapter();   // 화면 갱신
-                } else
+
+                    divisionGenre(mGenreTitle);
+                }
+                else
                 {
                     // 실패
                 }
@@ -148,40 +138,38 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
     }
 
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    /* 장르 구분 */
+    public void divisionGenre(String genretitle)
     {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_search, menu);
-        //getActivity().getMenuInflater().inflate(R.menu.menu_search, menu);
-        MenuItem menuItem = menu.findItem(R.id.item_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem); /* 액션바에 searchview 추가 */
-        searchView.setOnQueryTextListener(this);
-
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query)
-    {
-        return false;
-    }
-
-    /* 필터에서 텍스트 검색 처리 */
-    @Override
-    public boolean onQueryTextChange(String newText)
-    {
-        newText = newText.toLowerCase();
+        String genreTitle = genretitle;
         List<CultureEvent> newList = new ArrayList<>();
-        for (CultureEvent cultureEvent : mCultureEventLIst)
+
+        for (CultureEvent cultureEvent :mCultureEventLIst)
         {
-            String name = cultureEvent.getTitle();
-            if (name.contains(newText))
+            String name = cultureEvent.getCodeName();
+            if (name.contains(genreTitle))
                 newList.add(cultureEvent);
         }
 
-        mAdapter.setFilter(newList);
+        //Toast.makeText(getContext(),genreTitle, Toast.LENGTH_SHORT).show();
 
-        return true;
+        mAdapter.setFilter(newList);
     }
 
+
+    /* 스피너 선택 이벤트*/
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+    {
+        mGenreTitle = mGenreStr[position];
+        loadData(); // 스피너 선택될때마다 loadData해서 비효율적 => 수정 필요
+        //divisionGenre(mGenreTitle); => 왜 실행 안되는지..
+    }
+
+    /* 스피너 선택 이벤트*/
+    @Override
+    public void onNothingSelected(AdapterView<?> parent)
+    {
+
+    }
 }
