@@ -15,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.community.AddChatRoomActivity;
@@ -88,6 +87,28 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
 
     }
 
+    @Override
+    public void onClick(CultureEvent cultureEvent)
+    {
+        //채팅방추가를 위해 intent 넘어옴
+        String choose = getActivity().getIntent().getStringExtra("choose");
+        if (choose != null && choose.equals(AddChatRoomActivity.class.getSimpleName()))
+        {
+            Intent intent = new Intent(getActivity(), AddChatRoomActivity.class);
+            intent.putExtra("key", cultureEvent);
+            startActivity(intent);
+
+        }
+        else
+        {
+            Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
+            startToDetailActivity.putExtra("key", cultureEvent);
+            startActivity(startToDetailActivity);
+        }
+        getActivity().getIntent().putExtra("choose", "");
+    }
+
+    /* URL에서 json 데이터 파싱해서 불러옴 */
     private void loadData()
     {
         // http://openapi.seoul.go.kr:8088/sample/json/SearchConcertDetailService/1/5/23075/
@@ -126,68 +147,16 @@ public class PerformanceFragment extends Fragment implements PerformanceAdapter.
         });
     }
 
-    @Override
-    public void onClick(CultureEvent cultureEvent)
-    {
-        //채팅방추가를 위해 intent 넘어옴
-        String choose = getActivity().getIntent().getStringExtra("choose");
-        if (choose != null && choose.equals(AddChatRoomActivity.class.getSimpleName()))
-        {
-            Intent intent = new Intent(getActivity(), AddChatRoomActivity.class);
-            intent.putExtra("key", cultureEvent);
-            startActivity(intent);
-
-        }
-        else
-        {
-            Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
-            startToDetailActivity.putExtra("key", cultureEvent);
-            startActivity(startToDetailActivity);
-        }
-        getActivity().getIntent().putExtra("choose", "");
-    }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_filter, menu);
-        //getActivity().getMenuInflater().inflate(R.menu.menu_filter, menu);
+        inflater.inflate(R.menu.menu_search, menu);
+        //getActivity().getMenuInflater().inflate(R.menu.menu_search, menu);
         MenuItem menuItem = menu.findItem(R.id.item_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem); /* 액션바에 searchview 추가 */
         searchView.setOnQueryTextListener(this);
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.item_genre:   // 장르 필터링
-                Toast.makeText(this.getContext(), "genre", Toast.LENGTH_SHORT).show();
-
-                String newText = "클래식";
-                List<CultureEvent> newList = new ArrayList<>();
-                for (CultureEvent cultureEvent : mCultureEventLIst)
-                {
-                    String name = cultureEvent.getCodeName();
-                    if (name.contains(newText))
-                        newList.add(cultureEvent);
-                }
-
-                mAdapter.setFilter(newList);
-
-                return true;
-
-            case R.id.item_period:
-                Toast.makeText(this.getContext(), "period", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
 
     }
 

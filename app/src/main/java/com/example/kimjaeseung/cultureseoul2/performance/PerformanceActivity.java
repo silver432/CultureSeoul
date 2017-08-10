@@ -16,8 +16,9 @@ import com.example.kimjaeseung.cultureseoul2.R;
 
 public class PerformanceActivity extends AppCompatActivity
 {
-    ViewPager viewPager;
     TabLayout tabLayout;
+    ViewPager viewPager;
+
     private static int PAGE_NUMBER = 3;
 
     @Override
@@ -26,16 +27,16 @@ public class PerformanceActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_performance);
 
-        // TabLayout <-> ViewPager 어댑터 연결 필요
         tabLayout = (TabLayout) findViewById(R.id.tl_view_pager);
+
         tabLayout.addTab(tabLayout.newTab().setText("First Tab"));
         tabLayout.addTab(tabLayout.newTab().setText("Second Tab"));
         tabLayout.addTab(tabLayout.newTab().setText("Third Tab"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        viewPager = (ViewPager) findViewById(R.id.vp);
-
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+
+        viewPager = (ViewPager) findViewById(R.id.vp_view_pager);
 
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -85,7 +86,7 @@ public class PerformanceActivity extends AppCompatActivity
                 case 1:
                     return new PerformanceGenreFragment();
                 case 2:
-                    return new PerformanceGenreFragment();
+                    return new PerformanceDateFragment();
                 default:
                     return null;
             }
