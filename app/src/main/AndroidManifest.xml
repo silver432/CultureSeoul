@@ -46,7 +46,6 @@
         <activity android:name=".community.AddChatRoomActivity"/>
         <activity android:name=".community.ChatActivity"/>
         <activity android:name=".performance.DetailActivity"/>
-        <activity android:name=".performance.PerformanceActivity"/>
     </application>
 
 </manifest>

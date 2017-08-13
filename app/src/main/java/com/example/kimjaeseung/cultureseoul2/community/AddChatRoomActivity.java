@@ -7,26 +7,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
 import com.example.kimjaeseung.cultureseoul2.main.MainActivity;
-import com.example.kimjaeseung.cultureseoul2.performance.PerformanceFragment;
+import com.example.kimjaeseung.cultureseoul2.performance.PerformanceRealTimeFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -82,7 +75,7 @@ public class AddChatRoomActivity extends Activity {
                 break;
             case R.id.community_btn_select_performance:
                 Intent intent1 = new Intent(AddChatRoomActivity.this,MainActivity.class);
-                intent1.putExtra("select_page", PerformanceFragment.class.getSimpleName());
+                intent1.putExtra("select_page", PerformanceRealTimeFragment.class.getSimpleName());
                 intent1.putExtra("choose",AddChatRoomActivity.class.getSimpleName());
                 startActivity(intent1);
                 break;

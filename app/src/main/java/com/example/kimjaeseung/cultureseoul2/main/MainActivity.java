@@ -1,6 +1,5 @@
 package com.example.kimjaeseung.cultureseoul2.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -14,8 +13,8 @@ import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.attendance.AttandanceFragment;
 import com.example.kimjaeseung.cultureseoul2.community.CommunityFragment;
 import com.example.kimjaeseung.cultureseoul2.home.HomeFragment;
-import com.example.kimjaeseung.cultureseoul2.performance.PerformanceActivity;
 import com.example.kimjaeseung.cultureseoul2.performance.PerformanceFragment;
+import com.example.kimjaeseung.cultureseoul2.performance.PerformanceRealTimeFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         if (selectPage!=null){
             if (selectPage.equals(CommunityFragment.class.getSimpleName())) {
                 bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_community);
-            }else if(selectPage.equals(PerformanceFragment.class.getSimpleName())){
+            }else if(selectPage.equals(PerformanceRealTimeFragment.class.getSimpleName())){
                 bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_performance);
             }
         }else {
@@ -59,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     switchFragment(HomeFragment.getInstance());
                     return true;
                 case R.id.main_bottomnavigation_performance:
-                    startActivity(new Intent(getApplicationContext(), PerformanceActivity.class));
+                    switchFragment(PerformanceFragment.getInstance());
                     return true;
                 case R.id.main_bottomnavigation_community:
                     switchFragment(CommunityFragment.getInstance());
