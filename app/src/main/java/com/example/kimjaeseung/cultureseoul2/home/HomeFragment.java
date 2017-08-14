@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment implements HomeAdapter.HomeAdapterOnC
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
         ButterKnife.bind(this,view);
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
         culturalEventTypeMini.setOpenAPIKey(openApiKey);
 
         //이후 예외처리
@@ -141,6 +141,7 @@ public class HomeFragment extends Fragment implements HomeAdapter.HomeAdapterOnC
         startActivity(startToDetailActivity);
     }
 
+    /*
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -163,4 +164,5 @@ public class HomeFragment extends Fragment implements HomeAdapter.HomeAdapterOnC
         Intent i = new Intent(getContext(),LoginActivity.class);
         startActivity(i);
     }
+    */
 }

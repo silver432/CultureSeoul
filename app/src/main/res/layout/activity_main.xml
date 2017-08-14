@@ -19,11 +19,30 @@
         tools:context="com.example.kimjaeseung.cultureseoul2.main.MainActivity"
         tools:showIn="@layout/activity_main">
 
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/my_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:background="?attr/colorPrimary"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+
+        </android.support.design.widget.AppBarLayout>
+
+
+
         <FrameLayout
             android:id="@+id/main_fragment_container"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
 
         <android.support.design.widget.BottomNavigationView
@@ -35,7 +54,6 @@
             app:layout_anchorGravity="bottom"
             app:layout_behavior=""
             app:menu="@menu/menu_main_bottomnavigation"/>
-
 
     </android.support.design.widget.CoordinatorLayout>
 
