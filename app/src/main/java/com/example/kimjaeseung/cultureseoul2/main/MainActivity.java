@@ -1,5 +1,6 @@
 package com.example.kimjaeseung.cultureseoul2.main;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,10 +10,13 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -79,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                 bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_performance);
             }
         }else {
-            switchFragment(HomeFragment.getInstance());
             bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_home);
         }
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
@@ -104,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                     switchFragment(AttandanceFragment.getInstance());
                     return true;
             }
+            invalidateOptionsMenu();
             return false;
         }
 
@@ -120,6 +124,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_home, menu);
+        Log.d(TAG,"optionmenu create");
+        if (bottomNavigationView.getSelectedItemId()==R.id.main_bottomnavigation_performance){
+            menu.getItem(1).setVisible(true);
+        }else menu.getItem(1).setVisible(false);
         return true;
     }
 

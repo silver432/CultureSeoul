@@ -69,7 +69,6 @@ public class HomeFragment extends Fragment implements HomeAdapter.HomeAdapterOnC
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
         ButterKnife.bind(this,view);
-        //setHasOptionsMenu(true);
         culturalEventTypeMini.setOpenAPIKey(openApiKey);
 
         //이후 예외처리
