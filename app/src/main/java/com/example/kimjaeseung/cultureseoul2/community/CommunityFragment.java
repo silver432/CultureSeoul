@@ -71,7 +71,7 @@ public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatR
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_community, container, false);
         ButterKnife.bind(this, view);
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
         return view;
     }
 

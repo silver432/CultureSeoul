@@ -8,6 +8,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -42,6 +45,8 @@ public class PerformanceFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
 
         View view = inflater.inflate(R.layout.fragment_performance,container,false);
 
@@ -116,4 +121,20 @@ public class PerformanceFragment extends Fragment
         }
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_performance, menu);
+    }
+
+    //item_search 이벤트 설정
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.item_search:
+                //// TODO: 2017. 8. 16. 여기서 작업해주면 될 거 같음
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

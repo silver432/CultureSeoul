@@ -1,6 +1,5 @@
 package com.example.kimjaeseung.cultureseoul2.main;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,15 +9,14 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.attendance.AttandanceFragment;
@@ -121,14 +119,22 @@ public class MainActivity extends AppCompatActivity {
 
 
     //toolbar 관련
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_home, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
         Log.d(TAG,"optionmenu create");
+
+        //// TODO: 2017. 8. 16. 이거 뭐임?
+        /*
         if (bottomNavigationView.getSelectedItemId()==R.id.main_bottomnavigation_performance){
             menu.getItem(1).setVisible(true);
         }else menu.getItem(1).setVisible(false);
-        return true;
+        */
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -146,10 +152,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.menu_profile:
+                Toast.makeText(this, "test profile", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_home_signout:
+                Toast.makeText(this, "test signout", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        /* //test 중
         if(actionBarDrawerToggle.onOptionsItemSelected(item)){
             return true;
         }
         return super.onOptionsItemSelected(item);
+        */
+        return true;
     }
+
     //toolbar 관련 끝
 }

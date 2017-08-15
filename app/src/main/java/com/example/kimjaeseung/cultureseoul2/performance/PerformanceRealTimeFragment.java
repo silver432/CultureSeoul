@@ -65,7 +65,7 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
 
         ButterKnife.bind(this, view);
 
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
 
         return view;
     }
@@ -136,16 +136,17 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
         });
     }
 
+    /*
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-//        inflater.inflate(R.menu.menu_home, menu);
-//        getActivity().getMenuInflater().inflate(R.menu.menu_search, menu);
+
         MenuItem menuItem = menu.findItem(R.id.item_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem); /* 액션바에 searchview 추가 */
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem); // 액션바에 searchview 추가
         searchView.setOnQueryTextListener(this);
         Log.d(TAG, "onCreateOptionMenu");
     }
+    */
 
 //    @Override
 //    public void onPrepareOptionsMenu(Menu menu) {
