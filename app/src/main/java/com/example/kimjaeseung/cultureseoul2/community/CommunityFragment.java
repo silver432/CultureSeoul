@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.kimjaeseung.cultureseoul2.R;
+import com.example.kimjaeseung.cultureseoul2.main.MainActivity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -68,6 +71,7 @@ public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatR
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_community, container, false);
         ButterKnife.bind(this, view);
+        //setHasOptionsMenu(true);
         return view;
     }
 
