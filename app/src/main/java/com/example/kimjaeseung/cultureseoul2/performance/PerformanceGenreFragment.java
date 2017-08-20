@@ -13,21 +13,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.example.kimjaeseung.cultureseoul2.GlobalApp;
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
-import com.example.kimjaeseung.cultureseoul2.domain.CultureEventOutWrapper;
-import com.example.kimjaeseung.cultureseoul2.network.CultureService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by heo04 on 2017-08-09.
@@ -44,6 +40,7 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
     List<CultureEvent> mCultureEventLIst = new ArrayList<>();
     String[] mGenreStr;
     String mGenreTitle;
+    GlobalApp globalApp;
 
     public PerformanceGenreFragment()
     {
@@ -57,6 +54,8 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
         View view = inflater.inflate(R.layout.fragment_performance_genre, container, false);
 
         ButterKnife.bind(this, view);
+
+        globalApp = (GlobalApp) getApplicationContext();
 
         spinner.setOnItemSelectedListener(this);
 
@@ -84,7 +83,7 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
 
         mGenreTitle = "클래식";    // default 장르 값
 
-        loadData();
+        setData();
 
     }
 
@@ -96,62 +95,26 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
         startActivity(startToDetailActivity);
     }
 
-    private void loadData()
+    private void setData()
     {
-        // http://openapi.seoul.go.kr:8088/sample/json/SearchConcertDetailService/1/5/23075/
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://openapi.seoul.go.kr:8088")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        CultureService cultureService = retrofit.create(CultureService.class);
-        Call<CultureEventOutWrapper> callCultureEvent = cultureService.getCultureEvents(
-                "74776b4f6873696c34364a6368704d", "json", "SearchConcertDetailService", 1, 50, ""
-        );
-        callCultureEvent.enqueue(new Callback<CultureEventOutWrapper>()
-        {
-            @Override
-            public void onResponse(Call<CultureEventOutWrapper> call, Response<CultureEventOutWrapper> response)
-            {
-                if (response.isSuccessful())
-                {
-                    // 성공
-                    CultureEventOutWrapper result = response.body();
-                    List<CultureEvent> list = result.getCultureEventWrapper().getCultureEventList();
-                    mAdapter.setItemList(list); // recyclerview에 데이터 추가
-                    mAdapter.notifyAdapter();   // 화면 갱신
-
-                    divisionGenre(mGenreTitle);
-                }
-                else
-                {
-                    // 실패
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CultureEventOutWrapper> call, Throwable t)
-            {
-                loadData();
-            }
-        });
+        mAdapter.setItemList(globalApp.getmList());
+        mAdapter.notifyAdapter();
+        divisionGenre();
     }
 
 
+
     /* 장르 구분 */
-    public void divisionGenre(String genretitle)
+    public void divisionGenre()
     {
-        String genreTitle = genretitle;
         List<CultureEvent> newList = new ArrayList<>();
 
         for (CultureEvent cultureEvent :mCultureEventLIst)
         {
             String name = cultureEvent.getCodeName();
-            if (name.contains(genreTitle))
+            if (name.contains(mGenreTitle))
                 newList.add(cultureEvent);
         }
-
-        //Toast.makeText(getContext(),genreTitle, Toast.LENGTH_SHORT).show();
 
         mAdapter.setFilter(newList);
     }
@@ -162,8 +125,7 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
     {
         mGenreTitle = mGenreStr[position];
-        loadData(); // 스피너 선택될때마다 loadData해서 비효율적 => 수정 필요
-        //divisionGenre(mGenreTitle); => 왜 실행 안되는지..
+        divisionGenre();
     }
 
     /* 스피너 선택 이벤트*/

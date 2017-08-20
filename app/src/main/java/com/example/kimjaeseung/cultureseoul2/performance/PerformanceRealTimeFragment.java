@@ -4,7 +4,6 @@ package com.example.kimjaeseung.cultureseoul2.performance;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,24 +16,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.kimjaeseung.cultureseoul2.GlobalApp;
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.community.AddChatRoomActivity;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
-import com.example.kimjaeseung.cultureseoul2.domain.CultureEventOutWrapper;
-import com.example.kimjaeseung.cultureseoul2.main.MainActivity;
-import com.example.kimjaeseung.cultureseoul2.network.CultureService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by kimjaeseung on 2017. 7. 11..
@@ -48,6 +43,7 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
     @Bind(R.id.performance_list)
     RecyclerView mPerformanceList;
     List<CultureEvent> mCultureEventLIst = new ArrayList<>();
+    GlobalApp globalApp;
 
 
     public PerformanceRealTimeFragment() {
@@ -65,7 +61,9 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
 
         ButterKnife.bind(this, view);
 
-        //setHasOptionsMenu(true);
+        globalApp = (GlobalApp) getApplicationContext();
+
+        setHasOptionsMenu(true);
 
         return view;
     }
@@ -81,7 +79,7 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
         mAdapter = new PerformanceAdapter(this.getContext(), this, mCultureEventLIst);
         mPerformanceList.setAdapter(mAdapter);
 
-        loadData();
+        setData();
 
     }
 
@@ -103,50 +101,44 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
         getActivity().getIntent().putExtra("choose", "");
     }
 
-    /* URL에서 json 데이터 파싱해서 불러옴 */
-    private void loadData() {
-        // http://openapi.seoul.go.kr:8088/sample/json/SearchConcertDetailService/1/5/23075/
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://openapi.seoul.go.kr:8088")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        CultureService cultureService = retrofit.create(CultureService.class);
-        Call<CultureEventOutWrapper> callCultureEvent = cultureService.getCultureEvents(
-                "74776b4f6873696c34364a6368704d", "json", "SearchConcertDetailService", 1, 50, ""
-        );
-        callCultureEvent.enqueue(new Callback<CultureEventOutWrapper>() {
-            @Override
-            public void onResponse(Call<CultureEventOutWrapper> call, Response<CultureEventOutWrapper> response) {
-                if (response.isSuccessful()) {
-                    // 성공
-                    CultureEventOutWrapper result = response.body();
-                    List<CultureEvent> list = result.getCultureEventWrapper().getCultureEventList();
-                    mAdapter.setItemList(list); // recyclerview에 데이터 추가
-                    mAdapter.notifyAdapter();   // 화면 갱신
-                } else {
-                    // 실패
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CultureEventOutWrapper> call, Throwable t) {
-                loadData();
-            }
-        });
+    private void setData()
+    {
+        mAdapter.setItemList(globalApp.getmList());
+        mAdapter.notifyAdapter();
     }
 
-    /*
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
+        inflater.inflate(R.menu.menu_performance, menu);
+
         MenuItem menuItem = menu.findItem(R.id.item_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem); // 액션바에 searchview 추가
         searchView.setOnQueryTextListener(this);
+
+        Toast.makeText(getContext(), "onCreateOptionsMenu", Toast.LENGTH_SHORT).show();
+
+        /*MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener()
+        {
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem item) {
+// Do something when collapsed
+                        mAdapter.setFilter(mCultureEventLIst);
+                        return true; // Return true to collapse action view
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem item) {
+// Do something when expanded
+                        return true; // Return true to expand action view
+                    }
+                });*/
         Log.d(TAG, "onCreateOptionMenu");
     }
-    */
+
 
 //    @Override
 //    public void onPrepareOptionsMenu(Menu menu) {
