@@ -19,58 +19,45 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/community_btn_select_location"
+    <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="모임장소" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:columnCount="3">
+        <Button
+            android:id="@+id/community_btn_select_location"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="모임장소" />
         <Button
             android:id="@+id/community_btn_select_day"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:text="날짜선택" />
 
         <Button
             android:id="@+id/community_btn_select_time"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:text="시간선택" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="모집인원" />
-
         <NumberPicker
             android:id="@+id/community_np_people"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
         <Button
             android:id="@+id/community_btn_select_performance"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:text="공연선택" />
 
         <Button
             android:id="@+id/community_btn_chatroomcreate"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:text="채팅방생성" />
-    </LinearLayout>
+    </GridLayout>
+
 
 
 
