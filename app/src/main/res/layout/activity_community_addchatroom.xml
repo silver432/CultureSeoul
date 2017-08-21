@@ -14,7 +14,6 @@
             android:text="방제목"/>
         <EditText
             android:id="@+id/community_et_roomname"
-            android:hint="방제목입력"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

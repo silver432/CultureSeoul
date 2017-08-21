@@ -26,12 +26,13 @@
             android:paddingLeft="5dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:maxLines="2"
+            android:maxLines="1"
             android:textSize="15sp" />
         <TextView
             android:id="@+id/community_tv_performancename"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
+            android:maxLines="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"/>
@@ -39,6 +40,7 @@
             android:id="@+id/community_tv_roomlocation"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
+            android:maxLines="1"
             android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
