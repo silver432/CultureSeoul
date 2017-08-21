@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,6 @@ public class PerformanceFragment extends Fragment
 
     @Bind(R.id.tl_view_pager) TabLayout tabLayout;
     @Bind(R.id.vp_view_pager) ViewPager viewPager;
-    SearchView searchView;
 
     private static int PAGE_NUMBER = 3;
 
@@ -56,7 +54,7 @@ public class PerformanceFragment extends Fragment
         tabLayout.addTab(tabLayout.newTab().setText("날짜별"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        PagerAdapter pagerAdapter = new PagerAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
+        PagerAdapter pagerAdapter = new PagerAdapter(getChildFragmentManager(), tabLayout.getTabCount());
 
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
