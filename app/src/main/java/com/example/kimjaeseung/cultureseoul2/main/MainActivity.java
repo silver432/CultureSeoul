@@ -125,15 +125,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        Log.d(TAG,"optionmenu create");
-
-        //// TODO: 2017. 8. 16. 이거 뭐임?
-        /*
-        if (bottomNavigationView.getSelectedItemId()==R.id.main_bottomnavigation_performance){
-            menu.getItem(1).setVisible(true);
-        }else menu.getItem(1).setVisible(false);
-        */
         return super.onCreateOptionsMenu(menu);
     }
 

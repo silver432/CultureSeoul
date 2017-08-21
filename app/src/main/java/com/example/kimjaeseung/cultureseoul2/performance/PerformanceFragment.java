@@ -6,16 +6,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.kimjaeseung.cultureseoul2.R;
 
@@ -26,7 +23,7 @@ import butterknife.ButterKnife;
  * Created by heo04 on 2017-08-09.
  */
 
-public class PerformanceFragment extends Fragment implements SearchView.OnQueryTextListener
+public class PerformanceFragment extends Fragment
 {
     private final static String TAG = "PerformanceFragment";
 
@@ -40,7 +37,6 @@ public class PerformanceFragment extends Fragment implements SearchView.OnQueryT
 
     @Bind(R.id.tl_view_pager) TabLayout tabLayout;
     @Bind(R.id.vp_view_pager) ViewPager viewPager;
-    SearchView searchView;
 
     private static int PAGE_NUMBER = 3;
 
@@ -50,7 +46,7 @@ public class PerformanceFragment extends Fragment implements SearchView.OnQueryT
     {
         super.onCreate(savedInstanceState);
 
-        //setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
 
         View view = inflater.inflate(R.layout.fragment_performance,container,false);
 
@@ -125,30 +121,10 @@ public class PerformanceFragment extends Fragment implements SearchView.OnQueryT
         }
     }
 
-   /* @Override
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-
         inflater.inflate(R.menu.menu_performance, menu);
-
-        MenuItem menuItem = menu.findItem(R.id.item_search);
-
-        searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-
-    }
-
-
-    @Override
-    public boolean onQueryTextSubmit(String query)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText)
-    {
-        Toast.makeText(getContext(), "PerformanceTextChange", Toast.LENGTH_SHORT).show();
-        return false;
     }
 
     //item_search 이벤트 설정
@@ -156,13 +132,9 @@ public class PerformanceFragment extends Fragment implements SearchView.OnQueryT
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.item_search:
-                Toast.makeText(getContext(), "onOptionsItemSelected", Toast.LENGTH_SHORT).show();
                 //// TODO: 2017. 8. 16. 여기서 작업해주면 될 거 같음
-                //SearchView searchView = new SearchView(getActivity());
-                //searchView.setOnQueryTextListener(this);
-                //item.setActionView(searchView);
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 }
