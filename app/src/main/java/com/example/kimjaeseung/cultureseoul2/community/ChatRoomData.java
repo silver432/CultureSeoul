@@ -8,9 +8,10 @@ import java.io.Serializable;
  * Created by kimjaeseung on 2017. 7. 23..
  */
 
-public class ChatRoomData implements Serializable{
+public class ChatRoomData implements Serializable {
     private String firebaseKey;
     private String performanceImage;
+    private String performanceName;
     private String roomName;
     private String roomLocation;
     private String roomTime;
@@ -71,5 +72,13 @@ public class ChatRoomData implements Serializable{
 
     public void setRoomPeople(String roomPeople) {
         this.roomPeople = roomPeople;
+    }
+
+    public String getPerformanceName() {
+        return performanceName;
+    }
+
+    public void setPerformanceName(String performanceName) {
+        this.performanceName = performanceName;
     }
 }
