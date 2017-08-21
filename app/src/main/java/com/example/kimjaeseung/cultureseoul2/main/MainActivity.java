@@ -10,12 +10,14 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.kimjaeseung.cultureseoul2.R;
@@ -44,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         //툴바 설정
         /* 참고
@@ -54,8 +55,14 @@ public class MainActivity extends AppCompatActivity {
         */
         setSupportActionBar(toolbar); //툴바를 액션바와 같게 만든다
 
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.app_name, R.string.app_name);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
+
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeAsUpIndicator(R.mipmap.ic_launcher);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_profile);
         navigationView.setNavigationItemSelectedListener(
@@ -124,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -143,22 +150,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.menu_profile:
-                Toast.makeText(this, "test profile", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.menu_home_signout:
-                Toast.makeText(this, "test signout", Toast.LENGTH_SHORT).show();
-                break;
-        }
 
-        /* //test 중
         if(actionBarDrawerToggle.onOptionsItemSelected(item)){
             return true;
         }
+
         return super.onOptionsItemSelected(item);
-        */
-        return true;
     }
 
     //toolbar 관련 끝
