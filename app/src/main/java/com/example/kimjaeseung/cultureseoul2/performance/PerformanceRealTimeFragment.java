@@ -16,7 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.kimjaeseung.cultureseoul2.GlobalApp;
 import com.example.kimjaeseung.cultureseoul2.R;
@@ -35,7 +34,8 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by kimjaeseung on 2017. 7. 11..
  */
 
-public class PerformanceRealTimeFragment extends Fragment implements PerformanceAdapter.PerformanceAdapterOnClickHandler, SearchView.OnQueryTextListener {
+public class PerformanceRealTimeFragment extends Fragment implements PerformanceAdapter.PerformanceAdapterOnClickHandler, SearchView.OnQueryTextListener
+{
     private final static String TAG = "PRTF";
     private static final int NUM_LIST_ITEMS = 100;
     private PerformanceAdapter mAdapter;
@@ -44,32 +44,36 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
     RecyclerView mPerformanceList;
     List<CultureEvent> mCultureEventLIst = new ArrayList<>();
     GlobalApp globalApp;
+    SearchView searchView;
 
-
-    public PerformanceRealTimeFragment() {
+    public PerformanceRealTimeFragment()
+    {
     }
 
-    public static Fragment getInstance() {
+    public static Fragment getInstance()
+    {
         PerformanceRealTimeFragment performanceRealTimeFragment = new PerformanceRealTimeFragment();
         return performanceRealTimeFragment;
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
+    {
         View view = inflater.inflate(R.layout.fragment_performance_realtime, container, false);
 
         ButterKnife.bind(this, view);
 
-        globalApp = (GlobalApp) getApplicationContext();
-
         setHasOptionsMenu(true);
+
+        globalApp = (GlobalApp) getApplicationContext();
 
         return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState)
+    {
         super.onActivityCreated(savedInstanceState);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -85,15 +89,18 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
 
 
     @Override
-    public void onClick(CultureEvent cultureEvent) {
+    public void onClick(CultureEvent cultureEvent)
+    {
         //채팅방추가를 위해 intent 넘어옴
         String choose = getActivity().getIntent().getStringExtra("choose");
-        if (choose != null && choose.equals(AddChatRoomActivity.class.getSimpleName())) {
+        if (choose != null && choose.equals(AddChatRoomActivity.class.getSimpleName()))
+        {
             Intent intent = new Intent(getActivity(), AddChatRoomActivity.class);
             intent.putExtra("key", cultureEvent);
             startActivity(intent);
 
-        } else {
+        } else
+        {
             Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
             startToDetailActivity.putExtra("key", cultureEvent);
             startActivity(startToDetailActivity);
@@ -110,54 +117,31 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
 
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+
         super.onCreateOptionsMenu(menu, inflater);
-
         inflater.inflate(R.menu.menu_performance, menu);
-
-        MenuItem menuItem = menu.findItem(R.id.item_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem); // 액션바에 searchview 추가
+        MenuItem searchItem = menu.findItem(R.id.item_search);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem); // 액션바에 searchview 추가
         searchView.setOnQueryTextListener(this);
-
-        Toast.makeText(getContext(), "onCreateOptionsMenu", Toast.LENGTH_SHORT).show();
-
-        /*MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener()
-        {
-                    @Override
-                    public boolean onMenuItemActionCollapse(MenuItem item) {
-// Do something when collapsed
-                        mAdapter.setFilter(mCultureEventLIst);
-                        return true; // Return true to collapse action view
-                    }
-
-                    @Override
-                    public boolean onMenuItemActionExpand(MenuItem item) {
-// Do something when expanded
-                        return true; // Return true to expand action view
-                    }
-                });*/
-        Log.d(TAG, "onCreateOptionMenu");
+        Log.d(TAG, "onCreateOptionsMenu");
     }
 
-
-//    @Override
-//    public void onPrepareOptionsMenu(Menu menu) {
-//        super.onPrepareOptionsMenu(menu);
-//        Log.d(TAG,"onPrepareOptionMenu");
-//    }
-
-
     @Override
-    public boolean onQueryTextSubmit(String query) {
+    public boolean onQueryTextSubmit(String query)
+    {
         return false;
     }
 
     /* 필터에서 텍스트 검색 처리 */
     @Override
-    public boolean onQueryTextChange(String newText) {
+    public boolean onQueryTextChange(String newText)
+    {
         newText = newText.toLowerCase();
         List<CultureEvent> newList = new ArrayList<>();
-        for (CultureEvent cultureEvent : mCultureEventLIst) {
+        for (CultureEvent cultureEvent : mCultureEventLIst)
+        {
             String name = cultureEvent.getTitle();
             if (name.contains(newText))
                 newList.add(cultureEvent);
