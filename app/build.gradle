@@ -69,5 +69,10 @@ dependencies {
     //GoogleMap
     compile 'com.google.android.gms:play-services-maps:11.0.4'
     compile 'com.google.android.gms:play-services-location:11.0.4'
+    //GooglePlace
+    compile 'com.google.android.gms:play-services-places:11.0.4'
+
+    //TedPerission
+    compile 'gun0912.ted:tedpermission:1.0.3'
 }
 apply plugin: 'com.google.gms.google-services'
