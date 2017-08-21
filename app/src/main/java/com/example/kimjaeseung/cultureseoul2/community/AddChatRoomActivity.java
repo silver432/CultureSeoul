@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -54,6 +55,8 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
 
     @Bind(R.id.community_np_people)
     NumberPicker numberPickerPeople;
+    @Bind(R.id.community_et_roomname)
+    EditText mRoomName;
 
 
     private ChatRoomData mChatRoomData;
@@ -96,8 +99,9 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
             case R.id.community_btn_chatroomcreate:
                 mChatRoomData = new ChatRoomData();
                 mChatRoomData.setPerformanceImage(cultureEvent.getMainImg().toLowerCase());
-                mChatRoomData.setRoomLocation(mLocation);
-                mChatRoomData.setRoomName(cultureEvent.getTitle());
+                mChatRoomData.setPerformanceName(cultureEvent.getTitle());
+                mChatRoomData.setRoomLocation("모임장소: "+mLocation);
+                mChatRoomData.setRoomName(mRoomName.getText().toString());
                 mChatRoomData.setRoomPeople("0/"+mPeople);
                 mChatRoomData.setRoomDay(mYear+"-"+mMonth+"-"+mDay);
                 mChatRoomData.setRoomTime(AM_PM+" "+mHour+":"+mMinute);
