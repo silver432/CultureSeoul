@@ -5,10 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -36,7 +41,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by heo04 on 2017-08-10.
  */
 
-public class PerformanceDateFragment extends Fragment implements PerformanceAdapter.PerformanceAdapterOnClickHandler
+public class PerformanceDateFragment extends Fragment implements PerformanceAdapter.PerformanceAdapterOnClickHandler, SearchView.OnQueryTextListener
 {
     private final static String TAG = "PDF";
     private PerformanceAdapter mAdapter;
@@ -48,6 +53,8 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
 
     List<CultureEvent> mCultureEventLIst = new ArrayList<>();
     GlobalApp mGlobalApp;
+    MenuItem mMenuItem;
+    SearchView mSearchView;
 
     public PerformanceDateFragment()
     {
@@ -68,7 +75,7 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
 
         ButterKnife.bind(this, view);
 
-        //setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
 
         mGlobalApp = (GlobalApp) getApplicationContext();
 
@@ -140,6 +147,10 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
 
             mCurDate= String.valueOf(mYear + "-" + mMonth + "-" + mDay);
             mButton.setText(mCurDate);
+
+            if(mMenuItem != null)
+                mMenuItem.collapseActionView(); // 클릭하면 검색창 없어지게
+
             divisionDate();
         }
     };
@@ -180,5 +191,51 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_performance, menu);
+        mMenuItem = menu.findItem(R.id.item_search);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(mMenuItem); // 액션바에 searchview 추가
+        mSearchView.setOnQueryTextListener(this);
+    }
 
+
+    @Override
+    public boolean onQueryTextSubmit(String query)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText)
+    {
+        newText = newText.toLowerCase();
+        List<CultureEvent> newList = new ArrayList<>();
+
+        for (CultureEvent cultureEvent :mCultureEventLIst)
+        {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+            Date startDate = cultureEvent.getStartDate();
+            Date endDate = cultureEvent.getEndDate();
+            Date curDate = null;
+            try
+            {
+                curDate = formatter.parse(mCurDate);
+            }
+            catch (ParseException e)
+            {
+                Log.e(TAG, "Date parsing error", e);
+            }
+
+            String name = cultureEvent.getTitle().toLowerCase();
+            if (name.contains(newText) && curDate.compareTo(startDate) >= 0 && curDate.compareTo(endDate) <= 0)   // 날짜 비교
+                newList.add(cultureEvent);
+        }
+
+        mAdapter.setFilter(newList);
+        return false;
+    }
 }

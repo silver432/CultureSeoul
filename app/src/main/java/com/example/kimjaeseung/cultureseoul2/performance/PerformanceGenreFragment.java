@@ -128,46 +128,6 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
         divisionGenre();
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_performance, menu);
-        mMenuItem = menu.findItem(R.id.item_search);
-        mSearchView = (SearchView) MenuItemCompat.getActionView(mMenuItem); // 액션바에 searchview 추가
-        mSearchView.setOnQueryTextListener(this);
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query)
-    {
-        return false;
-    }
-
-    /* 필터에서 텍스트 검색 처리 */
-    @Override
-    public boolean onQueryTextChange(String newText)
-    {
-        newText = newText.toLowerCase();
-        List<CultureEvent> newList = new ArrayList<>();
-        for (CultureEvent cultureEvent : mCultureEventLIst)
-        {
-            String name = cultureEvent.getTitle().toLowerCase();
-            String genre = cultureEvent.getCodeName();
-            if (name.contains(newText) && genre.contains(mGenreTitle))
-                newList.add(cultureEvent);
-        }
-
-        mAdapter.setFilter(newList);
-
-        return true;
-    }
-
-    public static void setmGenreTitle(String setGenre)
-    {
-        mGenreTitle = setGenre;
-        mGenreCount = 1;
-    }
 
     /* 장르 구분 */
     public void divisionGenre()
@@ -205,10 +165,54 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
 
     }
 
-    /* 스피너 선택 이벤트*/
+    /* 스피너 선택 이벤트 */
     @Override
     public void onNothingSelected(AdapterView<?> parent)
     {
 
     }
+
+    public static void setmGenreTitle(String setGenre)
+    {
+        mGenreTitle = setGenre;
+        mGenreCount = 1;
+    }
+
+    /* Searchview 생성 */
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_performance, menu);
+        mMenuItem = menu.findItem(R.id.item_search);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(mMenuItem); // 액션바에 searchview 추가
+        mSearchView.setOnQueryTextListener(this);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query)
+    {
+        return false;
+    }
+
+    /* 필터에서 텍스트 검색 처리 */
+    @Override
+    public boolean onQueryTextChange(String newText)
+    {
+        newText = newText.toLowerCase();
+        List<CultureEvent> newList = new ArrayList<>();
+        for (CultureEvent cultureEvent : mCultureEventLIst)
+        {
+            String name = cultureEvent.getTitle().toLowerCase();
+            String genre = cultureEvent.getCodeName();
+            if (name.contains(newText) && genre.contains(mGenreTitle))
+                newList.add(cultureEvent);
+        }
+
+        mAdapter.setFilter(newList);
+
+        return true;
+    }
+
+
 }
