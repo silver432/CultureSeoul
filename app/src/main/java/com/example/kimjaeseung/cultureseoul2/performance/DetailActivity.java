@@ -9,6 +9,8 @@ import android.widget.TextView;
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
 
+import static com.example.kimjaeseung.cultureseoul2.utils.DateUtils.dateToString;
+
 /**
  * Created by heo04 on 2017-07-22.
  */
@@ -33,7 +35,7 @@ public class DetailActivity extends AppCompatActivity
         DetailAdapter mDetailAdapter = new DetailAdapter();
         mListView.setAdapter(mDetailAdapter);
 
-        mDetailAdapter.addItem("기간" , cultureEvent.getStartDate() + "~" + cultureEvent.getEndDate());
+        mDetailAdapter.addItem("기간" , dateToString(cultureEvent.getStartDate()) + "~" + dateToString(cultureEvent.getEndDate()));
         mDetailAdapter.addItem("시간", cultureEvent.getTime());
         mDetailAdapter.addItem("장소", cultureEvent.getPlace());
         mDetailAdapter.addItem("이용대상", cultureEvent.getUseTrgt());

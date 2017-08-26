@@ -9,7 +9,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,14 +36,14 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class PerformanceRealTimeFragment extends Fragment implements PerformanceAdapter.PerformanceAdapterOnClickHandler, SearchView.OnQueryTextListener
 {
     private final static String TAG = "PRTF";
-    private static final int NUM_LIST_ITEMS = 100;
     private PerformanceAdapter mAdapter;
 
-    @Bind(R.id.performance_list)
+    @Bind(R.id.performance_rv_realtime)
     RecyclerView mPerformanceList;
     List<CultureEvent> mCultureEventLIst = new ArrayList<>();
-    GlobalApp globalApp;
-    SearchView searchView;
+    GlobalApp mGlobalApp;
+    SearchView mSearchView;
+    MenuItem mMenuItem;
 
     public PerformanceRealTimeFragment()
     {
@@ -66,7 +65,7 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
 
         setHasOptionsMenu(true);
 
-        globalApp = (GlobalApp) getApplicationContext();
+        mGlobalApp = (GlobalApp) getApplicationContext();
 
         return view;
     }
@@ -111,7 +110,7 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
 
     private void setData()
     {
-        mAdapter.setItemList(globalApp.getmList());
+        mAdapter.setItemList(mGlobalApp.getmList());
         mAdapter.notifyAdapter();
     }
 
@@ -122,17 +121,13 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
 
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_performance, menu);
-        MenuItem searchItem = menu.findItem(R.id.item_search);
-        searchView = (SearchView) MenuItemCompat.getActionView(searchItem); // 액션바에 searchview 추가
-        searchView.setOnQueryTextListener(this);
-        Log.d(TAG, "onCreateOptionsMenu");
+        mMenuItem = menu.findItem(R.id.item_search);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(mMenuItem); // 액션바에 searchview 추가
+        mSearchView.setOnQueryTextListener(this);
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query)
-    {
-        return false;
-    }
+    public boolean onQueryTextSubmit(String query) { return false; }
 
     /* 필터에서 텍스트 검색 처리 */
     @Override

@@ -5,6 +5,8 @@ import android.app.Application;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEventOutWrapper;
 import com.example.kimjaeseung.cultureseoul2.network.CultureService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
@@ -25,9 +27,11 @@ public class GlobalApp extends Application {
     /** JSON 파싱 */
     public void loadData()
     {
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://openapi.seoul.go.kr:8088")
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         CultureService cultureService = retrofit.create(CultureService.class);

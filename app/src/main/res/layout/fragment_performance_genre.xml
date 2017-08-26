@@ -4,13 +4,13 @@
               android:layout_height="match_parent">
 
     <Spinner
-        android:id="@+id/spinner_genre"
+        android:id="@+id/performance_spn_genre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:entries="@array/array_genre"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/performance_genre_list"
+        android:id="@+id/performance_rv_genre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </android.support.v7.widget.RecyclerView>

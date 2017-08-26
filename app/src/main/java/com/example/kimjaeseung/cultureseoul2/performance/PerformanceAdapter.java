@@ -16,6 +16,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.kimjaeseung.cultureseoul2.utils.DateUtils.dateToString;
+
 /**
  * Created by heo04 on 2017-07-12.
  */
@@ -114,8 +116,7 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
 
             listItemTitleView.setText(cultureEvent.getTitle());    // 공연 제목
 
-            listItemDateView.setText(cultureEvent.getStartDate() + " ~ " + cultureEvent.getEndDate());
-
+            listItemDateView.setText(dateToString(cultureEvent.getStartDate()) + " ~ " + dateToString(cultureEvent.getEndDate()));
         }
 
         @Override
@@ -133,6 +134,5 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
         cultureEventList.addAll(newList);
         notifyDataSetChanged();
     }
-
 
 }
