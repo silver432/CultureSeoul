@@ -1,14 +1,17 @@
 package com.example.kimjaeseung.cultureseoul2.community;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.Window;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.NumberPicker;
@@ -38,6 +41,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -49,19 +54,21 @@ import butterknife.OnClick;
  * Created by kimjaeseung on 2017. 7. 22..
  */
 
-public class AddChatRoomActivity extends FragmentActivity implements OnConnectionFailedListener{
+public class AddChatRoomActivity extends FragmentActivity implements OnConnectionFailedListener {
     private static final String TAG = AddChatRoomActivity.class.getSimpleName();
 
     @Bind(R.id.community_np_people)
     NumberPicker numberPickerPeople;
+    @Bind(R.id.community_et_roomname)
+    EditText mRoomNameEditText;
 
 
     private ChatRoomData mChatRoomData;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     private CultureEvent cultureEvent;
-    private static int mYear,mMonth,mDay,mHour,mMinute,mPeople=1;
-    private static String AM_PM,mLocation;
+    private static int mYear = 0, mMonth = 0, mDay = 0, mHour = 0, mMinute = 0, mPeople = 1;
+    private static String AM_PM = "", mLocation = "", mRoomName = "";
     private GoogleApiClient mGoogleApiClient;
     private int PLACE_PICKER_REQUEST = 1;
 
@@ -75,43 +82,61 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference("room");
 
-        cultureEvent=(CultureEvent) getIntent().getSerializableExtra("key");
+        cultureEvent = (CultureEvent) getIntent().getSerializableExtra("key");
 
         initGoogleApiClient();
         initNumberPickerPeople();
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mRoomName = mRoomNameEditText.getText().toString();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mRoomNameEditText.setText(mRoomName);
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
-                mLocation = place.getName().toString();
+                mLocation = place.getAddress().toString();
             }
         }
     }
 
-    @OnClick({R.id.community_btn_chatroomcreate,R.id.community_btn_select_performance,R.id.community_btn_select_day,R.id.community_btn_select_time,R.id.community_btn_select_location})
-    public void mOnClick(View v){
-        switch (v.getId()){
+    @OnClick({R.id.community_btn_chatroomcreate, R.id.community_btn_select_performance, R.id.community_btn_select_day, R.id.community_btn_select_time, R.id.community_btn_select_location})
+    public void mOnClick(View v) {
+        switch (v.getId()) {
             case R.id.community_btn_chatroomcreate:
+
+                if (!checkStaticValue()) return;
+
                 mChatRoomData = new ChatRoomData();
                 mChatRoomData.setPerformanceImage(cultureEvent.getMainImg().toLowerCase());
-                mChatRoomData.setRoomLocation(mLocation);
-                mChatRoomData.setRoomName(cultureEvent.getTitle());
-                mChatRoomData.setRoomPeople("0/"+mPeople);
-                mChatRoomData.setRoomDay(mYear+"-"+mMonth+"-"+mDay);
-                mChatRoomData.setRoomTime(AM_PM+" "+mHour+":"+mMinute);
-
+                mChatRoomData.setPerformanceName(cultureEvent.getTitle());
+                mChatRoomData.setRoomLocation("모임장소: " + mLocation);
+                mChatRoomData.setRoomName(mRoomNameEditText.getText().toString());
+                mChatRoomData.setRoomPeople("0/" + mPeople);
+                mChatRoomData.setRoomDay(mYear + "-" + mMonth + "-" + mDay);
+                mChatRoomData.setRoomTime(AM_PM + " " + mHour + ":" + formatMinute(mMinute));
                 mDatabaseReference.push().setValue(mChatRoomData);
 
-                Intent intent = new Intent(AddChatRoomActivity.this,MainActivity.class);
-                intent.putExtra("select_page",CommunityFragment.class.getSimpleName());
+                Intent intent = new Intent(AddChatRoomActivity.this, MainActivity.class);
+                intent.putExtra("select_page", CommunityFragment.class.getSimpleName());
                 startActivity(intent);
+
+                initStaticValue();
                 break;
             case R.id.community_btn_select_performance:
-                Intent intent1 = new Intent(AddChatRoomActivity.this,MainActivity.class);
+                Intent intent1 = new Intent(AddChatRoomActivity.this, MainActivity.class);
                 intent1.putExtra("select_page", PerformanceRealTimeFragment.class.getSimpleName());
-                intent1.putExtra("choose",AddChatRoomActivity.class.getSimpleName());
+                intent1.putExtra("choose", AddChatRoomActivity.class.getSimpleName());
                 startActivity(intent1);
                 break;
             case R.id.community_btn_select_day:
@@ -119,42 +144,43 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
                 mYear = calendar.get(Calendar.YEAR);
                 mMonth = calendar.get(Calendar.MONTH);
                 mDay = calendar.get(Calendar.DAY_OF_MONTH);
-                new DatePickerDialog(AddChatRoomActivity.this,mDateSetListener,mYear,mMonth,mDay).show();
+                new DatePickerDialog(AddChatRoomActivity.this, mDateSetListener, mYear, mMonth, mDay).show();
                 break;
             case R.id.community_btn_select_time:
                 Calendar calendar1 = new GregorianCalendar();
                 mHour = calendar1.get(Calendar.HOUR_OF_DAY);
-                mMinute= calendar1.get(Calendar.MINUTE);
-                new TimePickerDialog(AddChatRoomActivity.this,mTimeSetListener,mHour,mMinute,false).show();
+                mMinute = calendar1.get(Calendar.MINUTE);
+                new TimePickerDialog(AddChatRoomActivity.this, mTimeSetListener, mHour, mMinute, false).show();
                 break;
             case R.id.community_btn_select_location:
                 initPlacePicker();
                 break;
         }
     }
-    DatePickerDialog.OnDateSetListener mDateSetListener= new DatePickerDialog.OnDateSetListener() {
+
+    DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            mYear=year;
-            mMonth=month+1;
-            mDay=dayOfMonth;
+            mYear = year;
+            mMonth = month + 1;
+            mDay = dayOfMonth;
         }
     };
     TimePickerDialog.OnTimeSetListener mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            if (hourOfDay>12) {
-                AM_PM="오후";
-                hourOfDay-=12;
+            if (hourOfDay > 12) {
+                AM_PM = "오후";
+                hourOfDay -= 12;
+            } else {
+                AM_PM = "오전";
             }
-            else {
-                AM_PM="오전";
-            }
-            mHour=hourOfDay;
-            mMinute=minute;
+            mHour = hourOfDay;
+            mMinute = minute;
         }
     };
-    private void initNumberPickerPeople(){
+
+    private void initNumberPickerPeople() {
         numberPickerPeople.setMinValue(1);
         numberPickerPeople.setMaxValue(5);
         numberPickerPeople.setValue(mPeople);
@@ -162,11 +188,12 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
         numberPickerPeople.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                mPeople=newVal;
+                mPeople = newVal;
             }
         });
     }
-    private void initGoogleApiClient(){
+
+    private void initGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -174,7 +201,8 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
                 .enableAutoManage(this, this)
                 .build();
     }
-    private void initPlacePicker(){
+
+    private void initPlacePicker() {
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
         try {
@@ -184,6 +212,39 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
         } catch (GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean checkStaticValue() {
+        if (mYear == 0 || mMonth == 0 || mDay == 0) {
+            Toast.makeText(this, "날짜를 선택해 주세요", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (AM_PM.isEmpty()) {
+            Toast.makeText(this, "시간을 선택해 주세요", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (mLocation.isEmpty()) {
+            Toast.makeText(this, "장소를 선택해 주세요", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (cultureEvent == null) {
+            Toast.makeText(this, "공연을 선택해 주세요", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (mRoomName.isEmpty()) {
+            Toast.makeText(this, "방제목을 입력해 주세요", Toast.LENGTH_SHORT).show();
+            return false;
+        } else return true;
+    }
+
+    private void initStaticValue() {
+        mYear = mMonth = mDay = mHour = mMinute = 0;
+        mPeople = 1;
+        AM_PM = mLocation = "";
+    }
+
+    private String formatMinute(int minute){
+        String formatMinute;
+        if (minute<10){
+            formatMinute = "0"+minute;
+            return formatMinute;
+        }else return Integer.toString(minute);
     }
 
     @Override

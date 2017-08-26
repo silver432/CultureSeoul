@@ -39,12 +39,19 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
 
     List<CultureEvent> mCultureEventLIst = new ArrayList<>();
     String[] mGenreStr;
-    String mGenreTitle;
+    static String mGenreTitle = "";
+    static int setGenreCount = 0;
     GlobalApp globalApp;
 
     public PerformanceGenreFragment()
     {
 
+    }
+
+    public static Fragment getInstance()
+    {
+        PerformanceGenreFragment performanceGenreFragment = new PerformanceGenreFragment();
+        return performanceGenreFragment;
     }
 
     @Nullable
@@ -81,8 +88,6 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
         mAdapter = new PerformanceAdapter(this.getContext(), this, mCultureEventLIst);
         mPerformanceList.setAdapter(mAdapter);
 
-        mGenreTitle = "클래식";    // default 장르 값
-
         setData();
 
     }
@@ -102,7 +107,10 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
         divisionGenre();
     }
 
-
+    public static void setmGenreTitle(String setGenre) {
+        mGenreTitle = setGenre;
+        setGenreCount = 1;
+    }
 
     /* 장르 구분 */
     public void divisionGenre()
@@ -124,7 +132,14 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
     {
-        mGenreTitle = mGenreStr[position];
+        if (setGenreCount == 0) {
+            if (mGenreTitle == "")
+                mGenreTitle = "콘서트";    // default 장르 값
+            else
+                mGenreTitle = mGenreStr[position];
+        }
+
+        setGenreCount = 0;
         divisionGenre();
     }
 

@@ -1,6 +1,7 @@
 package com.example.kimjaeseung.cultureseoul2.community;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -82,25 +83,25 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private ImageView mPerformanceImage;
+        private TextView mPerformanceName;
         private TextView mRoomName;
         private TextView mRoomLocation;
         private TextView mRoomDay;
         private TextView mRoomTime;
         private TextView mRoomPeople;
-        private TextView mLine;
         private TextView mRoomday2;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             mPerformanceImage=(ImageView)itemView.findViewById(R.id.community_iv_chatroom);
+            mPerformanceName=(TextView)itemView.findViewById(R.id.community_tv_performancename);
             mRoomName=(TextView)itemView.findViewById(R.id.community_tv_roomname);
             mRoomLocation=(TextView)itemView.findViewById(R.id.community_tv_roomlocation);
             mRoomTime=(TextView)itemView.findViewById(R.id.community_tv_roomtime);
             mRoomDay=(TextView)itemView.findViewById(R.id.community_tv_roomday);
             mRoomday2=(TextView)itemView.findViewById(R.id.community_tv_roomday2);
             mRoomPeople=(TextView)itemView.findViewById(R.id.community_tv_roompeople);
-            mLine=(TextView)itemView.findViewById(R.id.community_tv_line);
 
             itemView.setOnClickListener(this);
         }
@@ -112,12 +113,13 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
                     .fit()
                     .into(mPerformanceImage);
             mRoomName.setText(chatRoomData.getRoomName());
+            mRoomName.setBackgroundColor(Color.LTGRAY);
+            mPerformanceName.setText(chatRoomData.getPerformanceName());
             mRoomPeople.setText(chatRoomData.getRoomPeople());
             mRoomDay.setText(chatRoomData.getRoomDay());
             mRoomday2.setText(calculateDay(chatRoomData.getRoomDay()));
             mRoomTime.setText(chatRoomData.getRoomTime());
             mRoomLocation.setText(chatRoomData.getRoomLocation());
-            mLine.setBackgroundResource(R.color.colorPrimary);
         }
 
         @Override

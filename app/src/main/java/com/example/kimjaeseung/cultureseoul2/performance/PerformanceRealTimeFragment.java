@@ -142,7 +142,7 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
         List<CultureEvent> newList = new ArrayList<>();
         for (CultureEvent cultureEvent : mCultureEventLIst)
         {
-            String name = cultureEvent.getTitle();
+            String name = cultureEvent.getTitle().toLowerCase();
             if (name.contains(newText))
                 newList.add(cultureEvent);
         }
