@@ -20,6 +20,7 @@ import android.widget.Spinner;
 
 import com.example.kimjaeseung.cultureseoul2.GlobalApp;
 import com.example.kimjaeseung.cultureseoul2.R;
+import com.example.kimjaeseung.cultureseoul2.community.AddChatRoomActivity;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
 
 import java.util.ArrayList;
@@ -104,9 +105,20 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
     @Override
     public void onClick(CultureEvent cultureEvent)
     {
-        Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
-        startToDetailActivity.putExtra("key", cultureEvent);
-        startActivity(startToDetailActivity);
+        String choose = getActivity().getIntent().getStringExtra("choose");
+        if (choose != null && choose.equals(AddChatRoomActivity.class.getSimpleName()))
+        {
+            Intent intent = new Intent(getActivity(), AddChatRoomActivity.class);
+            intent.putExtra("key", cultureEvent);
+            startActivity(intent);
+
+        } else
+        {
+            Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
+            startToDetailActivity.putExtra("key", cultureEvent);
+            startActivity(startToDetailActivity);
+        }
+        getActivity().getIntent().putExtra("choose", "");
     }
 
     private void setData()

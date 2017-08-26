@@ -86,7 +86,6 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
 
     }
 
-
     @Override
     public void onClick(CultureEvent cultureEvent)
     {
