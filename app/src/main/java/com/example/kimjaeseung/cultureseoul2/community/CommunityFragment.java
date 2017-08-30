@@ -1,16 +1,21 @@
 package com.example.kimjaeseung.cultureseoul2.community;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kimjaeseung.cultureseoul2.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,7 +24,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,11 +41,14 @@ import butterknife.OnClick;
 public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatRoomAdapterOnClickHandler {
     private final static String TAG = CommunityFragment.class.getSimpleName();
 
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     private ChildEventListener mChildEventListener;
     private ChatRoomAdapter mAdapter;
-    List<ChatRoomData> chatRoomDataList = new ArrayList<>();
+    private HashMap<String,String> userList = new HashMap<>();
+    private List<ChatRoomData> chatRoomDataList = new ArrayList<>();
     @Bind(R.id.community_chatroom_recyclerview)
     RecyclerView mRecyclerView;
 
@@ -64,7 +76,12 @@ public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatR
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initView();
-        initFirebaseDatabase();
+        initFirebase();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @OnClick({R.id.community_chatroom_fab})
@@ -93,7 +110,10 @@ public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatR
         floatingActionButton.attachToRecyclerView(mRecyclerView);
     }
 
-    private void initFirebaseDatabase() {
+    private void initFirebase() {
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference("room");
 
@@ -102,6 +122,10 @@ public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatR
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ChatRoomData chatRoomData = dataSnapshot.getValue(ChatRoomData.class);
                 chatRoomData.setFirebaseKey(dataSnapshot.getKey());
+                chatRoomData.setRoomPeople((int)dataSnapshot.child("people").getChildrenCount());
+                for (DataSnapshot user: dataSnapshot.child("people").getChildren()){
+                    userList.put(user.getKey(),user.getValue().toString());
+                }
                 chatRoomDataList.add(chatRoomData);
                 mAdapter.addItem(chatRoomData);
                 mAdapter.notifyDataSetChanged();
@@ -141,9 +165,53 @@ public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatR
     }
 
     @Override
-    public void onClick(ChatRoomData chatRoomData) {
+    public void onClick(final ChatRoomData chatRoomData) {
+        Log.d(TAG,userList.toString());
+        if (isUserInChatRoom(mUser)) gotoChatActivity(chatRoomData);
+        else {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    getContext());
+            alertDialogBuilder.setTitle("방정보");
+            alertDialogBuilder.setMessage(
+                    "-방이름: "+chatRoomData.getRoomName()+"\n"
+                            +"-공연이름: "+chatRoomData.getPerformanceName()+"\n"
+                            +"-모임장소: "+chatRoomData.getRoomLocationName()+"("+chatRoomData.getRoomLocation()+")\n"
+                            +"-모임날짜: "+ chatRoomData.getRoomDay()+"\n"
+                            +"-모임시간: "+chatRoomData.getRoomTime()+"\n"
+                            +"-모임인원: "+chatRoomData.getRoomPeople()+"/"+chatRoomData.getRoomMaxPeople())
+                    .setPositiveButton("입장", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mDatabaseReference.child(chatRoomData.getFirebaseKey()).child("people").push().setValue(mUser.getUid());
+                            gotoChatActivity(chatRoomData);
+                        }
+                    })
+                    .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    }).create().show();
+        }
+    }
+
+    private boolean isUserInChatRoom(FirebaseUser mUser){
+        Set<Map.Entry<String, String>> set = userList.entrySet();
+        Iterator<Map.Entry<String, String>> it = set.iterator();
+
+        while (it.hasNext()){
+            Map.Entry<String, String> e = (Map.Entry<String, String>)it.next();
+            if (mUser.getUid().equals(e.getValue())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void gotoChatActivity(ChatRoomData chatRoomData){
         Intent intent = new Intent(getContext(), ChatActivity.class);
         intent.putExtra("room_information", chatRoomData);
+        intent.putExtra("room_people_information",userList);
         startActivity(intent);
     }
 }

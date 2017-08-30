@@ -115,7 +115,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
             mRoomName.setText(chatRoomData.getRoomName());
             mRoomName.setBackgroundColor(Color.LTGRAY);
             mPerformanceName.setText(chatRoomData.getPerformanceName());
-            mRoomPeople.setText(chatRoomData.getRoomPeople());
+            mRoomPeople.setText(chatRoomData.getRoomPeople()+"/"+chatRoomData.getRoomMaxPeople());
             mRoomDay.setText(chatRoomData.getRoomDay());
             mRoomday2.setText(calculateDay(chatRoomData.getRoomDay()));
             mRoomTime.setText(chatRoomData.getRoomTime());

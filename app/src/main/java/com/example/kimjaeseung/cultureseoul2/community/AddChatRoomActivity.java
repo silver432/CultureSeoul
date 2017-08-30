@@ -25,6 +25,7 @@ import com.example.kimjaeseung.cultureseoul2.performance.PerformanceRealTimeFrag
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
@@ -35,6 +36,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -66,9 +70,11 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
     private ChatRoomData mChatRoomData;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
+    private FirebaseUser mUser;
+
     private CultureEvent cultureEvent;
-    private static int mYear = 0, mMonth = 0, mDay = 0, mHour = 0, mMinute = 0, mPeople = 1;
-    private static String AM_PM = "", mLocation = "", mRoomName = "";
+    private static int mYear = 0, mMonth = 0, mDay = 0, mHour = 0, mMinute = 0, mMaxPeople = 1;
+    private static String AM_PM = "", mLocation = "", mRoomName = "",mLocationName="";
     private GoogleApiClient mGoogleApiClient;
     private int PLACE_PICKER_REQUEST = 1;
 
@@ -79,11 +85,9 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
         setContentView(R.layout.activity_community_addchatroom);
         ButterKnife.bind(this);
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference("room");
-
         cultureEvent = (CultureEvent) getIntent().getSerializableExtra("key");
 
+        initFirebase();
         initGoogleApiClient();
         initNumberPickerPeople();
 
@@ -106,6 +110,8 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
                 mLocation = place.getAddress().toString();
+                mLocationName= place.getName().toString();
+
             }
         }
     }
@@ -120,16 +126,23 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
                 mChatRoomData = new ChatRoomData();
                 mChatRoomData.setPerformanceImage(cultureEvent.getMainImg().toLowerCase());
                 mChatRoomData.setPerformanceName(cultureEvent.getTitle());
-                mChatRoomData.setRoomLocation("모임장소: " + mLocation);
+                mChatRoomData.setRoomLocation(mLocation);
+                mChatRoomData.setRoomLocationName(mLocationName);
                 mChatRoomData.setRoomName(mRoomNameEditText.getText().toString());
-                mChatRoomData.setRoomPeople("0/" + mPeople);
+                mChatRoomData.setRoomMaxPeople(mMaxPeople);
                 mChatRoomData.setRoomDay(mYear + "-" + mMonth + "-" + mDay);
                 mChatRoomData.setRoomTime(AM_PM + " " + mHour + ":" + formatMinute(mMinute));
-                mDatabaseReference.push().setValue(mChatRoomData);
+                mDatabaseReference.push().setValue(mChatRoomData, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        mDatabaseReference.child(databaseReference.getKey()).child("people").push().setValue(mUser.getUid());
 
-                Intent intent = new Intent(AddChatRoomActivity.this, MainActivity.class);
-                intent.putExtra("select_page", CommunityFragment.class.getSimpleName());
-                startActivity(intent);
+                        Intent intent = new Intent(AddChatRoomActivity.this, MainActivity.class);
+                        intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("select_page", CommunityFragment.class.getSimpleName());
+                        startActivity(intent);
+                    }
+                });
 
                 initStaticValue();
                 break;
@@ -180,15 +193,21 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
         }
     };
 
+    private void initFirebase(){
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mDatabaseReference = mFirebaseDatabase.getReference("room");
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+    }
+
     private void initNumberPickerPeople() {
         numberPickerPeople.setMinValue(1);
         numberPickerPeople.setMaxValue(5);
-        numberPickerPeople.setValue(mPeople);
+        numberPickerPeople.setValue(mMaxPeople);
         numberPickerPeople.setWrapSelectorWheel(false);
         numberPickerPeople.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                mPeople = newVal;
+                mMaxPeople = newVal;
             }
         });
     }
@@ -235,7 +254,7 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
 
     private void initStaticValue() {
         mYear = mMonth = mDay = mHour = mMinute = 0;
-        mPeople = 1;
+        mMaxPeople = 1;
         AM_PM = mLocation = "";
     }
 

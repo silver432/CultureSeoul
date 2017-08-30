@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private Toolbar toolbar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
 
     @Bind(R.id.main_bottomnavigation) BottomNavigationView bottomNavigationView;
 
@@ -44,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        Log.d(TAG,"onCreate");
 
         toolbar = (Toolbar) findViewById(R.id.my_toolbar);
 
@@ -91,6 +96,12 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_home);
         }
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG,"onDestroy");
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -157,6 +168,22 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    //뒤로가기
+//    @Override
+//    public void onBackPressed() {
+//        long tempTime = System.currentTimeMillis();
+//        long intervalTime = tempTime - backPressedTime;
+//        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime)
+//        {
+//            ActivityCompat.finishAffinity(this);
+//        }
+//        else
+//        {
+//            backPressedTime = tempTime;
+//            Toast.makeText(getApplicationContext(), "한번 더 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     //toolbar 관련 끝
 }

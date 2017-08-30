@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,6 +14,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.kimjaeseung.cultureseoul2.R;
+import com.example.kimjaeseung.cultureseoul2.main.MainActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,6 +29,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -35,15 +40,20 @@ import butterknife.OnClick;
  */
 
 public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnClickHandler{
+    private static final String TAG = ChatActivity.class.getSimpleName();
+
     @Bind(R.id.community_chat_recyclerview)
     RecyclerView mRecyclerView;
     @Bind(R.id.community_chat_edittext)
     EditText chatEditText;
     @Bind(R.id.community_chat_button)
     Button chatButton;
+    @Bind(R.id.community_chat_exit_button) Button exitButton;
 
 
-    List<ChatData> chatDataList=new ArrayList<>();
+    private HashMap<String,String> userList = new HashMap<>();
+    private List<ChatData> chatDataList=new ArrayList<>();
+    private FirebaseUser mUser;
     private DatabaseReference reference;
     private ChatAdapter mAdapter;
 
@@ -58,19 +68,27 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
         initView();
         initFirebaseDatabase();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     private void initView(){
         Intent intent = getIntent();
         chatRoomData=(ChatRoomData)intent.getSerializableExtra("room_information");
-
-        setTitle(chatRoomData.getRoomName() + " 채팅방");
+        userList = (HashMap<String, String>) intent.getSerializableExtra("room_people_information");
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new ChatAdapter(this, this);
         mRecyclerView.setAdapter(mAdapter);
+
+//        setTitle(chatRoomData.getRoomName() + " 채팅방");
     }
     private void initFirebaseDatabase(){
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference(chatRoomData.getFirebaseKey());
         reference.addChildEventListener(new ChildEventListener() {
             @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -108,7 +126,7 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
             }
         });
     }
-    @OnClick({R.id.community_chat_button})
+    @OnClick({R.id.community_chat_button,R.id.community_chat_exit_button})
     public void mOnClick(View v){
         switch (v.getId()){
             case R.id.community_chat_button:
@@ -125,11 +143,36 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
 
                 chatEditText.setText("");
                 break;
+            case R.id.community_chat_exit_button:
+                Set<Map.Entry<String, String>> set = userList.entrySet();
+                Iterator<Map.Entry<String, String>> it = set.iterator();
+                while (it.hasNext()){
+                    Map.Entry<String, String> e = (Map.Entry<String, String>)it.next();
+                    if (e.getValue().equals(mUser.getUid())){
+                        Map<String, Object> childUpdates = new HashMap<>();
+                        childUpdates.put(e.getKey(),null);
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("room").child(chatRoomData.getFirebaseKey()).child("people");
+                        databaseReference.updateChildren(childUpdates);
+                    }
+                }
+                gotoCommunity();
+                break;
         }
     }
 
     @Override
     public void onClick(ChatData chatData) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        gotoCommunity();
+    }
+    private void gotoCommunity(){
+        Intent intent = new Intent(ChatActivity.this,MainActivity.class);
+        intent.putExtra("select_page", CommunityFragment.class.getSimpleName());
+        intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }

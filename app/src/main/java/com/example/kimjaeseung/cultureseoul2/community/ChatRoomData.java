@@ -14,9 +14,11 @@ public class ChatRoomData implements Serializable {
     private String performanceName;
     private String roomName;
     private String roomLocation;
+    private String roomLocationName;
     private String roomTime;
     private String roomDay;
-    private String roomPeople;
+    private int roomPeople;
+    private int roomMaxPeople;
 
     public String getFirebaseKey() {
         return firebaseKey;
@@ -66,19 +68,36 @@ public class ChatRoomData implements Serializable {
         this.roomDay = roomDay;
     }
 
-    public String getRoomPeople() {
-        return roomPeople;
-    }
-
-    public void setRoomPeople(String roomPeople) {
-        this.roomPeople = roomPeople;
-    }
-
     public String getPerformanceName() {
         return performanceName;
     }
 
+    public void setRoomPeople(int roomPeople) {
+        this.roomPeople = roomPeople;
+    }
+
+    public int getRoomMaxPeople() {
+        return roomMaxPeople;
+    }
+
+    public void setRoomMaxPeople(int roomMaxPeople) {
+        this.roomMaxPeople = roomMaxPeople;
+    }
+
     public void setPerformanceName(String performanceName) {
         this.performanceName = performanceName;
+
+    }
+
+    public String getRoomLocationName() {
+        return roomLocationName;
+    }
+
+    public void setRoomLocationName(String roomLocationName) {
+        this.roomLocationName = roomLocationName;
+    }
+
+    public int getRoomPeople() {
+        return roomPeople;
     }
 }
