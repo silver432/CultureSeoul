@@ -40,10 +40,6 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="시간선택" />
-        <NumberPicker
-            android:id="@+id/community_np_people"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
         <Button
             android:id="@+id/community_btn_select_performance"
             android:layout_height="wrap_content"

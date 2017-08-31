@@ -23,18 +23,18 @@ import java.util.Locale;
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     private final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("a h:mm", Locale.getDefault());
     private Context mContext;
-    private List<ChatData> chatDataList=new ArrayList<>();
+    private List<ChatData> chatDataList = new ArrayList<>();
     private ChatAdapterOnClickHandler chatAdapterOnClickHandler;
     private ChatData chatData;
     private int mPosition;
 
-    public interface ChatAdapterOnClickHandler{
+    public interface ChatAdapterOnClickHandler {
         void onClick(ChatData chatData);
     }
 
-    public ChatAdapter(Context context,ChatAdapterOnClickHandler handler){
-        mContext=context;
-        chatAdapterOnClickHandler=handler;
+    public ChatAdapter(Context context, ChatAdapterOnClickHandler handler) {
+        mContext = context;
+        chatAdapterOnClickHandler = handler;
     }
 
     @Override
@@ -61,22 +61,21 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         return chatDataList.size();
     }
 
-    public void setItemList(List<ChatData> itemList){
+    public void setItemList(List<ChatData> itemList) {
         chatDataList.clear();
         chatDataList.addAll(itemList);
     }
-    public void addItem(ChatData chatData){
+
+    public void addItem(ChatData chatData) {
         chatDataList.add(chatData);
     }
-    public void removeItem(int position){
+
+    public void removeItem(int position) {
         chatDataList.remove(position);
     }
 
 
-
-
-
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView userPhoto;
         private TextView userName;
         private TextView userMessage;
@@ -85,14 +84,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
 
-            userPhoto=(ImageView)itemView.findViewById(R.id.community_iv_userphoto);
-            userName=(TextView)itemView.findViewById(R.id.community_tv_username);
-            userMessage=(TextView)itemView.findViewById(R.id.community_tv_message);
-            userTime=(TextView)itemView.findViewById(R.id.community_tv_time);
+            userPhoto = (ImageView) itemView.findViewById(R.id.community_iv_userphoto);
+            userName = (TextView) itemView.findViewById(R.id.community_tv_username);
+            userMessage = (TextView) itemView.findViewById(R.id.community_tv_message);
+            userTime = (TextView) itemView.findViewById(R.id.community_tv_time);
 
             itemView.setOnClickListener(this);
         }
-        public void bind(ChatData chatData){
+
+        public void bind(ChatData chatData) {
             userPhoto.setImageResource(chatData.userPhoto);
             userName.setText(chatData.userName);
             userMessage.setText(chatData.message);

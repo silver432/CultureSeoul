@@ -28,20 +28,20 @@ import java.util.Locale;
  * Created by kimjaeseung on 2017. 7. 23..
  */
 
-public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHolder>{
+public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHolder> {
     private Context mContext;
-    private List<ChatRoomData> chatRoomDataList=new ArrayList<>();
+    private List<ChatRoomData> chatRoomDataList = new ArrayList<>();
     private ChatRoomAdapterOnClickHandler chatRoomAdapterOnClickHandler;
     private ChatRoomData chatRoomData;
     private int mPosition;
 
-    public interface ChatRoomAdapterOnClickHandler{
+    public interface ChatRoomAdapterOnClickHandler {
         void onClick(ChatRoomData chatRoomData);
     }
 
-    public ChatRoomAdapter(Context context,ChatRoomAdapterOnClickHandler handler){
-        mContext=context;
-        chatRoomAdapterOnClickHandler=handler;
+    public ChatRoomAdapter(Context context, ChatRoomAdapterOnClickHandler handler) {
+        mContext = context;
+        chatRoomAdapterOnClickHandler = handler;
     }
 
 
@@ -69,19 +69,21 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
         return chatRoomDataList.size();
     }
 
-    public void setItemList(List<ChatRoomData> itemList){
+    public void setItemList(List<ChatRoomData> itemList) {
         chatRoomDataList.clear();
         chatRoomDataList.addAll(itemList);
     }
-    public void addItem(ChatRoomData chatRoomData){
+
+    public void addItem(ChatRoomData chatRoomData) {
         chatRoomDataList.add(chatRoomData);
     }
-    public void removeItem(int position){
+
+    public void removeItem(int position) {
         chatRoomDataList.remove(position);
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView mPerformanceImage;
         private TextView mPerformanceName;
         private TextView mRoomName;
@@ -94,18 +96,19 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
         public ViewHolder(View itemView) {
             super(itemView);
 
-            mPerformanceImage=(ImageView)itemView.findViewById(R.id.community_iv_chatroom);
-            mPerformanceName=(TextView)itemView.findViewById(R.id.community_tv_performancename);
-            mRoomName=(TextView)itemView.findViewById(R.id.community_tv_roomname);
-            mRoomLocation=(TextView)itemView.findViewById(R.id.community_tv_roomlocation);
-            mRoomTime=(TextView)itemView.findViewById(R.id.community_tv_roomtime);
-            mRoomDay=(TextView)itemView.findViewById(R.id.community_tv_roomday);
-            mRoomday2=(TextView)itemView.findViewById(R.id.community_tv_roomday2);
-            mRoomPeople=(TextView)itemView.findViewById(R.id.community_tv_roompeople);
+            mPerformanceImage = (ImageView) itemView.findViewById(R.id.community_iv_chatroom);
+            mPerformanceName = (TextView) itemView.findViewById(R.id.community_tv_performancename);
+            mRoomName = (TextView) itemView.findViewById(R.id.community_tv_roomname);
+            mRoomLocation = (TextView) itemView.findViewById(R.id.community_tv_roomlocation);
+            mRoomTime = (TextView) itemView.findViewById(R.id.community_tv_roomtime);
+            mRoomDay = (TextView) itemView.findViewById(R.id.community_tv_roomday);
+            mRoomday2 = (TextView) itemView.findViewById(R.id.community_tv_roomday2);
+            mRoomPeople = (TextView) itemView.findViewById(R.id.community_tv_roompeople);
 
             itemView.setOnClickListener(this);
         }
-        public void bind(ChatRoomData chatRoomData){
+
+        public void bind(ChatRoomData chatRoomData) {
             Picasso.with(itemView.getContext()) // 공연 이미지
                     .load(chatRoomData.getPerformanceImage())
                     .placeholder(R.drawable.bubble_50dp)
@@ -115,7 +118,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
             mRoomName.setText(chatRoomData.getRoomName());
             mRoomName.setBackgroundColor(Color.LTGRAY);
             mPerformanceName.setText(chatRoomData.getPerformanceName());
-            mRoomPeople.setText(chatRoomData.getRoomPeople()+"/"+chatRoomData.getRoomMaxPeople());
+            mRoomPeople.setText("참여인원: "+chatRoomData.getRoomPeople());
             mRoomDay.setText(chatRoomData.getRoomDay());
             mRoomday2.setText(calculateDay(chatRoomData.getRoomDay()));
             mRoomTime.setText(chatRoomData.getRoomTime());
@@ -128,8 +131,9 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
             chatRoomData = chatRoomDataList.get(position);
             chatRoomAdapterOnClickHandler.onClick(chatRoomData);
         }
-        public String calculateDay(String roomDay){
-            String mString="";
+
+        public String calculateDay(String roomDay) {
+            String mString = "";
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 Date performanceDate = formatter.parse(roomDay);
@@ -138,11 +142,11 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
                 long diff = performanceDate.getTime() - thisDate.getTime();
                 long diffDays = diff / (24 * 60 * 60 * 1000);
 
-                if (diffDays<0) mString="이전";
-                else if (diffDays==0) mString="오늘";
-                else if (diffDays==1) mString="내일";
-                else if (diffDays==2) mString="모레";
-                else mString=Long.toString(diffDays)+"일 후";
+                if (diffDays < 0) mString = "이전";
+                else if (diffDays == 0) mString = "오늘";
+                else if (diffDays == 1) mString = "내일";
+                else if (diffDays == 2) mString = "모레";
+                else mString = Long.toString(diffDays) + "일 후";
 
                 return mString;
 

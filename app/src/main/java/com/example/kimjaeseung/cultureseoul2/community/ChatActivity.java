@@ -39,7 +39,7 @@ import butterknife.OnClick;
  * Created by kimjaeseung on 2017. 7. 22..
  */
 
-public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnClickHandler{
+public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnClickHandler {
     private static final String TAG = ChatActivity.class.getSimpleName();
 
     @Bind(R.id.community_chat_recyclerview)
@@ -48,11 +48,11 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
     EditText chatEditText;
     @Bind(R.id.community_chat_button)
     Button chatButton;
-    @Bind(R.id.community_chat_exit_button) Button exitButton;
+    @Bind(R.id.community_chat_exit_button)
+    Button exitButton;
 
 
-    private HashMap<String,String> userList = new HashMap<>();
-    private List<ChatData> chatDataList=new ArrayList<>();
+    private List<ChatData> chatDataList = new ArrayList<>();
     private FirebaseUser mUser;
     private DatabaseReference reference;
     private ChatAdapter mAdapter;
@@ -74,10 +74,9 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
         super.onDestroy();
     }
 
-    private void initView(){
+    private void initView() {
         Intent intent = getIntent();
-        chatRoomData=(ChatRoomData)intent.getSerializableExtra("room_information");
-        userList = (HashMap<String, String>) intent.getSerializableExtra("room_people_information");
+        chatRoomData = (ChatRoomData) intent.getSerializableExtra("room_information");
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -87,11 +86,13 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
 
 //        setTitle(chatRoomData.getRoomName() + " 채팅방");
     }
-    private void initFirebaseDatabase(){
+
+    private void initFirebaseDatabase() {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference(chatRoomData.getFirebaseKey());
         reference.addChildEventListener(new ChildEventListener() {
-            @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ChatData chatData = dataSnapshot.getValue(ChatData.class);
                 chatData.firebaseKey = dataSnapshot.getKey();
                 chatDataList.add(chatData);
@@ -100,15 +101,17 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
                 mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
             }
 
-            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
             }
 
-            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {
-                String firebaseKey=dataSnapshot.getKey();
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                String firebaseKey = dataSnapshot.getKey();
                 int count = chatDataList.size();
-                for (int i=0;i<count;i++){
-                    if (chatDataList.get(i).firebaseKey.equals(firebaseKey)){
+                for (int i = 0; i < count; i++) {
+                    if (chatDataList.get(i).firebaseKey.equals(firebaseKey)) {
                         chatDataList.remove(i);
                         mAdapter.removeItem(i);
                         mAdapter.notifyDataSetChanged();
@@ -117,40 +120,43 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
                 }
             }
 
-            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
             }
 
-            @Override public void onCancelled(DatabaseError databaseError) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
     }
-    @OnClick({R.id.community_chat_button,R.id.community_chat_exit_button})
-    public void mOnClick(View v){
-        switch (v.getId()){
+
+    @OnClick({R.id.community_chat_button, R.id.community_chat_exit_button})
+    public void mOnClick(View v) {
+        switch (v.getId()) {
             case R.id.community_chat_button:
                 Calendar calendar = Calendar.getInstance();
                 long now = calendar.getTimeInMillis();
 
                 ChatData chatData = new ChatData();
-                chatData.userPhoto=R.drawable.smile_50dp;
-                chatData.message=chatEditText.getText().toString();
-                chatData.userName="Default User";
-                chatData.time=now;
+                chatData.userPhoto = R.drawable.smile_50dp;
+                chatData.message = chatEditText.getText().toString();
+                chatData.userName = "Default User";
+                chatData.time = now;
 
                 reference.push().setValue(chatData);
 
                 chatEditText.setText("");
                 break;
             case R.id.community_chat_exit_button:
-                Set<Map.Entry<String, String>> set = userList.entrySet();
+                Set<Map.Entry<String, String>> set = chatRoomData.getPeopleList().entrySet();
                 Iterator<Map.Entry<String, String>> it = set.iterator();
-                while (it.hasNext()){
-                    Map.Entry<String, String> e = (Map.Entry<String, String>)it.next();
-                    if (e.getValue().equals(mUser.getUid())){
+                while (it.hasNext()) {
+                    Map.Entry<String, String> e = it.next();
+                    if (e.getValue().equals(mUser.getUid())) {
                         Map<String, Object> childUpdates = new HashMap<>();
-                        childUpdates.put(e.getKey(),null);
+                        childUpdates.put(e.getKey(), null);
                         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("room").child(chatRoomData.getFirebaseKey()).child("people");
                         databaseReference.updateChildren(childUpdates);
                     }
@@ -169,8 +175,9 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
     public void onBackPressed() {
         gotoCommunity();
     }
-    private void gotoCommunity(){
-        Intent intent = new Intent(ChatActivity.this,MainActivity.class);
+
+    private void gotoCommunity() {
+        Intent intent = new Intent(ChatActivity.this, MainActivity.class);
         intent.putExtra("select_page", CommunityFragment.class.getSimpleName());
         intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

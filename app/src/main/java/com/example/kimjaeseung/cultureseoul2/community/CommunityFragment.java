@@ -4,7 +4,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -41,13 +44,10 @@ import butterknife.OnClick;
 public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatRoomAdapterOnClickHandler {
     private final static String TAG = CommunityFragment.class.getSimpleName();
 
-    private FirebaseAuth mAuth;
     private FirebaseUser mUser;
-    private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     private ChildEventListener mChildEventListener;
     private ChatRoomAdapter mAdapter;
-    private HashMap<String,String> userList = new HashMap<>();
     private List<ChatRoomData> chatRoomDataList = new ArrayList<>();
     @Bind(R.id.community_chatroom_recyclerview)
     RecyclerView mRecyclerView;
@@ -79,11 +79,6 @@ public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatR
         initFirebase();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     @OnClick({R.id.community_chatroom_fab})
     public void mOnClick(View view) {
         switch (view.getId()) {
@@ -111,21 +106,20 @@ public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatR
     }
 
     private void initFirebase() {
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference("room");
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("room");
 
         mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ChatRoomData chatRoomData = dataSnapshot.getValue(ChatRoomData.class);
                 chatRoomData.setFirebaseKey(dataSnapshot.getKey());
-                chatRoomData.setRoomPeople((int)dataSnapshot.child("people").getChildrenCount());
-                for (DataSnapshot user: dataSnapshot.child("people").getChildren()){
-                    userList.put(user.getKey(),user.getValue().toString());
+                chatRoomData.setRoomPeople((int) dataSnapshot.child("people").getChildrenCount());
+                HashMap<String, String> userList = new HashMap<>();
+                for (DataSnapshot user : dataSnapshot.child("people").getChildren()) {
+                    userList.put(user.getKey(), user.getValue().toString());
                 }
+                chatRoomData.setPeopleList(userList);
                 chatRoomDataList.add(chatRoomData);
                 mAdapter.addItem(chatRoomData);
                 mAdapter.notifyDataSetChanged();
@@ -166,19 +160,18 @@ public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatR
 
     @Override
     public void onClick(final ChatRoomData chatRoomData) {
-        Log.d(TAG,userList.toString());
-        if (isUserInChatRoom(mUser)) gotoChatActivity(chatRoomData);
+        if (isUserInChatRoom(chatRoomData, mUser)) gotoChatActivity(chatRoomData);
         else {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                     getContext());
             alertDialogBuilder.setTitle("방정보");
             alertDialogBuilder.setMessage(
-                    "-방이름: "+chatRoomData.getRoomName()+"\n"
-                            +"-공연이름: "+chatRoomData.getPerformanceName()+"\n"
-                            +"-모임장소: "+chatRoomData.getRoomLocationName()+"("+chatRoomData.getRoomLocation()+")\n"
-                            +"-모임날짜: "+ chatRoomData.getRoomDay()+"\n"
-                            +"-모임시간: "+chatRoomData.getRoomTime()+"\n"
-                            +"-모임인원: "+chatRoomData.getRoomPeople()+"/"+chatRoomData.getRoomMaxPeople())
+                    "-방이름: " + chatRoomData.getRoomName() + "\n"
+                            + "-공연이름: " + chatRoomData.getPerformanceName() + "\n"
+                            + "-모임장소: " + chatRoomData.getRoomLocationName() + "(" + chatRoomData.getRoomLocation() + ")\n"
+                            + "-모임날짜: " + chatRoomData.getRoomDay() + "\n"
+                            + "-모임시간: " + chatRoomData.getRoomTime() + "\n"
+                            + "-모임인원: " + chatRoomData.getRoomPeople())
                     .setPositiveButton("입장", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -195,23 +188,23 @@ public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatR
         }
     }
 
-    private boolean isUserInChatRoom(FirebaseUser mUser){
-        Set<Map.Entry<String, String>> set = userList.entrySet();
+    private boolean isUserInChatRoom(ChatRoomData chatRoomdData, FirebaseUser mUser) {
+
+        Set<Map.Entry<String, String>> set = chatRoomdData.getPeopleList().entrySet();
         Iterator<Map.Entry<String, String>> it = set.iterator();
 
-        while (it.hasNext()){
-            Map.Entry<String, String> e = (Map.Entry<String, String>)it.next();
-            if (mUser.getUid().equals(e.getValue())){
+        while (it.hasNext()) {
+            Map.Entry<String, String> e = it.next();
+            if (mUser.getUid().equals(e.getValue())) {
                 return true;
             }
         }
         return false;
     }
 
-    private void gotoChatActivity(ChatRoomData chatRoomData){
+    private void gotoChatActivity(ChatRoomData chatRoomData) {
         Intent intent = new Intent(getContext(), ChatActivity.class);
         intent.putExtra("room_information", chatRoomData);
-        intent.putExtra("room_people_information",userList);
         startActivity(intent);
     }
 }

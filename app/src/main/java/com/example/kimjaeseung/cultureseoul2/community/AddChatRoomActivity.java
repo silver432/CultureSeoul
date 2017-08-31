@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.DatePicker;
@@ -61,20 +62,17 @@ import butterknife.OnClick;
 public class AddChatRoomActivity extends FragmentActivity implements OnConnectionFailedListener {
     private static final String TAG = AddChatRoomActivity.class.getSimpleName();
 
-    @Bind(R.id.community_np_people)
-    NumberPicker numberPickerPeople;
     @Bind(R.id.community_et_roomname)
     EditText mRoomNameEditText;
 
 
     private ChatRoomData mChatRoomData;
-    private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     private FirebaseUser mUser;
 
     private CultureEvent cultureEvent;
-    private static int mYear = 0, mMonth = 0, mDay = 0, mHour = 0, mMinute = 0, mMaxPeople = 1;
-    private static String AM_PM = "", mLocation = "", mRoomName = "",mLocationName="";
+    private static int mYear = 0, mMonth = 0, mDay = 0, mHour = 0, mMinute = 0;
+    private static String AM_PM = "", mLocation = "", mRoomName = "", mLocationName = "";
     private GoogleApiClient mGoogleApiClient;
     private int PLACE_PICKER_REQUEST = 1;
 
@@ -89,8 +87,6 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
 
         initFirebase();
         initGoogleApiClient();
-        initNumberPickerPeople();
-
     }
 
     @Override
@@ -105,12 +101,18 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
         mRoomNameEditText.setText(mRoomName);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        initStaticValue();
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
                 mLocation = place.getAddress().toString();
-                mLocationName= place.getName().toString();
+                mLocationName = place.getName().toString();
 
             }
         }
@@ -129,9 +131,8 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
                 mChatRoomData.setRoomLocation(mLocation);
                 mChatRoomData.setRoomLocationName(mLocationName);
                 mChatRoomData.setRoomName(mRoomNameEditText.getText().toString());
-                mChatRoomData.setRoomMaxPeople(mMaxPeople);
-                mChatRoomData.setRoomDay(mYear + "-" + mMonth + "-" + mDay);
-                mChatRoomData.setRoomTime(AM_PM + " " + mHour + ":" + formatMinute(mMinute));
+                mChatRoomData.setRoomDay(mYear + "-" + formatDay(mMonth) + "-" + formatDay(mDay));
+                mChatRoomData.setRoomTime(AM_PM + " " + mHour + ":" + formatDay(mMinute));
                 mDatabaseReference.push().setValue(mChatRoomData, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
@@ -143,8 +144,6 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
                         startActivity(intent);
                     }
                 });
-
-                initStaticValue();
                 break;
             case R.id.community_btn_select_performance:
                 Intent intent1 = new Intent(AddChatRoomActivity.this, MainActivity.class);
@@ -193,23 +192,10 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
         }
     };
 
-    private void initFirebase(){
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference("room");
+    private void initFirebase() {
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("room");
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-    }
 
-    private void initNumberPickerPeople() {
-        numberPickerPeople.setMinValue(1);
-        numberPickerPeople.setMaxValue(5);
-        numberPickerPeople.setValue(mMaxPeople);
-        numberPickerPeople.setWrapSelectorWheel(false);
-        numberPickerPeople.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                mMaxPeople = newVal;
-            }
-        });
     }
 
     private void initGoogleApiClient() {
@@ -234,7 +220,10 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
     }
 
     private boolean checkStaticValue() {
-        if (mYear == 0 || mMonth == 0 || mDay == 0) {
+        if (mRoomNameEditText.getText().toString().isEmpty()) {
+            Toast.makeText(this, "방제목을 입력해 주세요", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (mYear == 0 || mMonth == 0 || mDay == 0) {
             Toast.makeText(this, "날짜를 선택해 주세요", Toast.LENGTH_SHORT).show();
             return false;
         } else if (AM_PM.isEmpty()) {
@@ -246,24 +235,19 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
         } else if (cultureEvent == null) {
             Toast.makeText(this, "공연을 선택해 주세요", Toast.LENGTH_SHORT).show();
             return false;
-        } else if (mRoomName.isEmpty()) {
-            Toast.makeText(this, "방제목을 입력해 주세요", Toast.LENGTH_SHORT).show();
-            return false;
         } else return true;
     }
 
     private void initStaticValue() {
         mYear = mMonth = mDay = mHour = mMinute = 0;
-        mMaxPeople = 1;
-        AM_PM = mLocation = "";
+        AM_PM = mLocation = mRoomName = mLocationName = "";
     }
 
-    private String formatMinute(int minute){
-        String formatMinute;
-        if (minute<10){
-            formatMinute = "0"+minute;
-            return formatMinute;
-        }else return Integer.toString(minute);
+    private String formatDay(int day) {
+        String dayString;
+        if (day < 10) dayString = "0" + day;
+        else dayString = Integer.toString(day);
+        return dayString;
     }
 
     @Override

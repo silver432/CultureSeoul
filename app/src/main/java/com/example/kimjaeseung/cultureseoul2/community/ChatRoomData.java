@@ -3,6 +3,7 @@ package com.example.kimjaeseung.cultureseoul2.community;
 import android.graphics.drawable.Drawable;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * Created by kimjaeseung on 2017. 7. 23..
@@ -18,7 +19,7 @@ public class ChatRoomData implements Serializable {
     private String roomTime;
     private String roomDay;
     private int roomPeople;
-    private int roomMaxPeople;
+    private Map<String, String> peopleList;
 
     public String getFirebaseKey() {
         return firebaseKey;
@@ -76,14 +77,6 @@ public class ChatRoomData implements Serializable {
         this.roomPeople = roomPeople;
     }
 
-    public int getRoomMaxPeople() {
-        return roomMaxPeople;
-    }
-
-    public void setRoomMaxPeople(int roomMaxPeople) {
-        this.roomMaxPeople = roomMaxPeople;
-    }
-
     public void setPerformanceName(String performanceName) {
         this.performanceName = performanceName;
 
@@ -99,5 +92,13 @@ public class ChatRoomData implements Serializable {
 
     public int getRoomPeople() {
         return roomPeople;
+    }
+
+    public Map<String, String> getPeopleList() {
+        return peopleList;
+    }
+
+    public void setPeopleList(Map<String, String> peopleList) {
+        this.peopleList = peopleList;
     }
 }
