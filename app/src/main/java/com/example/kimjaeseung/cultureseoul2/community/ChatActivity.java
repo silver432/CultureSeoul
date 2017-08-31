@@ -65,6 +65,8 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
         setContentView(R.layout.activity_community_chat);
         ButterKnife.bind(this);
 
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+
         initView();
         initFirebaseDatabase();
     }
@@ -82,13 +84,13 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new ChatAdapter(this, this);
+        mAdapter.setEmail(mUser.getEmail());
         mRecyclerView.setAdapter(mAdapter);
 
 //        setTitle(chatRoomData.getRoomName() + " 채팅방");
     }
 
     private void initFirebaseDatabase() {
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference(chatRoomData.getFirebaseKey());
         reference.addChildEventListener(new ChildEventListener() {
             @Override
@@ -142,7 +144,8 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
                 ChatData chatData = new ChatData();
                 chatData.userPhoto = R.drawable.smile_50dp;
                 chatData.message = chatEditText.getText().toString();
-                chatData.userName = "Default User";
+                chatData.email = mUser.getEmail();
+                chatData.userName = mUser.getDisplayName();
                 chatData.time = now;
 
                 reference.push().setValue(chatData);

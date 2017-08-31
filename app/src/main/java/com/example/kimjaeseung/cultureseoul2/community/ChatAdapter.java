@@ -20,13 +20,16 @@ import java.util.Locale;
  * Created by kimjaeseung on 2017. 7. 22..
  */
 
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
+public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("a h:mm", Locale.getDefault());
+    private static final int CHAT_MY = 0;
+    private static final int CHAT_OTHER = 1;
     private Context mContext;
     private List<ChatData> chatDataList = new ArrayList<>();
     private ChatAdapterOnClickHandler chatAdapterOnClickHandler;
     private ChatData chatData;
     private int mPosition;
+    private String mEmail;
 
     public interface ChatAdapterOnClickHandler {
         void onClick(ChatData chatData);
@@ -37,23 +40,59 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         chatAdapterOnClickHandler = handler;
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        int layoutIdForListItem = R.layout.community_listitem_chat;
-        LayoutInflater inflater = LayoutInflater.from(context);
-
-        boolean shouldAttachToParentImmediately = false;
-
-        View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
-        ViewHolder viewHolder = new ViewHolder(view);
-
-        return viewHolder;
+    public void setEmail(String email) {
+        mEmail = email;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bind(chatDataList.get(position));
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case CHAT_MY:
+                Context context1 = parent.getContext();
+                int layoutIdForListItem1 = R.layout.community_listitem_chat_my;
+                LayoutInflater inflater1 = LayoutInflater.from(context1);
+
+                boolean shouldAttachToParentImmediately1 = false;
+
+                View view1 = inflater1.inflate(layoutIdForListItem1, parent, shouldAttachToParentImmediately1);
+                MyViewHolder viewHolder1 = new MyViewHolder(view1);
+
+                return viewHolder1;
+
+            case CHAT_OTHER:
+                Context context = parent.getContext();
+                int layoutIdForListItem = R.layout.community_listitem_chat;
+                LayoutInflater inflater = LayoutInflater.from(context);
+
+                boolean shouldAttachToParentImmediately = false;
+
+                View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
+                OtherViewHolder viewHolder = new OtherViewHolder(view);
+
+                return viewHolder;
+        }
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        switch (holder.getItemViewType()){
+            case CHAT_MY:
+                MyViewHolder myViewHolder = (MyViewHolder)holder;
+                myViewHolder.bind(chatDataList.get(position));
+                break;
+            case CHAT_OTHER:
+                OtherViewHolder otherViewHolder = (OtherViewHolder)holder;
+                otherViewHolder.bind(chatDataList.get(position));
+                break;
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        ChatData chatData = chatDataList.get(position);
+        if (chatData.email.equals(mEmail)) return CHAT_MY;
+        else return CHAT_OTHER;
     }
 
     @Override
@@ -75,13 +114,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class OtherViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView userPhoto;
         private TextView userName;
         private TextView userMessage;
         private TextView userTime;
 
-        public ViewHolder(View itemView) {
+        public OtherViewHolder(View itemView) {
             super(itemView);
 
             userPhoto = (ImageView) itemView.findViewById(R.id.community_iv_userphoto);
@@ -97,6 +136,33 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             userName.setText(chatData.userName);
             userMessage.setText(chatData.message);
             userTime.setText(mSimpleDateFormat.format(chatData.time));
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            chatData = chatDataList.get(position);
+            chatAdapterOnClickHandler.onClick(chatData);
+        }
+
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView myMessage;
+        private TextView myTime;
+
+        public MyViewHolder(View itemView) {
+            super(itemView);
+
+            myMessage = (TextView) itemView.findViewById(R.id.community_tv_message_my);
+            myTime = (TextView) itemView.findViewById(R.id.community_tv_time_my);
+
+            itemView.setOnClickListener(this);
+        }
+
+        public void bind(ChatData chatData) {
+            myMessage.setText(chatData.message);
+            myTime.setText(mSimpleDateFormat.format(chatData.time));
         }
 
         @Override
