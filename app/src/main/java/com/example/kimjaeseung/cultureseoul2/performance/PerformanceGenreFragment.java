@@ -47,6 +47,7 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
     String[] mGenreStr;
     static String mGenreTitle = "";
     static int mGenreCount = 0;
+    static int GenreCategory = 999;
     GlobalApp mGlobalApp;
     MenuItem mMenuItem;
     SearchView mSearchView;
@@ -81,6 +82,11 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, mGenreStr);
 
         mSpinner.setAdapter(arrayAdapter);
+
+        if (GenreCategory != 999) {
+            mSpinner.setSelection(GenreCategory);
+            GenreCategory = 999;
+        }
 
 
         return view;
@@ -172,9 +178,10 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
 
     }
 
-    public static void setmGenreTitle(String setGenre)
+    public static void setmGenreTitle(int TagID, String setGenre)
     {
         mGenreTitle = setGenre;
+        GenreCategory = TagID;
         mGenreCount = 1;
     }
 
