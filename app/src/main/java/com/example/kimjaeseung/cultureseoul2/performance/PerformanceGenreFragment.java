@@ -104,6 +104,8 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
         mAdapter = new PerformanceAdapter(this.getContext(), this, mCultureEventLIst);
         mPerformanceList.setAdapter(mAdapter);
 
+        //mProgressBar.setVisibility(View.VISIBLE);
+
         setData();
 
     }

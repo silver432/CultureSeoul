@@ -3,19 +3,11 @@ package com.example.kimjaeseung.cultureseoul2.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,32 +15,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.kimjaeseung.cultureseoul2.R;
-import com.example.kimjaeseung.cultureseoul2.community.AddChatRoomActivity;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
-import com.example.kimjaeseung.cultureseoul2.domain.CultureEventOutWrapper;
-import com.example.kimjaeseung.cultureseoul2.login.LoginActivity;
 import com.example.kimjaeseung.cultureseoul2.main.MainActivity;
-import com.example.kimjaeseung.cultureseoul2.network.CultureService;
 import com.example.kimjaeseung.cultureseoul2.performance.DetailActivity;
-import com.example.kimjaeseung.cultureseoul2.performance.PerformanceAdapter;
 import com.example.kimjaeseung.cultureseoul2.performance.PerformanceFragment;
 import com.example.kimjaeseung.cultureseoul2.performance.PerformanceGenreFragment;
-import com.example.kimjaeseung.cultureseoul2.performance.PerformanceRealTimeFragment;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.Transaction;
-import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,16 +35,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import kr.go.seoul.culturalevents.CulturalEventTypeMini;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by kimjaeseung on 2017. 7. 11..

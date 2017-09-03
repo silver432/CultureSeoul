@@ -83,7 +83,6 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
         mPerformanceList.setAdapter(mAdapter);
 
         setData();
-
     }
 
     @Override

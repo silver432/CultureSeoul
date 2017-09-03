@@ -36,7 +36,7 @@ public class GlobalApp extends Application {
 
         CultureService cultureService = retrofit.create(CultureService.class);
         Call<CultureEventOutWrapper> callCultureEvent = cultureService.getCultureEvents(
-                "74776b4f6873696c34364a6368704d", "json", "SearchConcertDetailService", 1, 100, ""
+                "74776b4f6873696c34364a6368704d", "json", "SearchConcertDetailService", 1, 800, ""
         );
         callCultureEvent.enqueue(new Callback<CultureEventOutWrapper>() {
             @Override

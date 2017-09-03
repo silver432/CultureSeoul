@@ -31,6 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -169,21 +170,21 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
 
         for (CultureEvent cultureEvent :mCultureEventLIst)
         {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
 
             Date startDate = cultureEvent.getStartDate();
             Date endDate = cultureEvent.getEndDate();
-            Date curDate = null;
+            Date selectedDate = null;
             try
             {
-                curDate = formatter.parse(mCurDate);
+                selectedDate = formatter.parse(mCurDate);
             }
             catch (ParseException e)
             {
                 Log.e(TAG, "Date parsing error", e);
             }
 
-            if (curDate.compareTo(startDate) >= 0 && curDate.compareTo(endDate) <= 0)   // 날짜 비교
+            if (selectedDate.compareTo(startDate) >= 0 && selectedDate.compareTo(endDate) <= 0)   // 날짜 비교
                 newList.add(cultureEvent);
         }
 
@@ -216,14 +217,14 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
 
         for (CultureEvent cultureEvent :mCultureEventLIst)
         {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
 
             Date startDate = cultureEvent.getStartDate();
             Date endDate = cultureEvent.getEndDate();
-            Date curDate = null;
+            Date selectedDate = null;
             try
             {
-                curDate = formatter.parse(mCurDate);
+                selectedDate = formatter.parse(mCurDate);
             }
             catch (ParseException e)
             {
@@ -231,7 +232,7 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
             }
 
             String name = cultureEvent.getTitle().toLowerCase();
-            if (name.contains(newText) && curDate.compareTo(startDate) >= 0 && curDate.compareTo(endDate) <= 0)   // 날짜 비교
+            if (name.contains(newText) && selectedDate.compareTo(startDate) >= 0 && selectedDate.compareTo(endDate) <= 0)   // 날짜 비교
                 newList.add(cultureEvent);
         }
 
