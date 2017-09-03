@@ -32,8 +32,15 @@ public class PerformanceFragment extends Fragment
         return performanceFragment;
     }
 
+    static int PageFlag = 0;
+    public static void getPageFlag() {
+        PageFlag = 1;
+    }
+
     @Bind(R.id.tl_view_pager) TabLayout tabLayout;
     @Bind(R.id.vp_view_pager) ViewPager viewPager;
+
+
 
     private static int PAGE_NUMBER = 3;
 
@@ -58,6 +65,11 @@ public class PerformanceFragment extends Fragment
 
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        if (PageFlag == 1) {
+            viewPager.setCurrentItem( 1 );
+            PageFlag = 0;
+        }
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener()
         {

@@ -91,12 +91,16 @@ public class MainActivity extends AppCompatActivity {
                 bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_community);
             }else if(selectPage.equals(PerformanceRealTimeFragment.class.getSimpleName())){
                 bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_performance);
+            }else if(selectPage.equals("HomeFragment")){
+                bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_performance);
             }
         }else {
             bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_home);
         }
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
     }
+
+
 
     @Override
     protected void onDestroy() {
