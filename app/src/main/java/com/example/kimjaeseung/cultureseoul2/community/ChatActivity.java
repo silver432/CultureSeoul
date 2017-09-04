@@ -1,17 +1,28 @@
 package com.example.kimjaeseung.cultureseoul2.community;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.main.MainActivity;
@@ -39,7 +50,7 @@ import butterknife.OnClick;
  * Created by kimjaeseung on 2017. 7. 22..
  */
 
-public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnClickHandler {
+public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatAdapterOnClickHandler {
     private static final String TAG = ChatActivity.class.getSimpleName();
 
     @Bind(R.id.community_chat_recyclerview)
@@ -67,13 +78,61 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
+
         initView();
         initFirebaseDatabase();
+        initToolbar();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_chat, menu);
+        Log.d(TAG,"here");
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.community_chat__item_roominfo:
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        ChatActivity.this);
+                alertDialogBuilder.setTitle("방정보");
+                alertDialogBuilder.setMessage(
+                        "-방이름: " + chatRoomData.getRoomName() + "\n"
+                                + "-공연이름: " + chatRoomData.getPerformanceName() + "\n"
+                                + "-모임장소: " + chatRoomData.getRoomLocationName() + "(" + chatRoomData.getRoomLocation() + ")\n"
+                                + "-모임날짜: " + chatRoomData.getRoomDay() + "\n"
+                                + "-모임시간: " + chatRoomData.getRoomTime() + "\n"
+                                + "-모임인원: " + chatRoomData.getRoomPeople())
+                        .setNegativeButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create().show();
+                return true;
+            case R.id.community_chat_item_location:
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q="+chatRoomData.getRoomLocationName());
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(mapIntent);
+                }
+                return true;
+            case R.id.community_chat_item_people:
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void initView() {
@@ -86,8 +145,6 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
         mAdapter = new ChatAdapter(this, this);
         mAdapter.setEmail(mUser.getEmail());
         mRecyclerView.setAdapter(mAdapter);
-
-//        setTitle(chatRoomData.getRoomName() + " 채팅방");
     }
 
     private void initFirebaseDatabase() {
@@ -134,23 +191,35 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
         });
     }
 
+    private void initToolbar(){
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.community_chat_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setTitle(chatRoomData.getRoomName()+"채팅방");
+    }
+
+
     @OnClick({R.id.community_chat_button, R.id.community_chat_exit_button})
     public void mOnClick(View v) {
         switch (v.getId()) {
             case R.id.community_chat_button:
-                Calendar calendar = Calendar.getInstance();
-                long now = calendar.getTimeInMillis();
+                if (!chatEditText.getText().toString().isEmpty()){
+                    Calendar calendar = Calendar.getInstance();
+                    long now = calendar.getTimeInMillis();
 
-                ChatData chatData = new ChatData();
-                chatData.userPhoto = R.drawable.smile_50dp;
-                chatData.message = chatEditText.getText().toString();
-                chatData.email = mUser.getEmail();
-                chatData.userName = mUser.getDisplayName();
-                chatData.time = now;
+                    ChatData chatData = new ChatData();
+                    chatData.userPhoto = R.drawable.smile_50dp;
+                    chatData.message = chatEditText.getText().toString();
+                    chatData.email = mUser.getEmail();
+                    chatData.userName = mUser.getDisplayName();
+                    chatData.time = now;
 
-                reference.push().setValue(chatData);
+                    reference.push().setValue(chatData);
 
-                chatEditText.setText("");
+                    chatEditText.setText("");
+                }else {
+                    Toast.makeText(ChatActivity.this,"채팅을 입력해 주세요",Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case R.id.community_chat_exit_button:
                 Set<Map.Entry<String, String>> set = chatRoomData.getPeopleList().entrySet();
@@ -185,4 +254,6 @@ public class ChatActivity extends Activity implements ChatAdapter.ChatAdapterOnC
         intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
+
+
 }

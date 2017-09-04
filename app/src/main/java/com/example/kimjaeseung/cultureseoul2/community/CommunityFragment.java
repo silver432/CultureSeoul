@@ -175,6 +175,7 @@ public class CommunityFragment extends Fragment implements ChatRoomAdapter.ChatR
                     .setPositiveButton("입장", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            
                             mDatabaseReference.child(chatRoomData.getFirebaseKey()).child("people").push().setValue(mUser.getUid());
                             gotoChatActivity(chatRoomData);
                         }
