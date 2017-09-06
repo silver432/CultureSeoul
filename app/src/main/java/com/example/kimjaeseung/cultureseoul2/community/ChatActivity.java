@@ -1,6 +1,5 @@
 package com.example.kimjaeseung.cultureseoul2.community;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,17 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.kimjaeseung.cultureseoul2.R;
@@ -59,9 +54,6 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
     EditText chatEditText;
     @Bind(R.id.community_chat_button)
     Button chatButton;
-    @Bind(R.id.community_chat_exit_button)
-    Button exitButton;
-
 
     private List<ChatData> chatDataList = new ArrayList<>();
     private FirebaseUser mUser;
@@ -129,6 +121,20 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
                 return true;
             case R.id.community_chat_item_people:
 
+                return true;
+            case R.id.community_chat_item_exit:
+                Set<Map.Entry<String, String>> set = chatRoomData.getPeopleList().entrySet();
+                Iterator<Map.Entry<String, String>> it = set.iterator();
+                while (it.hasNext()) {
+                    Map.Entry<String, String> e = it.next();
+                    if (e.getValue().equals(mUser.getUid())) {
+                        Map<String, Object> childUpdates = new HashMap<>();
+                        childUpdates.put(e.getKey(), null);
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("room").child(chatRoomData.getFirebaseKey()).child("people");
+                        databaseReference.updateChildren(childUpdates);
+                    }
+                }
+                gotoCommunity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -198,7 +204,7 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
     }
 
 
-    @OnClick({R.id.community_chat_button, R.id.community_chat_exit_button})
+    @OnClick({R.id.community_chat_button})
     public void mOnClick(View v) {
         switch (v.getId()) {
             case R.id.community_chat_button:
@@ -220,20 +226,6 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
                     Toast.makeText(ChatActivity.this,"채팅을 입력해 주세요",Toast.LENGTH_SHORT).show();
                 }
 
-                break;
-            case R.id.community_chat_exit_button:
-                Set<Map.Entry<String, String>> set = chatRoomData.getPeopleList().entrySet();
-                Iterator<Map.Entry<String, String>> it = set.iterator();
-                while (it.hasNext()) {
-                    Map.Entry<String, String> e = it.next();
-                    if (e.getValue().equals(mUser.getUid())) {
-                        Map<String, Object> childUpdates = new HashMap<>();
-                        childUpdates.put(e.getKey(), null);
-                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("room").child(chatRoomData.getFirebaseKey()).child("people");
-                        databaseReference.updateChildren(childUpdates);
-                    }
-                }
-                gotoCommunity();
                 break;
         }
     }
