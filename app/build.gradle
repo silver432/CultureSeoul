@@ -48,7 +48,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
 
     //facebook login
-    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
 
     // network
     compile 'com.squareup.retrofit2:retrofit:2.3.0'

@@ -7,6 +7,4 @@
             android:title="Sign Out"
             app:showAsAction="never"/>
     </group>
-
-
 </menu>
