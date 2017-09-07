@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.example.kimjaeseung.cultureseoul2.login.LoginActivity;
+import com.example.kimjaeseung.cultureseoul2.main.MainActivity;
 
 /**
  * Created by Nick0917 on 2017-08-10.
@@ -20,7 +21,7 @@ public class SplashActivity extends Activity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+        startActivity(new Intent(SplashActivity.this, MainActivity.class));
         finish();
     }
 

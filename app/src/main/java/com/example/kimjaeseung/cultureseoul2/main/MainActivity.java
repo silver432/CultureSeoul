@@ -32,6 +32,7 @@ import com.example.kimjaeseung.cultureseoul2.login.LoginActivity;
 import com.example.kimjaeseung.cultureseoul2.performance.PerformanceFragment;
 import com.example.kimjaeseung.cultureseoul2.performance.PerformanceRealTimeFragment;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
@@ -40,10 +41,16 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity{
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+
+    private GoogleApiClient mGoogleApiClient;
+
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
 
     private String mName;
+    private String mPhotoUrl;
     private String mEmail;
 
 
@@ -63,9 +70,15 @@ public class MainActivity extends AppCompatActivity{
 
         Log.d(TAG,"onCreate");
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        if (mFirebaseUser == null) {
+            Toast.makeText(this, "로그인 필요 test", Toast.LENGTH_SHORT).show();
 
-        if (user != null) {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            /*
             Log.d(TAG, "user is not null");
             for (UserInfo profile : user.getProviderData()) {
                 // Id of the provider (ex: google.com)
@@ -93,8 +106,14 @@ public class MainActivity extends AppCompatActivity{
                 Log.d(TAG, "success load profile");
 
             }
+            */
         }else{
-            Log.d(TAG,"dont load profile in mainactivity");
+            mName = mFirebaseUser.getDisplayName();
+            mEmail = mFirebaseUser.getEmail();
+            if(mFirebaseUser.getPhotoUrl() != null) {
+                mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
+            }
+
         }
 
 
