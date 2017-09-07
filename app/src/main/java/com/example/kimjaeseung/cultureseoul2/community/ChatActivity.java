@@ -123,6 +123,7 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
 
                 return true;
             case R.id.community_chat_item_exit:
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("room").child(chatRoomData.getFirebaseKey()).child("people");
                 Set<Map.Entry<String, String>> set = chatRoomData.getPeopleList().entrySet();
                 Iterator<Map.Entry<String, String>> it = set.iterator();
                 while (it.hasNext()) {
@@ -130,9 +131,12 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
                     if (e.getValue().equals(mUser.getUid())) {
                         Map<String, Object> childUpdates = new HashMap<>();
                         childUpdates.put(e.getKey(), null);
-                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("room").child(chatRoomData.getFirebaseKey()).child("people");
                         databaseReference.updateChildren(childUpdates);
                     }
+                }
+                if (set.size()==1){
+                    databaseReference.getParent().removeValue();
+                    FirebaseDatabase.getInstance().getReference(databaseReference.getParent().getKey()).removeValue();
                 }
                 gotoCommunity();
                 return true;
