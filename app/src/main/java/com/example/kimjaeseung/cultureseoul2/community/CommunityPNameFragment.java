@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,9 +25,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.melnykov.fab.FloatingActionButton;
-
-import org.xml.sax.helpers.LocatorImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,39 +35,35 @@ import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by kimjaeseung on 2017. 9. 6..
  */
 
-public class CommunityRealTimeFragment extends Fragment implements ChatRoomAdapter.ChatRoomAdapterOnClickHandler, SearchView.OnQueryTextListener {
-    private static final String TAG = CommunityRealTimeFragment.class.getSimpleName();
-    private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-    private DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference("room");
-    ;
+public class CommunityPNameFragment extends Fragment implements ChatRoomAdapter.ChatRoomAdapterOnClickHandler, SearchView.OnQueryTextListener {
+    private static final String TAG = CommunityPNameFragment.class.getSimpleName();
+    private FirebaseUser mUser;
+    private DatabaseReference mDatabaseReference;
     private ChildEventListener mChildEventListener;
     private ChatRoomAdapter mAdapter;
     private List<ChatRoomData> chatRoomDataList = new ArrayList<>();
-    private String mCurRoomName;
+    private String mCurPName;
 
-    @Bind(R.id.community_realtime_recyclerview)
+    @Bind(R.id.community_pname_recyclerview)
     RecyclerView mRecyclerView;
-    @Bind(R.id.community_realtime_fab)
-    FloatingActionButton floatingActionButton;
 
-    public CommunityRealTimeFragment() {
+    public CommunityPNameFragment() {
     }
 
     public static Fragment getInstance() {
-        CommunityRealTimeFragment communityRealTimeFragment = new CommunityRealTimeFragment();
-        return communityRealTimeFragment;
+        CommunityPNameFragment communityPNameFragment = new CommunityPNameFragment();
+        return communityPNameFragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_community_reatltime, container, false);
+        View view = inflater.inflate(R.layout.fragment_community_pname, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         return view;
@@ -99,16 +91,6 @@ public class CommunityRealTimeFragment extends Fragment implements ChatRoomAdapt
         searchView.setOnQueryTextListener(this);
     }
 
-    @OnClick({R.id.community_realtime_fab})
-    public void mOnClick(View view) {
-        switch (view.getId()) {
-            case R.id.community_realtime_fab:
-                Intent intent = new Intent(getContext(), AddChatRoomActivity.class);
-                startActivity(intent);
-                break;
-        }
-    }
-
     private void initView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
@@ -116,22 +98,24 @@ public class CommunityRealTimeFragment extends Fragment implements ChatRoomAdapt
 
         mAdapter = new ChatRoomAdapter(this.getContext(), this);
         mRecyclerView.setAdapter(mAdapter);
-        floatingActionButton.attachToRecyclerView(mRecyclerView);
     }
 
     private void initFirebase() {
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("room");
+
         mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ChatRoomData chatRoomData = dataSnapshot.getValue(ChatRoomData.class);
-
-                if (mCurRoomName == null) {
+                if (mCurPName == null) {
                     childAdd(chatRoomData, dataSnapshot);
                 } else {
-                    if (chatRoomData.getRoomName().toLowerCase().contains(mCurRoomName.toLowerCase())) {
+                    if (chatRoomData.getPerformanceName().toLowerCase().contains(mCurPName)) {
                         childAdd(chatRoomData, dataSnapshot);
                     }
                 }
+
             }
 
             @Override
@@ -179,7 +163,6 @@ public class CommunityRealTimeFragment extends Fragment implements ChatRoomAdapt
         mAdapter.addItem(chatRoomData);
         mAdapter.notifyDataSetChanged();
     }
-
 
     @Override
     public void onClick(final ChatRoomData chatRoomData) {
@@ -239,7 +222,7 @@ public class CommunityRealTimeFragment extends Fragment implements ChatRoomAdapt
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        mCurRoomName = newText;
+        mCurPName = newText;
         chatRoomDataList.clear();
         mAdapter.removeItemList();
         mAdapter.notifyDataSetChanged();

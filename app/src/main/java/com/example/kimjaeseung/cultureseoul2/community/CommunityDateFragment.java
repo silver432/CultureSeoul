@@ -53,8 +53,10 @@ import butterknife.ButterKnife;
 
 public class CommunityDateFragment extends Fragment implements ChatRoomAdapter.ChatRoomAdapterOnClickHandler {
     private static final String TAG = CommunityDateFragment.class.getSimpleName();
-    private FirebaseUser mUser;
-    private DatabaseReference mDatabaseReference;
+    private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+    ;
+    private DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference("room");
+    ;
     private ChildEventListener mChildEventListener;
     private ChatRoomAdapter mAdapter;
     private List<ChatRoomData> chatRoomDataList = new ArrayList<>();
@@ -106,21 +108,20 @@ public class CommunityDateFragment extends Fragment implements ChatRoomAdapter.C
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private void initButton(){
+    private void initButton() {
         Calendar calendar = new GregorianCalendar();
         mYear = calendar.get(Calendar.YEAR);
         mMonth = calendar.get(Calendar.MONTH) + 1;
         mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        dateButton.setOnClickListener(new View.OnClickListener()
-        {
+        dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(getActivity(), mDateSetListener, mYear, mMonth - 1, mDay).show();
 
             }
         });
-        if (mCurDate==null){
+        if (mCurDate == null) {
             mCurDate = String.valueOf(mYear + "-" + formatDay(mMonth) + "-" + formatDay(mDay));
         }
 
@@ -128,14 +129,11 @@ public class CommunityDateFragment extends Fragment implements ChatRoomAdapter.C
     }
 
     private void initFirebase() {
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("room");
-
         mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ChatRoomData chatRoomData = dataSnapshot.getValue(ChatRoomData.class);
-                if (chatRoomData.getRoomDay().equals(mCurDate)){
+                if (chatRoomData.getRoomDay().equals(mCurDate)) {
                     chatRoomData.setFirebaseKey(dataSnapshot.getKey());
                     chatRoomData.setRoomPeople((int) dataSnapshot.child("people").getChildrenCount());
                     HashMap<String, String> userList = new HashMap<>();

@@ -54,9 +54,9 @@ public class CommunityFragment extends Fragment {
     }
 
     private void makePager() {
-        tabLayout.addTab(tabLayout.newTab().setText("실시간"));
-        tabLayout.addTab(tabLayout.newTab().setText("장르별"));
-        tabLayout.addTab(tabLayout.newTab().setText("날짜별"));
+        tabLayout.addTab(tabLayout.newTab().setText("방이름"));
+        tabLayout.addTab(tabLayout.newTab().setText("공연이름"));
+        tabLayout.addTab(tabLayout.newTab().setText("날짜"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         PagerAdapter pagerAdapter = new PagerAdapter(getChildFragmentManager(), tabLayout.getTabCount());
@@ -98,7 +98,7 @@ public class CommunityFragment extends Fragment {
                 case 0:
                     return new CommunityRealTimeFragment();
                 case 1:
-                    return new CommunityGenreFragment();
+                    return new CommunityPNameFragment();
                 case 2:
                     return new CommunityDateFragment();
                 default:

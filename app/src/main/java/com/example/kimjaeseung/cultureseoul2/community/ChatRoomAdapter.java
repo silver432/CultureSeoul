@@ -63,6 +63,14 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
         return chatRoomDataList.size();
     }
 
+    public void setChatRoomDataList(List<ChatRoomData> chatRoomDataList) {
+        this.chatRoomDataList = chatRoomDataList;
+    }
+
+    public List<ChatRoomData> getChatRoomDataList() {
+        return chatRoomDataList;
+    }
+
     public void setItemList(List<ChatRoomData> itemList) {
         chatRoomDataList.clear();
         chatRoomDataList.addAll(itemList);
