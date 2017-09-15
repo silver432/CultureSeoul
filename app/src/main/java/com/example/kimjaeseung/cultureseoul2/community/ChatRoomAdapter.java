@@ -115,9 +115,9 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
         }
 
         public void bind(ChatRoomData chatRoomData) {
+
             Picasso.with(itemView.getContext()) // 공연 이미지
                     .load(chatRoomData.getPerformanceImage())
-                    .placeholder(R.drawable.bubble_50dp)
                     .error(R.drawable.smile_50dp)
                     .fit()
                     .into(mPerformanceImage);

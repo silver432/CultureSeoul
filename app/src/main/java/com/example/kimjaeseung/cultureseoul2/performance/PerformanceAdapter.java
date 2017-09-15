@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
 import com.squareup.picasso.Picasso;
@@ -102,6 +103,7 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
             listItemTitleView = (TextView) itemView.findViewById(R.id.tv_item_title);
             listItemDateView = (TextView) itemView.findViewById(R.id.tv_item_date);
 
+
             itemView.setOnClickListener(this);  // 클릭 이벤트
         }
 
@@ -109,7 +111,6 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
         {
             Picasso.with(itemView.getContext()) // 공연 이미지
                 .load(cultureEvent.getMainImg().toLowerCase())
-                .placeholder(R.drawable.bubble_50dp)
                 .error(R.drawable.smile_50dp)
                 .fit()
                 .into(listItemImageView);

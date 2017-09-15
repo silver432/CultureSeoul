@@ -104,7 +104,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>
         {
             Picasso.with(itemView.getContext()) // 공연 이미지
                     .load(cultureEvent.getMainImg().toLowerCase())
-                    .placeholder(R.drawable.bubble_50dp)
                     .error(R.drawable.smile_50dp)
                     .resize(120, 120)
                     .into(listItemImageView);
