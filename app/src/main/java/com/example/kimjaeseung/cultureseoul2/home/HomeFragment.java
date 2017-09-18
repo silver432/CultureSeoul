@@ -44,7 +44,7 @@ import kr.go.seoul.culturalevents.CulturalEventTypeMini;
  * Created by kimjaeseung on 2017. 7. 11..
  */
 
-public class HomeFragment extends Fragment implements HomeAdapter.HomeAdapterOnClickHandler, View.OnClickListener {
+public class HomeFragment extends Fragment implements HomeAdapter.HomeAdapterOnClickHandler {
     private final static String TAG = "HomeFragment";
     private String openApiKey = "74776b4f6873696c34364a6368704d";
 
@@ -54,25 +54,6 @@ public class HomeFragment extends Fragment implements HomeAdapter.HomeAdapterOnC
     private GoogleApiClient mGoogleApiClient;
     private  HashMap<String, String> temp_performList = new HashMap<>();
     private  ArrayList<String> performList = new ArrayList<>();
-
-    @Bind(R.id.firebaseText)TextView fbText;
-    @Bind(R.id.firebaseEdit)EditText fbEdit;
-    @Bind(R.id.firebaseButton)Button fbButton;
-
-    @Bind(R.id.category_concert) public TextView category_concert;
-    @Bind(R.id.category_classic) public TextView category_classic;
-    @Bind(R.id.category_musical) public TextView category_musical;
-    @Bind(R.id.category_theater) public TextView category_theater;
-    @Bind(R.id.category_dancing) public TextView category_dancing;
-    @Bind(R.id.category_exhibition) public TextView category_exhibition;
-    @Bind(R.id.category_traditional_music) public TextView category_traditional_music;
-    @Bind(R.id.category_festival) public TextView category_festival;
-    @Bind(R.id.category_solo) public TextView category_solo;
-    @Bind(R.id.category_movie) public TextView category_movie;
-    @Bind(R.id.category_cultureclass) public TextView category_cultureclass;
-
-    private String Genre;
-
 
     //@Bind(R.id.home_button_culturalevent) CulturalEventButtonTypeA culturalEventButtonTypeA;
     @Bind(R.id.home_button_culturalevent)
@@ -98,14 +79,6 @@ public class HomeFragment extends Fragment implements HomeAdapter.HomeAdapterOnC
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("perform");
-
-        fbButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String newMessage = fbEdit.getText().toString();
-                myRef.setValue(newMessage);
-            }
-        });
 
         myRef.orderByValue().limitToFirst(5).addChildEventListener(new ChildEventListener() {
             @Override
@@ -171,29 +144,6 @@ public class HomeFragment extends Fragment implements HomeAdapter.HomeAdapterOnC
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        category_concert.setOnClickListener(this);
-        category_concert.setTag(0);
-        category_classic.setOnClickListener(this);
-        category_classic.setTag(1);
-        category_musical.setOnClickListener(this);
-        category_musical.setTag(2);
-        category_theater.setOnClickListener(this);
-        category_theater.setTag(3);
-        category_dancing.setOnClickListener(this);
-        category_dancing.setTag(4);
-        category_exhibition.setOnClickListener(this);
-        category_exhibition.setTag(5);
-        category_traditional_music.setOnClickListener(this);
-        category_traditional_music.setTag(6);
-        category_festival.setOnClickListener(this);
-        category_festival.setTag(7);
-        category_solo.setOnClickListener(this);
-        category_solo.setTag(8);
-        category_movie.setOnClickListener(this);
-        category_movie.setTag(9);
-        category_cultureclass.setOnClickListener(this);
-        category_cultureclass.setTag(10);
-
     }
 
     public void printLog(HashMap<String, String> map) {
@@ -228,18 +178,6 @@ public class HomeFragment extends Fragment implements HomeAdapter.HomeAdapterOnC
         Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
         startToDetailActivity.putExtra("key", cultureEvent);
         startActivity(startToDetailActivity);
-    }
-
-    @Override
-    public void onClick(View v) {
-        String textId = ((TextView) v).getText().toString();
-        int categoryTag = (int)v.getTag();
-        PerformanceGenreFragment.setmGenreTitle(categoryTag, textId);
-        PerformanceFragment.getPageFlag();
-
-        Intent intent1 = new Intent(this.getContext(), MainActivity.class);
-        intent1.putExtra("select_page", TAG);
-        startActivity(intent1);
     }
 
     private void switchFragment(Fragment fragment) {
