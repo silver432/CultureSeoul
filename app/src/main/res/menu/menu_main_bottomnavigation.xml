@@ -15,9 +15,5 @@
         android:id="@+id/main_bottomnavigation_community"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="Community" />
-
-    <item
-        android:id="@+id/main_bottomnavigation_attendance"
-        android:icon="@drawable/ic_assignment_ind_black_24dp"
-        android:title="Attandance" />
+    
 </menu>

@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kimjaeseung.cultureseoul2.R;
-import com.example.kimjaeseung.cultureseoul2.attendance.AttandanceFragment;
 import com.example.kimjaeseung.cultureseoul2.community.CommunityFragment;
 import com.example.kimjaeseung.cultureseoul2.home.HomeFragment;
 import com.example.kimjaeseung.cultureseoul2.login.LoginActivity;
@@ -207,11 +206,7 @@ public class MainActivity extends AppCompatActivity{
                 case R.id.main_bottomnavigation_community:
                     switchFragment(CommunityFragment.getInstance());
                     return true;
-                case R.id.main_bottomnavigation_attendance:
-                    switchFragment(AttandanceFragment.getInstance());
-                    return true;
             }
-            invalidateOptionsMenu();
             return false;
         }
 
