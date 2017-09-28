@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/chat_background"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <android.support.v7.widget.Toolbar
         android:id="@+id/community_chat_toolbar"
@@ -20,23 +21,25 @@
 
     <LinearLayout
         android:id="@+id/community_chat_layout"
+        android:background="@color/titlebackground"
         android:layout_alignParentBottom="true"
-        android:layout_margin="7dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/community_chat_edittext"
+            android:textColor="@color/white"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
 
         <Button
             android:id="@+id/community_chat_button"
-            android:text="전송"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:background="@drawable/send_button"
+            android:layout_marginTop="5dp"
+            android:layout_width="92dp"
+            android:layout_height="60dp"/>
 
     </LinearLayout>
 

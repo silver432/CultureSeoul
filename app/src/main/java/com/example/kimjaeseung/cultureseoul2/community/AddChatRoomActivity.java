@@ -119,7 +119,12 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
                 mDatabaseReference.push().setValue(mChatRoomData, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        mDatabaseReference.child(databaseReference.getKey()).child("people").push().setValue(mUser.getUid());
+                        ChatPeople chatPeople = new ChatPeople();
+                        chatPeople.setUid(mUser.getUid());
+                        chatPeople.setName(mUser.getDisplayName());
+                        chatPeople.setEmail(mUser.getEmail());
+                        chatPeople.setPhoto(mUser.getPhotoUrl().toString());
+                        mDatabaseReference.child(databaseReference.getKey()).child("people").push().setValue(chatPeople);
 
                         Intent intent = new Intent(AddChatRoomActivity.this, MainActivity.class);
                         intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);

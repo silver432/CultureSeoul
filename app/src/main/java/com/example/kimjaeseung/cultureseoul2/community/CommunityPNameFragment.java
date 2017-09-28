@@ -154,11 +154,36 @@ public class CommunityPNameFragment extends Fragment implements ChatRoomAdapter.
     private void childAdd(ChatRoomData chatRoomData, DataSnapshot dataSnapshot) {
         chatRoomData.setFirebaseKey(dataSnapshot.getKey());
         chatRoomData.setRoomPeople((int) dataSnapshot.child("people").getChildrenCount());
-        HashMap<String, String> userList = new HashMap<>();
-        for (DataSnapshot user : dataSnapshot.child("people").getChildren()) {
-            userList.put(user.getKey(), user.getValue().toString());
-        }
-        chatRoomData.setPeopleList(userList);
+        final List<ChatPeople> chatPeoples = new ArrayList<>();
+        DatabaseReference databaseReference = mDatabaseReference.child(chatRoomData.getFirebaseKey()).child("people");
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                ChatPeople chatPeople = dataSnapshot.getValue(ChatPeople.class);
+                chatPeoples.add(chatPeople);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        chatRoomData.setChatPeoples(chatPeoples);
         chatRoomDataList.add(chatRoomData);
         mAdapter.addItem(chatRoomData);
         mAdapter.notifyDataSetChanged();
@@ -170,19 +195,18 @@ public class CommunityPNameFragment extends Fragment implements ChatRoomAdapter.
         else {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                     getContext());
-            alertDialogBuilder.setTitle("방정보");
-            alertDialogBuilder.setMessage(
-                    "-방이름: " + chatRoomData.getRoomName() + "\n"
-                            + "-공연이름: " + chatRoomData.getPerformanceName() + "\n"
-                            + "-모임장소: " + chatRoomData.getRoomLocationName() + "(" + chatRoomData.getRoomLocation() + ")\n"
-                            + "-모임날짜: " + chatRoomData.getRoomDay() + "\n"
-                            + "-모임시간: " + chatRoomData.getRoomTime() + "\n"
-                            + "-모임인원: " + chatRoomData.getRoomPeople())
+            View view= new View(getContext());
+            view.setBackgroundResource(R.drawable.chat_background);
+            alertDialogBuilder.setView(view)
                     .setPositiveButton("입장", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
-                            mDatabaseReference.child(chatRoomData.getFirebaseKey()).child("people").push().setValue(mUser.getUid());
+                            ChatPeople chatPeople = new ChatPeople();
+                            chatPeople.setUid(mUser.getUid());
+                            chatPeople.setName(mUser.getDisplayName());
+                            chatPeople.setEmail(mUser.getEmail());
+                            chatPeople.setPhoto(mUser.getPhotoUrl().toString());
+                            mDatabaseReference.child(chatRoomData.getFirebaseKey()).child("people").push().setValue(chatPeople);
                             gotoChatActivity(chatRoomData);
                         }
                     })
@@ -196,15 +220,8 @@ public class CommunityPNameFragment extends Fragment implements ChatRoomAdapter.
     }
 
     private boolean isUserInChatRoom(ChatRoomData chatRoomdData, FirebaseUser mUser) {
-
-        Set<Map.Entry<String, String>> set = chatRoomdData.getPeopleList().entrySet();
-        Iterator<Map.Entry<String, String>> it = set.iterator();
-
-        while (it.hasNext()) {
-            Map.Entry<String, String> e = it.next();
-            if (mUser.getUid().equals(e.getValue())) {
-                return true;
-            }
+        for (ChatPeople c:chatRoomdData.getChatPeoples()){
+            if (c.getUid().equals(mUser.getUid())) return true;
         }
         return false;
     }

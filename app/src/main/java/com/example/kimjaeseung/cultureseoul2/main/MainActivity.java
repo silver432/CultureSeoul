@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -126,6 +127,8 @@ public class MainActivity extends AppCompatActivity{
         toolbar.setNavigationIcon(R.mipmap.ic_launcher); //제목앞에 아이콘 넣기
         */
         setSupportActionBar(toolbar); //툴바를 액션바와 같게 만든다
+        toolbar.setBackgroundResource(R.color.titlebackground);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
@@ -164,6 +167,7 @@ public class MainActivity extends AppCompatActivity{
         TextView nav_profile_email = (TextView) nav_profile_view.findViewById(R.id.profile_email);
         nav_profile_email.setText(mEmail);
 
+//        bottomNavigationView.setBackgroundResource(R.color.titlebackground);
 
         CoordinatorLayout.LayoutParams layoutParams=(CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());

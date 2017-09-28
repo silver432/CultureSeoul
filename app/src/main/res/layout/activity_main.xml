@@ -8,8 +8,7 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <android.support.design.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/activity_main"
@@ -31,18 +30,23 @@
                 android:background="?attr/colorPrimary"
                 android:elevation="4dp"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/title_image_moondeuk" />
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
 
 
-
         <FrameLayout
             android:id="@+id/main_fragment_container"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
         <android.support.design.widget.BottomNavigationView
@@ -50,10 +54,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:attr/windowBackground"
+            app:itemBackground="@color/titlebackground"
+            app:itemIconTint="@color/white"
+            app:itemTextColor="@color/white"
             app:layout_anchor="@id/main_fragment_container"
             app:layout_anchorGravity="bottom"
             app:layout_behavior=""
-            app:menu="@menu/menu_main_bottomnavigation"/>
+            app:menu="@menu/menu_main_bottomnavigation" />
+
 
     </android.support.design.widget.CoordinatorLayout>
 

@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.kimjaeseung.cultureseoul2.R;
@@ -56,8 +57,10 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
     Button chatButton;
 
     private List<ChatData> chatDataList = new ArrayList<>();
-    private FirebaseUser mUser;
+    private List<ChatPeople> chatPeoples = new ArrayList<>();
+    private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference reference;
+    private DatabaseReference peopleReference;
     private ChatAdapter mAdapter;
 
     ChatRoomData chatRoomData;
@@ -67,9 +70,6 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community_chat);
         ButterKnife.bind(this);
-
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
-
 
         initView();
         initFirebaseDatabase();
@@ -85,13 +85,12 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_chat, menu);
-        Log.d(TAG,"here");
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.community_chat__item_roominfo:
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         ChatActivity.this);
@@ -112,7 +111,7 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
                         .create().show();
                 return true;
             case R.id.community_chat_item_location:
-                Uri gmmIntentUri = Uri.parse("geo:0,0?q="+chatRoomData.getRoomLocationName());
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + chatRoomData.getRoomLocationName());
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 if (mapIntent.resolveActivity(getPackageManager()) != null) {
@@ -120,23 +119,30 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
                 }
                 return true;
             case R.id.community_chat_item_people:
+                View view = getLayoutInflater().inflate(R.layout.community_listview, null);
+                ListView listView = (ListView) view.findViewById(R.id.lv_community);
+                ChatListViewAdapter chatListViewAdapter = new ChatListViewAdapter();
+                listView.setAdapter(chatListViewAdapter);
+                for (ChatPeople c : chatPeoples) {
+                    chatListViewAdapter.addItem(c.getName(), c.getPhoto());
+                }
 
+                AlertDialog.Builder alertDialogBuilder2 = new AlertDialog.Builder(
+                        ChatActivity.this);
+                alertDialogBuilder2.setTitle("대화상대")
+                        .setView(view)
+                        .create().show();
                 return true;
             case R.id.community_chat_item_exit:
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("room").child(chatRoomData.getFirebaseKey()).child("people");
-                Set<Map.Entry<String, String>> set = chatRoomData.getPeopleList().entrySet();
-                Iterator<Map.Entry<String, String>> it = set.iterator();
-                while (it.hasNext()) {
-                    Map.Entry<String, String> e = it.next();
-                    if (e.getValue().equals(mUser.getUid())) {
-                        Map<String, Object> childUpdates = new HashMap<>();
-                        childUpdates.put(e.getKey(), null);
-                        databaseReference.updateChildren(childUpdates);
+                if (chatPeoples.size() == 1) {
+                    peopleReference.getParent().removeValue();
+                    FirebaseDatabase.getInstance().getReference(peopleReference.getParent().getKey()).removeValue();
+                } else {
+                    for (ChatPeople c : chatPeoples) {
+                        if (c.getUid().equals(mUser.getUid())) {
+                            peopleReference.child(c.getFirebaseKey()).removeValue();
+                        }
                     }
-                }
-                if (set.size()==1){
-                    databaseReference.getParent().removeValue();
-                    FirebaseDatabase.getInstance().getReference(databaseReference.getParent().getKey()).removeValue();
                 }
                 gotoCommunity();
                 return true;
@@ -199,12 +205,44 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
 
             }
         });
+        peopleReference = FirebaseDatabase.getInstance().getReference("room").child(chatRoomData.getFirebaseKey()).child("people");
+        peopleReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                ChatPeople chatPeople = dataSnapshot.getValue(ChatPeople.class);
+                chatPeople.setFirebaseKey(dataSnapshot.getKey());
+                chatPeoples.add(chatPeople);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
-    private void initToolbar(){
+    private void initToolbar() {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.community_chat_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setTitle(chatRoomData.getRoomName()+"채팅방");
+        myToolbar.setBackgroundResource(R.color.titlebackground);
+        getSupportActionBar().setTitle(chatRoomData.getRoomName() + "채팅방");
+        myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        myToolbar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_more_vert_white_24dp));
     }
 
 
@@ -212,7 +250,7 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
     public void mOnClick(View v) {
         switch (v.getId()) {
             case R.id.community_chat_button:
-                if (!chatEditText.getText().toString().isEmpty()){
+                if (!chatEditText.getText().toString().isEmpty()) {
                     Calendar calendar = Calendar.getInstance();
                     long now = calendar.getTimeInMillis();
 
@@ -226,8 +264,8 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
                     reference.push().setValue(chatData);
 
                     chatEditText.setText("");
-                }else {
-                    Toast.makeText(ChatActivity.this,"채팅을 입력해 주세요",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ChatActivity.this, "채팅을 입력해 주세요", Toast.LENGTH_SHORT).show();
                 }
 
                 break;

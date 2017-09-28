@@ -1,6 +1,7 @@
 package com.example.kimjaeseung.cultureseoul2.community;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,7 +18,7 @@ public class ChatRoomData implements Serializable {
     private String roomTime;
     private String roomDay;
     private int roomPeople;
-    private Map<String, String> peopleList;
+    private List<ChatPeople> chatPeoples;
 
     public String getFirebaseKey() {
         return firebaseKey;
@@ -92,11 +93,12 @@ public class ChatRoomData implements Serializable {
         return roomPeople;
     }
 
-    public Map<String, String> getPeopleList() {
-        return peopleList;
+    public List<ChatPeople> getChatPeoples() {
+        return chatPeoples;
     }
 
-    public void setPeopleList(Map<String, String> peopleList) {
-        this.peopleList = peopleList;
+    public void setChatPeoples(List<ChatPeople> chatPeoples) {
+        this.chatPeoples = chatPeoples;
     }
+
 }
