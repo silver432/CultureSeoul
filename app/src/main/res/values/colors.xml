@@ -8,6 +8,9 @@
     <color name="fabRipple">#AED6FC</color>
     <color name="titlebackground">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="performUnderBar">#3666A5</color>
+    <color name="performTab">#4A75AE</color>
     <color name="community_bar">#4A75AE</color>
     <color name="chat_room">#B4CCDD</color>
 </resources>

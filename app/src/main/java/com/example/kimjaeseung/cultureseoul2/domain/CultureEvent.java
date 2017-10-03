@@ -119,6 +119,8 @@ public class CultureEvent implements Serializable
 
     public String getTitle()
     {
+        title = title.replaceAll("&#39;", "\'");
+        title = title.replaceAll("&quot;", "\"");
         return title;
     }
 

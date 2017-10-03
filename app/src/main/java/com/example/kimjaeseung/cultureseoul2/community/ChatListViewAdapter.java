@@ -1,7 +1,6 @@
 package com.example.kimjaeseung.cultureseoul2.community;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +42,7 @@ public class ChatListViewAdapter extends BaseAdapter{
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.commuity_listview_item, parent, false);
+            convertView = inflater.inflate(R.layout.community_listview_item, parent, false);
         }
 
         ImageView photoImageView = (ImageView) convertView.findViewById(R.id.iv_community_photo) ;
