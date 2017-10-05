@@ -229,9 +229,8 @@ public class CommunityDateFragment extends Fragment implements ChatRoomAdapter.C
         else {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                     getContext());
-            View view= new View(getContext());
-            view.setBackgroundResource(R.drawable.chat_background);
-            alertDialogBuilder.setView(view)
+            alertDialogBuilder.setIcon(R.drawable.send_button)
+                    .setTitle(chatRoomData.getRoomName()+"채팅방에 입장하시겠습니까?")
                     .setPositiveButton("입장", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

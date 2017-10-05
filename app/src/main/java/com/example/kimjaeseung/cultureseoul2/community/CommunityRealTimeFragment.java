@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,14 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.melnykov.fab.FloatingActionButton;
 
-import org.xml.sax.helpers.LocatorImpl;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,11 +42,10 @@ public class CommunityRealTimeFragment extends Fragment implements ChatRoomAdapt
     private static final String TAG = CommunityRealTimeFragment.class.getSimpleName();
     private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference("room");
-    ;
     private ChildEventListener mChildEventListener;
     private ChatRoomAdapter mAdapter;
     private List<ChatRoomData> chatRoomDataList = new ArrayList<>();
-    private String mCurRoomName;
+    private String mCurSearch;
 
     @Bind(R.id.community_realtime_recyclerview)
     RecyclerView mRecyclerView;
@@ -125,10 +117,10 @@ public class CommunityRealTimeFragment extends Fragment implements ChatRoomAdapt
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ChatRoomData chatRoomData = dataSnapshot.getValue(ChatRoomData.class);
 
-                if (mCurRoomName == null) {
+                if (mCurSearch == null) {
                     childAdd(chatRoomData, dataSnapshot);
                 } else {
-                    if (chatRoomData.getRoomName().toLowerCase().contains(mCurRoomName.toLowerCase())) {
+                    if (chatRoomData.getRoomName().toLowerCase().contains(mCurSearch.toLowerCase())||chatRoomData.getPerformanceName().toLowerCase().contains(mCurSearch)) {
                         childAdd(chatRoomData, dataSnapshot);
                     }
                 }
@@ -212,9 +204,8 @@ public class CommunityRealTimeFragment extends Fragment implements ChatRoomAdapt
         else {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                     getContext());
-            View view= new View(getContext());
-            view.setBackgroundResource(R.drawable.chat_background);
-            alertDialogBuilder.setView(view)
+            alertDialogBuilder.setIcon(R.drawable.send_button)
+                    .setTitle(chatRoomData.getRoomName()+"채팅방에 입장하시겠습니까?")
                     .setPositiveButton("입장", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -256,7 +247,7 @@ public class CommunityRealTimeFragment extends Fragment implements ChatRoomAdapt
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        mCurRoomName = newText;
+        mCurSearch = newText;
         chatRoomDataList.clear();
         mAdapter.removeItemList();
         mAdapter.notifyDataSetChanged();

@@ -111,6 +111,7 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
                 mChatRoomData = new ChatRoomData();
                 mChatRoomData.setPerformanceImage(cultureEvent.getMainImg().toLowerCase());
                 mChatRoomData.setPerformanceName(cultureEvent.getTitle());
+                mChatRoomData.setPerformanceCode(Long.toString(cultureEvent.getCultCode()));
                 mChatRoomData.setRoomLocation(mLocation);
                 mChatRoomData.setRoomLocationName(mLocationName);
                 mChatRoomData.setRoomName(mRoomNameEditText.getText().toString());

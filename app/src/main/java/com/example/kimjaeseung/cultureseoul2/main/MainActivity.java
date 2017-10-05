@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kimjaeseung.cultureseoul2.R;
+import com.example.kimjaeseung.cultureseoul2.community.AddChatRoomActivity;
 import com.example.kimjaeseung.cultureseoul2.community.CommunityFragment;
 import com.example.kimjaeseung.cultureseoul2.home.HomeFragment;
 import com.example.kimjaeseung.cultureseoul2.login.LoginActivity;
@@ -178,8 +179,6 @@ public class MainActivity extends AppCompatActivity{
                 bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_community);
             }else if(selectPage.equals(PerformanceRealTimeFragment.class.getSimpleName())){
                 bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_performance);
-            }else if(selectPage.equals("HomeFragment")){
-                bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_performance);
             }
         }else {
             bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_home);
@@ -261,6 +260,14 @@ public class MainActivity extends AppCompatActivity{
     //뒤로 가기 2번 종료
     @Override
     public void onBackPressed() {
+        if (selectPage!=null&&selectPage.equals(PerformanceRealTimeFragment.class.getSimpleName())){
+            Intent intent = new Intent(MainActivity.this, AddChatRoomActivity.class);
+            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+
+            selectPage=null;
+            return;
+        }
         long tempTime = System.currentTimeMillis();
         long intervalTime = tempTime - backPressedTime;
 

@@ -12,6 +12,7 @@ public class ChatRoomData implements Serializable {
     private String firebaseKey;
     private String performanceImage;
     private String performanceName;
+    private String performanceCode;
     private String roomName;
     private String roomLocation;
     private String roomLocationName;
@@ -101,4 +102,11 @@ public class ChatRoomData implements Serializable {
         this.chatPeoples = chatPeoples;
     }
 
+    public String getPerformanceCode() {
+        return performanceCode;
+    }
+
+    public void setPerformanceCode(String performanceCode) {
+        this.performanceCode = performanceCode;
+    }
 }
