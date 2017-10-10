@@ -175,6 +175,7 @@ public class HomeFragment extends Fragment {
             TextView rankNum = (TextView)view.findViewById(R.id.tv_home_rank_num);
             ImageView iv = (ImageView) view.findViewById(R.id.iv_home_rank_image);
             TextView rankName = (TextView) view.findViewById(R.id.tv_home_rank_perform_name);
+            TextView rankContext = (TextView) view.findViewById(R.id.tv_home_rank_perform_context);
 
             if (mCrd!=null){
                 rankNum.setText(String.valueOf(i+1));
@@ -183,7 +184,9 @@ public class HomeFragment extends Fragment {
                         .error(R.drawable.smile_50dp)
                         .fit()
                         .into(iv);
+                rankContext.setText(mCrd.getPerformanceStartDate() + " ~ " + mCrd.getPerformanceEndDate() + "\n" + mCrd.getPerformanceGenre() + " / " + mCrd.getPerformanceLocation());
                 rankName.setText(mCrd.getPerformanceName());
+                rankName.setSelected(true);
 
                 linearLayout.addView(view);
             }
