@@ -13,6 +13,10 @@ public class ChatRoomData implements Serializable {
     private String performanceImage;
     private String performanceName;
     private String performanceCode;
+    private String performanceLocation;
+    private String performanceStartDate;
+    private String performanceEndDate;
+    private String performanceGenre;
     private String roomName;
     private String roomLocation;
     private String roomLocationName;
@@ -108,5 +112,37 @@ public class ChatRoomData implements Serializable {
 
     public void setPerformanceCode(String performanceCode) {
         this.performanceCode = performanceCode;
+    }
+
+    public String getPerformanceLocation() {
+        return performanceLocation;
+    }
+
+    public void setPerformanceLocation(String performanceLocation) {
+        this.performanceLocation = performanceLocation;
+    }
+
+    public String getPerformanceStartDate() {
+        return performanceStartDate;
+    }
+
+    public void setPerformanceStartDate(String performanceStartDate) {
+        this.performanceStartDate = performanceStartDate;
+    }
+
+    public String getPerformanceEndDate() {
+        return performanceEndDate;
+    }
+
+    public void setPerformanceEndDate(String performanceEndDate) {
+        this.performanceEndDate = performanceEndDate;
+    }
+
+    public String getPerformanceGenre() {
+        return performanceGenre;
+    }
+
+    public void setPerformanceGenre(String performanceGenre) {
+        this.performanceGenre = performanceGenre;
     }
 }
