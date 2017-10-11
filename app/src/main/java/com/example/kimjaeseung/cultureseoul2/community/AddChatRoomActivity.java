@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -47,7 +49,16 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
 
     @Bind(R.id.community_et_roomname)
     EditText mRoomNameEditText;
-
+    @Bind(R.id.tv_community_add_location_image)
+    ImageView ivLocation;
+    @Bind(R.id.tv_community_add_location)
+    TextView tvLocation;
+    @Bind(R.id.tv_community_add_day)
+    TextView tvDay;
+    @Bind(R.id.tv_community_add_time)
+    TextView tvTime;
+    @Bind(R.id.tv_community_add_performance)
+    TextView tvPerformance;
 
     private ChatRoomData mChatRoomData;
     private DatabaseReference mDatabaseReference;
@@ -55,7 +66,7 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
 
     private CultureEvent cultureEvent;
     private static int mYear = 0, mMonth = 0, mDay = 0, mHour = 0, mMinute = 0;
-    private static String AM_PM = "", mLocation = "", mRoomName = "", mLocationName = "";
+    private static String AM_PM = "", mLocation = "", mRoomName = "", mLocationName = "", mPerformance = "";
     private GoogleApiClient mGoogleApiClient;
     private int PLACE_PICKER_REQUEST = 1;
 
@@ -67,6 +78,7 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
         ButterKnife.bind(this);
 
         cultureEvent = (CultureEvent) getIntent().getSerializableExtra("key");
+        if (cultureEvent != null) mPerformance = cultureEvent.getTitle();
 
         initFirebase();
         initGoogleApiClient();
@@ -82,6 +94,10 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
     protected void onResume() {
         super.onResume();
         mRoomNameEditText.setText(mRoomName);
+        tvLocation.setText(mLocationName);
+        if (mYear!=0)tvDay.setText(mYear + "-" + formatDay(mMonth) + "-" + formatDay(mDay));
+        if (!AM_PM.equals(""))tvTime.setText(AM_PM + " " + mHour + ":" + formatDay(mMinute));
+        tvPerformance.setText(mPerformance);
     }
 
     @Override
@@ -96,12 +112,12 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
                 Place place = PlacePicker.getPlace(data, this);
                 mLocation = place.getAddress().toString();
                 mLocationName = place.getName().toString();
-
+                tvLocation.setText(mLocationName);
             }
         }
     }
 
-    @OnClick({R.id.community_btn_chatroomcreate, R.id.community_btn_select_performance, R.id.community_btn_select_day, R.id.community_btn_select_time, R.id.community_btn_select_location})
+    @OnClick({R.id.tv_community_add_location,R.id.tv_community_add_time,R.id.tv_community_add_day,R.id.tv_community_add_performance,R.id.tv_community_add_performance_image, R.id.tv_community_add_time_image, R.id.tv_community_add_day_image, R.id.community_btn_chatroomcreate, R.id.tv_community_add_location_image})
     public void mOnClick(View v) {
         switch (v.getId()) {
             case R.id.community_btn_chatroomcreate:
@@ -134,26 +150,30 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
                     }
                 });
                 break;
-            case R.id.community_btn_select_performance:
-                Intent intent1 = new Intent(AddChatRoomActivity.this, MainActivity.class);
-                intent1.putExtra("select_page", PerformanceRealTimeFragment.class.getSimpleName());
-                intent1.putExtra("choose", AddChatRoomActivity.class.getSimpleName());
-                startActivity(intent1);
-                break;
-            case R.id.community_btn_select_day:
+            case R.id.tv_community_add_day:
+            case R.id.tv_community_add_day_image:
                 Calendar calendar = new GregorianCalendar();
                 mYear = calendar.get(Calendar.YEAR);
                 mMonth = calendar.get(Calendar.MONTH);
                 mDay = calendar.get(Calendar.DAY_OF_MONTH);
                 new DatePickerDialog(AddChatRoomActivity.this, mDateSetListener, mYear, mMonth, mDay).show();
                 break;
-            case R.id.community_btn_select_time:
+            case R.id.tv_community_add_time:
+            case R.id.tv_community_add_time_image:
                 Calendar calendar1 = new GregorianCalendar();
                 mHour = calendar1.get(Calendar.HOUR_OF_DAY);
                 mMinute = calendar1.get(Calendar.MINUTE);
                 new TimePickerDialog(AddChatRoomActivity.this, mTimeSetListener, mHour, mMinute, false).show();
                 break;
-            case R.id.community_btn_select_location:
+            case R.id.tv_community_add_performance:
+            case R.id.tv_community_add_performance_image:
+                Intent intent1 = new Intent(AddChatRoomActivity.this, MainActivity.class);
+                intent1.putExtra("select_page", PerformanceRealTimeFragment.class.getSimpleName());
+                intent1.putExtra("choose", AddChatRoomActivity.class.getSimpleName());
+                startActivity(intent1);
+                break;
+            case R.id.tv_community_add_location:
+            case R.id.tv_community_add_location_image:
                 initPlacePicker();
                 break;
         }
@@ -165,6 +185,7 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
             mYear = year;
             mMonth = month + 1;
             mDay = dayOfMonth;
+            tvDay.setText(mYear + "-" + formatDay(mMonth) + "-" + formatDay(mDay));
         }
     };
     TimePickerDialog.OnTimeSetListener mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
@@ -178,6 +199,7 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
             }
             mHour = hourOfDay;
             mMinute = minute;
+            tvTime.setText(AM_PM + " " + mHour + ":" + formatDay(mMinute));
         }
     };
 

@@ -95,13 +95,15 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         ChatActivity.this);
                 alertDialogBuilder.setTitle("방정보");
-                alertDialogBuilder.setMessage(
-                        "-방이름: " + chatRoomData.getRoomName() + "\n"
-                                + "-공연이름: " + chatRoomData.getPerformanceName() + "\n"
-                                + "-모임장소: " + chatRoomData.getRoomLocationName() + "(" + chatRoomData.getRoomLocation() + ")\n"
-                                + "-모임날짜: " + chatRoomData.getRoomDay() + "\n"
-                                + "-모임시간: " + chatRoomData.getRoomTime() + "\n"
-                                + "-모임인원: " + chatRoomData.getRoomPeople())
+                alertDialogBuilder
+                        .setIcon(R.drawable.send_button)
+                        .setMessage(
+                        "- 방이름: " + chatRoomData.getRoomName() + "\n"
+                                + "- 공연이름: " + chatRoomData.getPerformanceName() + "\n"
+                                + "- 모임장소: " + chatRoomData.getRoomLocationName() + "(" + chatRoomData.getRoomLocation() + ")\n"
+                                + "- 모임날짜: " + chatRoomData.getRoomDay() + "\n"
+                                + "- 모임시간: " + chatRoomData.getRoomTime() + "\n"
+                                + "- 모임인원: " + chatRoomData.getRoomPeople())
                         .setNegativeButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -129,7 +131,9 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
 
                 AlertDialog.Builder alertDialogBuilder2 = new AlertDialog.Builder(
                         ChatActivity.this);
-                alertDialogBuilder2.setTitle("대화상대")
+                alertDialogBuilder2
+                        .setIcon(R.drawable.send_button)
+                        .setTitle("대화상대")
                         .setView(view)
                         .create().show();
                 return true;
@@ -255,7 +259,7 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
                     long now = calendar.getTimeInMillis();
 
                     ChatData chatData = new ChatData();
-                    chatData.userPhoto = R.drawable.smile_50dp;
+                    chatData.userPhoto = mUser.getPhotoUrl().toString();
                     chatData.message = chatEditText.getText().toString();
                     chatData.email = mUser.getEmail();
                     chatData.userName = mUser.getDisplayName();

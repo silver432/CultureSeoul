@@ -4,9 +4,11 @@
     android:layout_height="wrap_content">
     <TextView
         android:id="@+id/community_tv_message_my"
+        android:background="@drawable/chat_bubble_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"/>
+        android:textSize="15sp"
+        android:layout_gravity="end" />
     <TextView
         android:id="@+id/community_tv_time_my"
         android:layout_width="wrap_content"

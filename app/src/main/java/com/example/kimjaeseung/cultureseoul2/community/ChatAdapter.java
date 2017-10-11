@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kimjaeseung.cultureseoul2.R;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -131,7 +132,11 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         public void bind(ChatData chatData) {
-            userPhoto.setImageResource(chatData.userPhoto);
+            Picasso.with(itemView.getContext())
+                    .load(chatData.userPhoto)
+                    .error(R.drawable.smile_50dp)
+                    .fit()
+                    .into(userPhoto);
             userName.setText(chatData.userName);
             userMessage.setText(chatData.message);
             userTime.setText(mSimpleDateFormat.format(chatData.time));

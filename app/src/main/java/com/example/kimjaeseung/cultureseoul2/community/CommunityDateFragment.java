@@ -96,7 +96,7 @@ public class CommunityDateFragment extends Fragment implements ChatRoomAdapter.C
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mDatabaseReference.removeEventListener(mChildEventListener);
+        if (mChildEventListener!=null)mDatabaseReference.removeEventListener(mChildEventListener);
     }
 
     private void initView() {

@@ -72,5 +72,8 @@ dependencies {
     //GooglePlace
     compile 'com.google.android.gms:play-services-places:11.0.4'
 
+    //circle imageview
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+
 }
 apply plugin: 'com.google.gms.google-services'

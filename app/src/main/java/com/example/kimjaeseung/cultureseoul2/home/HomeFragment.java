@@ -83,6 +83,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
+        setHasOptionsMenu(true);
         culturalEventTypeMini.setOpenAPIKey(openApiKey);
         return view;
     }
@@ -97,8 +98,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mDatabaseReference.removeEventListener(mChildEventListener);
-        mDatabaseReference.removeEventListener(mValueEventListener);
+        if (mChildEventListener!=null) mDatabaseReference.removeEventListener(mChildEventListener);
+        if (mValueEventListener!=null) mDatabaseReference.removeEventListener(mValueEventListener);
     }
 
     private void initFirebase() {

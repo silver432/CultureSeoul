@@ -3,10 +3,10 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp">
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/community_iv_userphoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,6 +21,7 @@
             android:textStyle="bold"/>
         <TextView
             android:id="@+id/community_tv_message"
+            android:background="@drawable/chat_bubble_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"/>

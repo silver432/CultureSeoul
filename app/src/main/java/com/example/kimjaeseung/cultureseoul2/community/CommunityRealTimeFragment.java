@@ -79,7 +79,7 @@ public class CommunityRealTimeFragment extends Fragment implements ChatRoomAdapt
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mDatabaseReference.removeEventListener(mChildEventListener);
+        if (mChildEventListener!=null) mDatabaseReference.removeEventListener(mChildEventListener);
     }
 
     @Override
