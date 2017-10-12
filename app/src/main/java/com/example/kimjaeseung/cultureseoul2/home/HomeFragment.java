@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
@@ -75,7 +76,8 @@ public class HomeFragment extends Fragment {
     }
 
     public static Fragment getInstance() {
-        return new HomeFragment();
+        HomeFragment homeFragment = new HomeFragment();
+        return homeFragment;
     }
 
     @Nullable
