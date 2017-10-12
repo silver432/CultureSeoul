@@ -66,7 +66,7 @@ public class CommunityMyFragment extends Fragment implements ChatRoomAdapter.Cha
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mDatabaseReference.removeEventListener(mChildEventListener);
+        if (mChildEventListener!=null) mDatabaseReference.removeEventListener(mChildEventListener);
     }
 
     private void initFirebase() {

@@ -16,6 +16,7 @@
         android:id="@+id/community_chat_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/community_chat_toolbar"
         android:layout_above="@+id/community_chat_layout">
     </android.support.v7.widget.RecyclerView>
 
