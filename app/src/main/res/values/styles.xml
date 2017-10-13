@@ -22,4 +22,15 @@
         <item name="colorControlHighlight">@color/white</item>
     </style>
 
+    <!-- GregorianCalendar style -->
+    <style name="DatePicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/performTab</item>
+    </style>
+
+    <!-- SearchView style -->
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:textCursorDrawable">@color/performTab</item>
+    </style>
+
+
 </resources>

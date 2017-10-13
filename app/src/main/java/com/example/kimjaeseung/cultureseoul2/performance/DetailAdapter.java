@@ -48,7 +48,6 @@ public class DetailAdapter extends BaseAdapter
             convertView = inflater.inflate(R.layout.detail_list_item, parent, false);
         }
 
-
         TextView tv_type = (TextView) convertView.findViewById(R.id.tv_detail_type);
         TextView tv_contents = (TextView) convertView.findViewById(R.id.tv_detail_content);
 
@@ -71,4 +70,5 @@ public class DetailAdapter extends BaseAdapter
         mDetailItems.add(mDetailItem);
 
     }
+
 }

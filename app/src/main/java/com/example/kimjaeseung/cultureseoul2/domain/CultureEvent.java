@@ -202,6 +202,8 @@ public class CultureEvent implements Serializable
 
     public String getUseFee()
     {
+        useFee = useFee.replaceAll("&#39;", "\'");
+        useFee = useFee.replaceAll("&quot;", "\"");
         return useFee;
     }
 

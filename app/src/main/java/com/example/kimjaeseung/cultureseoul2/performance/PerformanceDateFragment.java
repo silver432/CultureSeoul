@@ -90,7 +90,7 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
             @Override
             public void onClick(View v)
             {
-                new DatePickerDialog(getActivity(), mDateSetListener, mYear, mMonth - 1, mDay).show();
+                new DatePickerDialog(getActivity(), R.style.DatePicker, mDateSetListener, mYear, mMonth - 1, mDay).show();
 
             }
         });
@@ -201,7 +201,6 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
         mSearchView = (SearchView) MenuItemCompat.getActionView(mMenuItem); // 액션바에 searchview 추가
         mSearchView.setOnQueryTextListener(this);
     }
-
 
     @Override
     public boolean onQueryTextSubmit(String query)
