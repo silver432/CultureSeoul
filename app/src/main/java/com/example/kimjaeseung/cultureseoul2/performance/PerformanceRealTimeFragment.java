@@ -116,7 +116,6 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_performance, menu);
         mMenuItem = menu.findItem(R.id.item_search);
