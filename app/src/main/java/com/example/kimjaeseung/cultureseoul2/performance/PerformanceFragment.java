@@ -1,5 +1,6 @@
 package com.example.kimjaeseung.cultureseoul2.performance;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -65,6 +66,8 @@ public class PerformanceFragment extends Fragment
         mGlobalApp = (GlobalApp) getApplicationContext();
 
         progressBar.setVisibility(View.VISIBLE);
+        progressBar.setIndeterminate(true);
+        progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#3666A5"),android.graphics.PorterDuff.Mode.MULTIPLY); // ProgressBar 색 변경
 
         final Handler handler = new Handler();
 

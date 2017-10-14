@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,6 +15,9 @@ import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
 import com.squareup.picasso.Picasso;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 import static com.example.kimjaeseung.cultureseoul2.utils.DateUtils.dateToString;
 
 /**
@@ -22,36 +26,53 @@ import static com.example.kimjaeseung.cultureseoul2.utils.DateUtils.dateToString
 
 public class DetailActivity extends AppCompatActivity
 {
-    private ImageView mPerformImage;
-    private TextView mPerformTitle;
-    private ListView mListView;
-    private Button mButton;
+    @Bind(R.id.btn_detail_back) Button mButtonBack;
+    @Bind(R.id.tv_detail_title) TextView mDetailTitle;
+    @Bind(R.id.iv_detail_image) ImageView mDetailImage;
+    @Bind(R.id.lv_detail) ListView mDetailLIst;
+    @Bind(R.id.btn_detail_reserve) Button mButtonReserve;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        mPerformImage = (ImageView) findViewById(R.id.iv_detail_image);
-        mPerformTitle = (TextView) findViewById(R.id.tv_detail_title);
-        mListView = (ListView) findViewById(R.id.lv_detail);
-        mButton = (Button) findViewById(R.id.btn_detail_url);
+        ButterKnife.bind(this);
 
         Intent intent = getIntent();
         final CultureEvent cultureEvent = (CultureEvent) intent.getSerializableExtra("key");
 
-        mPerformTitle.setText(cultureEvent.getTitle());
+        mButtonBack.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        mDetailTitle.setText(cultureEvent.getTitle());
+        mDetailTitle.setSingleLine(true); //한줄로 나오게 하기.
+        mDetailTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        mDetailTitle.setSelected(true);
+
         Picasso.with(this) // 공연 이미지
                 .load(cultureEvent.getMainImg().toLowerCase())
                 .error(R.drawable.smile_50dp)
-                .into(mPerformImage);
-        mPerformTitle.setSelected(true);
+                .into(mDetailImage);
 
         DetailAdapter mDetailAdapter = new DetailAdapter();
-        mListView.setAdapter(mDetailAdapter);
-        mListView.setDivider(null);
+        mDetailLIst.setAdapter(mDetailAdapter);
+        mDetailLIst.setDivider(null);
 
-        mButton.setOnClickListener(new View.OnClickListener()
+        mDetailAdapter.addItem("기간 : " , dateToString(cultureEvent.getStartDate()) + " ~ " + dateToString(cultureEvent.getEndDate()));
+        mDetailAdapter.addItem("시간 : ", cultureEvent.getTime());
+        mDetailAdapter.addItem("장소 : ", cultureEvent.getPlace());
+        mDetailAdapter.addItem("이용대상 : ", cultureEvent.getUseTrgt());
+        mDetailAdapter.addItem("이용요금 : ", cultureEvent.getUseFee());
+        mDetailAdapter.addItem("주최 : ", cultureEvent.getSponsor());
+        mDetailAdapter.addItem("문의 : ", cultureEvent.getInquiry());
+
+        mButtonReserve.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v) {
@@ -64,13 +85,6 @@ public class DetailActivity extends AppCompatActivity
            }
         });
 
-        mDetailAdapter.addItem("기간 : " , dateToString(cultureEvent.getStartDate()) + " ~ " + dateToString(cultureEvent.getEndDate()));
-        mDetailAdapter.addItem("시간 : ", cultureEvent.getTime());
-        mDetailAdapter.addItem("장소 : ", cultureEvent.getPlace());
-        mDetailAdapter.addItem("이용대상 : ", cultureEvent.getUseTrgt());
-        mDetailAdapter.addItem("이용요금 : ", cultureEvent.getUseFee());
-        mDetailAdapter.addItem("주최 : ", cultureEvent.getSponsor());
-        mDetailAdapter.addItem("문의 : ", cultureEvent.getInquiry());
-
     }
+
 }

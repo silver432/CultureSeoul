@@ -8,6 +8,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/titlebackground</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textCursorDrawable">@color/performTab</item>
+        <item name="android:textSelectHandle">@color/white</item>
+        <item name="android:textSelectHandleRight">@color/white</item>
+        <item name="android:textSelectHandleLeft">@color/white</item>
+        <item name="android:progress">@color/performTab</item>
+    </style>
+
+    <style name="PerformTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlActivated">@color/performTab</item>
     </style>
 
     <style name = "SplashTheme" parent="@android:style/Theme.Light.NoTitleBar">
@@ -27,10 +36,6 @@
         <item name="colorAccent">@color/performTab</item>
     </style>
 
-    <!-- SearchView style -->
-    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
-        <item name="android:textCursorDrawable">@color/performTab</item>
-    </style>
 
 
 </resources>
