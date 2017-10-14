@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 
@@ -63,6 +64,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         FacebookSdk.sdkInitialize(this);
@@ -146,13 +149,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mAuth = FirebaseAuth.getInstance();
     }
 
-    @OnClick({R.id.login_gotomain,R.id.login_button_google})
+    @OnClick({R.id.login_button_google})
     public void mOnClick(View view){
         switch (view.getId()){
-            case R.id.login_gotomain:
-                Intent i = new Intent(LoginActivity.this,MainActivity.class);
-                startActivity(i);
-                break;
             case R.id.login_button_google:
                 signIn();
                 break;

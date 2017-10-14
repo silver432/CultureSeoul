@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -167,6 +169,13 @@ public class MainActivity extends AppCompatActivity{
         nav_profile_name.setText(mName);
         TextView nav_profile_email = (TextView) nav_profile_view.findViewById(R.id.profile_email);
         nav_profile_email.setText(mEmail);
+        ImageView nav_profile_photo = (ImageView) nav_profile_view.findViewById(R.id.profile_img);
+        Picasso.with(this)
+                .load(mPhotoUrl)
+                .error(R.drawable.smile_50dp)
+                .fit()
+                .into(nav_profile_photo);
+
 
 //        bottomNavigationView.setBackgroundResource(R.color.titlebackground);
 
