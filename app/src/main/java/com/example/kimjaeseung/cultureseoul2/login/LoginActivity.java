@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 
+import com.example.kimjaeseung.cultureseoul2.CustomActivity;
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.main.MainActivity;
 
@@ -44,7 +45,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
+public class LoginActivity extends CustomActivity implements GoogleApiClient.OnConnectionFailedListener{
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
 
