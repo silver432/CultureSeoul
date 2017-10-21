@@ -65,7 +65,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-places:11.0.4'
     //circle imageview
     compile 'de.hdodenhof:circleimageview:2.1.0'
-    //typekit
-    compile 'com.tsengvn:typekit:1.0.1'
 }
 apply plugin: 'com.google.gms.google-services'

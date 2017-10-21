@@ -20,7 +20,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.kimjaeseung.cultureseoul2.CustomActivity;
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.main.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,7 +46,7 @@ import butterknife.OnClick;
  * Created by kimjaeseung on 2017. 7. 22..
  */
 
-public class ChatActivity extends CustomActivity implements ChatAdapter.ChatAdapterOnClickHandler {
+public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatAdapterOnClickHandler {
     private static final String TAG = ChatActivity.class.getSimpleName();
 
     @Bind(R.id.community_chat_recyclerview)

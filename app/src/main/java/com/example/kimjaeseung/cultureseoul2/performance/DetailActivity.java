@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.kimjaeseung.cultureseoul2.CustomActivity;
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
 import com.squareup.picasso.Picasso;
@@ -25,7 +24,7 @@ import static com.example.kimjaeseung.cultureseoul2.utils.DateUtils.dateToString
  * Created by heo04 on 2017-07-22.
  */
 
-public class DetailActivity extends CustomActivity
+public class DetailActivity extends AppCompatActivity
 {
     @Bind(R.id.btn_detail_back) Button mButtonBack;
     @Bind(R.id.tv_detail_title) TextView mDetailTitle;

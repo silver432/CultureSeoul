@@ -7,7 +7,6 @@ import com.example.kimjaeseung.cultureseoul2.domain.CultureEventOutWrapper;
 import com.example.kimjaeseung.cultureseoul2.network.CultureService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.tsengvn.typekit.Typekit;
 
 import java.util.List;
 
@@ -77,9 +76,6 @@ public class GlobalApp extends Application {
         super.onCreate();
         loadData();
 //        FirebaseApp.initializeApp(this);
-        Typekit.getInstance()
-                .addNormal(Typekit.createFromAsset(this, "NanumSquareOTFRegular.otf"))
-                .addBold(Typekit.createFromAsset(this,"NanumSquareOTFBold.otf"));
     }
 
     @Override

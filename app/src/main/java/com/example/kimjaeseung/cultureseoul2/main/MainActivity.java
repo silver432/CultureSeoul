@@ -2,7 +2,6 @@ package com.example.kimjaeseung.cultureseoul2.main;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,12 +20,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kimjaeseung.cultureseoul2.CustomActivity;
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.community.AddChatRoomActivity;
 import com.example.kimjaeseung.cultureseoul2.community.CommunityFragment;
@@ -44,7 +41,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends CustomActivity{
+public class MainActivity extends AppCompatActivity{
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
 
@@ -77,40 +74,12 @@ public class MainActivity extends CustomActivity{
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (mFirebaseUser == null) {
-            Toast.makeText(this, "로그인 필요 test", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "로그인을 해주세요.", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
-            /*
-            Log.d(TAG, "user is not null");
-            for (UserInfo profile : user.getProviderData()) {
-                // Id of the provider (ex: google.com)
-                String providerId = profile.getProviderId();
 
-                // UID specific to the provider
-                String uid = profile.getUid();
-
-                // Name, email address, and profile photo Url
-                mName = profile.getDisplayName();
-                mEmail = profile.getEmail();
-                Uri photoUrl = profile.getPhotoUrl();
-
-                if(mName == null){
-                    Log.d(TAG,"name is null");
-                }else{
-                    Log.d(TAG,"name is not null"+mName);
-                }
-                if(mEmail == null){
-                    Log.d(TAG,"email is null");
-                }else{
-                    Log.d(TAG,"email is not null"+mEmail);
-                }
-
-                Log.d(TAG, "success load profile");
-
-            }
-            */
         }else{
             mName = mFirebaseUser.getDisplayName();
             mEmail = mFirebaseUser.getEmail();

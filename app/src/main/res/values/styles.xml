@@ -20,7 +20,7 @@
     </style>
 
     <style name = "SplashTheme" parent="@android:style/Theme.Light.NoTitleBar">
-        <item name = "android:windowBackground">@drawable/bg_splash_img2</item>
+        <item name = "android:windowBackground">@drawable/bg_splash_img</item>
     </style>
     <style name="ChatTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
