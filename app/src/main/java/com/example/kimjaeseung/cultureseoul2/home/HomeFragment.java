@@ -184,7 +184,7 @@ public class HomeFragment extends Fragment {
                 rankNum.setText(String.valueOf(i+1));
                 Picasso.with(view.getContext())
                         .load(mCrd.getPerformanceImage())
-                        .error(R.drawable.smile_50dp)
+                        .error(R.drawable.error_image)
                         .fit()
                         .into(iv);
                 rankContext.setText(mCrd.getPerformanceStartDate() + " ~ " + mCrd.getPerformanceEndDate() + "\n" + mCrd.getPerformanceGenre() + " / " + mCrd.getPerformanceLocation());

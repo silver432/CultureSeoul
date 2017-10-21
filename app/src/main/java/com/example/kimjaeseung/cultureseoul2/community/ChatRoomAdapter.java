@@ -117,7 +117,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
         public void bind(ChatRoomData chatRoomData) {
             Picasso.with(itemView.getContext())
                     .load(chatRoomData.getPerformanceImage())
-                    .error(R.drawable.smile_50dp)
+                    .error(R.drawable.error_image)
                     .fit()
                     .into(mPerformanceImage);
             mRoomName.setText(chatRoomData.getRoomName());

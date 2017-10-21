@@ -21,7 +21,7 @@
             android:textStyle="bold"/>
         <TextView
             android:id="@+id/community_tv_message"
-            android:background="@drawable/chat_bubble_left"
+            android:background="@drawable/chat_bubble"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"/>

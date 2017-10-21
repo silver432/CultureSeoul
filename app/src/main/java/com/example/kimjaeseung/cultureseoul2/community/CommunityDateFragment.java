@@ -3,6 +3,7 @@ package com.example.kimjaeseung.cultureseoul2.community;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ProgressBar;
 
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.utils.DateUtils;
@@ -30,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,6 +61,7 @@ public class CommunityDateFragment extends Fragment implements ChatRoomAdapter.C
     private DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference("room");
     ;
     private ChildEventListener mChildEventListener;
+    private ValueEventListener mValueEventListener;
     private ChatRoomAdapter mAdapter;
     private List<ChatRoomData> chatRoomDataList = new ArrayList<>();
     private int mYear = 0, mMonth = 0, mDay = 0;
@@ -67,6 +71,8 @@ public class CommunityDateFragment extends Fragment implements ChatRoomAdapter.C
     RecyclerView mRecyclerView;
     @Bind(R.id.community_date_button)
     Button dateButton;
+    @Bind(R.id.pb_community_date)
+    ProgressBar progressBar;
 
     public CommunityDateFragment() {
     }
@@ -82,6 +88,9 @@ public class CommunityDateFragment extends Fragment implements ChatRoomAdapter.C
         View view = inflater.inflate(R.layout.fragment_community_date, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setIndeterminate(true);
+        progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#3666A5"),android.graphics.PorterDuff.Mode.MULTIPLY);
         return view;
     }
 
@@ -97,6 +106,7 @@ public class CommunityDateFragment extends Fragment implements ChatRoomAdapter.C
     public void onDestroy() {
         super.onDestroy();
         if (mChildEventListener!=null)mDatabaseReference.removeEventListener(mChildEventListener);
+        if (mValueEventListener!=null) mDatabaseReference.removeEventListener(mValueEventListener);
     }
 
     private void initView() {
@@ -117,7 +127,7 @@ public class CommunityDateFragment extends Fragment implements ChatRoomAdapter.C
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(getActivity(), mDateSetListener, mYear, mMonth - 1, mDay).show();
+                new DatePickerDialog(getActivity(), R.style.DatePicker, mDateSetListener, mYear, mMonth - 1, mDay).show();
 
             }
         });
@@ -202,7 +212,19 @@ public class CommunityDateFragment extends Fragment implements ChatRoomAdapter.C
             }
 
         };
+        mValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
         mDatabaseReference.addChildEventListener(mChildEventListener);
+        mDatabaseReference.addValueEventListener(mValueEventListener);
     }
 
     DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {

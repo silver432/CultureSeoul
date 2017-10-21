@@ -1,6 +1,7 @@
 package com.example.kimjaeseung.cultureseoul2.community;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +38,14 @@ public class CommunityMyFragment extends Fragment implements ChatRoomAdapter.Cha
     private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference("room");
     private ChildEventListener mChildEventListener;
+    private ValueEventListener mValueEventListener;
     private ChatRoomAdapter mAdapter;
     private List<ChatRoomData> chatRoomDataList = new ArrayList<>();
 
     @Bind(R.id.community_my_recyclerview)
     RecyclerView mRecyclerView;
+    @Bind(R.id.pb_community_my)
+    ProgressBar progressBar;
 
     public CommunityMyFragment() {
     }
@@ -53,6 +59,9 @@ public class CommunityMyFragment extends Fragment implements ChatRoomAdapter.Cha
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_community_my, container, false);
         ButterKnife.bind(this, view);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setIndeterminate(true);
+        progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#3666A5"),android.graphics.PorterDuff.Mode.MULTIPLY);
         return view;
     }
 
@@ -67,6 +76,7 @@ public class CommunityMyFragment extends Fragment implements ChatRoomAdapter.Cha
     public void onDestroy() {
         super.onDestroy();
         if (mChildEventListener!=null) mDatabaseReference.removeEventListener(mChildEventListener);
+        if (mValueEventListener!=null) mDatabaseReference.removeEventListener(mValueEventListener);
     }
 
     private void initFirebase() {
@@ -140,7 +150,19 @@ public class CommunityMyFragment extends Fragment implements ChatRoomAdapter.Cha
             }
 
         };
+        mValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
         mDatabaseReference.addChildEventListener(mChildEventListener);
+        mDatabaseReference.addValueEventListener(mValueEventListener);
     }
 
     private void initView() {

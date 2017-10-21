@@ -134,7 +134,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public void bind(ChatData chatData) {
             Picasso.with(itemView.getContext())
                     .load(chatData.userPhoto)
-                    .error(R.drawable.smile_50dp)
+                    .error(R.drawable.error_image)
                     .fit()
                     .into(userPhoto);
             userName.setText(chatData.userName);

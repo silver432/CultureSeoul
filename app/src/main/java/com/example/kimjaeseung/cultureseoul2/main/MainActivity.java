@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity{
         ImageView nav_profile_photo = (ImageView) nav_profile_view.findViewById(R.id.profile_img);
         Picasso.with(this)
                 .load(mPhotoUrl)
-                .error(R.drawable.smile_50dp)
+                .error(R.drawable.error_image)
                 .fit()
                 .into(nav_profile_photo);
 

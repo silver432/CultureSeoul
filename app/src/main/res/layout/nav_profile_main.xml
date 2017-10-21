@@ -40,7 +40,7 @@
         android:layout_centerHorizontal="true"
         android:layout_above="@id/profile_name"
         android:paddingBottom="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@drawable/smile_50dp" />
+        app:srcCompat="@drawable/error_image" />
 
 
 

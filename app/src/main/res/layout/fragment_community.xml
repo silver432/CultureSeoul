@@ -6,7 +6,10 @@
 
     <android.support.design.widget.TabLayout
         android:id="@+id/community_tablayout"
-        app:tabIndicatorColor="@color/community_bar"
+        app:tabBackground="@drawable/perform_tab_background"
+        app:tabIndicatorHeight="0dp"
+        app:tabTextColor="@color/white"
+        app:tabSelectedTextColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

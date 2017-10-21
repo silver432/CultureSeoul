@@ -2,6 +2,7 @@ package com.example.kimjaeseung.cultureseoul2.community;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -79,6 +83,7 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (chatEditText!=null&&textWatcher!=null) chatEditText.removeTextChangedListener(textWatcher);
     }
 
     @Override
@@ -98,12 +103,12 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
                 alertDialogBuilder
                         .setIcon(R.drawable.send_button)
                         .setMessage(
-                        "- 방이름: " + chatRoomData.getRoomName() + "\n"
-                                + "- 공연이름: " + chatRoomData.getPerformanceName() + "\n"
-                                + "- 모임장소: " + chatRoomData.getRoomLocationName() + "(" + chatRoomData.getRoomLocation() + ")\n"
-                                + "- 모임날짜: " + chatRoomData.getRoomDay() + "\n"
-                                + "- 모임시간: " + chatRoomData.getRoomTime() + "\n"
-                                + "- 모임인원: " + chatRoomData.getRoomPeople())
+                                "- 방이름: " + chatRoomData.getRoomName() + "\n"
+                                        + "- 공연이름: " + chatRoomData.getPerformanceName() + "\n"
+                                        + "- 모임장소: " + chatRoomData.getRoomLocationName() + "(" + chatRoomData.getRoomLocation() + ")\n"
+                                        + "- 모임날짜: " + chatRoomData.getRoomDay() + "\n"
+                                        + "- 모임시간: " + chatRoomData.getRoomTime() + "\n"
+                                        + "- 모임인원: " + chatRoomData.getRoomPeople())
                         .setNegativeButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -165,6 +170,8 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
         mAdapter = new ChatAdapter(this, this);
         mAdapter.setEmail(mUser.getEmail());
         mRecyclerView.setAdapter(mAdapter);
+
+        chatEditText.addTextChangedListener(textWatcher);
     }
 
     private void initFirebaseDatabase() {
@@ -292,6 +299,20 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
         intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
+
+    private TextWatcher textWatcher = new TextWatcher() {
+
+        public void afterTextChanged(Editable s) {
+        }
+
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (!TextUtils.isEmpty(chatEditText.getText())) chatButton.setBackgroundColor(Color.YELLOW);
+            else chatButton.setBackgroundColor(Color.LTGRAY);
+        }
+    };
 
 
 }

@@ -162,14 +162,14 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
                 mYear = calendar.get(Calendar.YEAR);
                 mMonth = calendar.get(Calendar.MONTH);
                 mDay = calendar.get(Calendar.DAY_OF_MONTH);
-                new DatePickerDialog(AddChatRoomActivity.this, mDateSetListener, mYear, mMonth, mDay).show();
+                new DatePickerDialog(AddChatRoomActivity.this, R.style.DatePicker,mDateSetListener, mYear, mMonth, mDay).show();
                 break;
             case R.id.tv_community_add_time:
             case R.id.tv_community_add_time_image:
                 Calendar calendar1 = new GregorianCalendar();
                 mHour = calendar1.get(Calendar.HOUR_OF_DAY);
                 mMinute = calendar1.get(Calendar.MINUTE);
-                new TimePickerDialog(AddChatRoomActivity.this, mTimeSetListener, mHour, mMinute, false).show();
+                new TimePickerDialog(AddChatRoomActivity.this,R.style.DatePicker, mTimeSetListener, mHour, mMinute, false).show();
                 break;
             case R.id.tv_community_add_performance:
             case R.id.tv_community_add_performance_image:

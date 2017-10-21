@@ -57,7 +57,7 @@ public class DetailActivity extends AppCompatActivity
 
         Picasso.with(this) // 공연 이미지
                 .load(cultureEvent.getMainImg().toLowerCase())
-                .error(R.drawable.smile_50dp)
+                .error(R.drawable.error_image)
                 .into(mDetailImage);
 
         DetailAdapter mDetailAdapter = new DetailAdapter();

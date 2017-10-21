@@ -111,7 +111,7 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
         {
             Picasso.with(itemView.getContext()) // 공연 이미지
                 .load(cultureEvent.getMainImg().toLowerCase())
-                .error(R.drawable.smile_50dp)
+                .error(R.drawable.error_image)
                 .fit()
                 .into(listItemImageView);
 
