@@ -60,6 +60,17 @@ public class DetailActivity extends AppCompatActivity
                 .error(R.drawable.error_image)
                 .into(mDetailImage);
 
+        mDetailImage.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {   // 클릭하면 원본 크기 이미지로
+                Intent intent = new Intent(DetailActivity.this, ClickedDetailImageActivity.class);
+                String message = cultureEvent.getMainImg().toLowerCase();
+                intent.putExtra("img", message);
+                startActivity(intent);
+            }
+        });
+
         DetailAdapter mDetailAdapter = new DetailAdapter();
         mDetailLIst.setAdapter(mDetailAdapter);
         mDetailLIst.setDivider(null);
@@ -82,7 +93,7 @@ public class DetailActivity extends AppCompatActivity
                     homeURL = homeURL.substring(1);
                 intent.setData(Uri.parse(homeURL));
                 startActivity(intent);
-           }
+            }
         });
 
     }

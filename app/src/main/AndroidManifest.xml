@@ -63,6 +63,7 @@
         <activity android:name=".community.AddChatRoomActivity" android:screenOrientation="portrait"/>
         <activity android:name=".community.ChatActivity" android:theme="@style/ChatTheme" android:screenOrientation="portrait" />
         <activity android:name=".performance.DetailActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".performance.ClickedDetailImageActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
