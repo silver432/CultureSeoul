@@ -1,8 +1,6 @@
 package com.example.kimjaeseung.cultureseoul2.performance;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.example.kimjaeseung.cultureseoul2.GlobalApp;
 import com.example.kimjaeseung.cultureseoul2.R;
@@ -39,14 +36,9 @@ public class PerformanceFragment extends Fragment
     }
 
     static int PageFlag = 0;
-    public static void getPageFlag() {
-        PageFlag = 1;
-    }
 
     @Bind(R.id.tl_view_pager) TabLayout tabLayout;
     @Bind(R.id.vp_view_pager) ViewPager viewPager;
-    @Bind(R.id.pb_performance_fragment)
-    ProgressBar progressBar;
     GlobalApp mGlobalApp;
 
     private static int PAGE_NUMBER = 3;
@@ -65,27 +57,7 @@ public class PerformanceFragment extends Fragment
 
         mGlobalApp = (GlobalApp) getApplicationContext();
 
-        progressBar.setVisibility(View.VISIBLE);
-        progressBar.setIndeterminate(true);
-        progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#3666A5"),android.graphics.PorterDuff.Mode.MULTIPLY); // ProgressBar 색 변경
-
-        final Handler handler = new Handler();
-
-        final Runnable runnable = new Runnable() {  // 0.5초마다 데이터 불러졌는지 확인
-            public void run() {
-
-                if (mGlobalApp.getmList() == null)
-                    handler.postDelayed(this, 300);
-
-                else // 데이터 다 받아졌으면 페이지 만듦
-                {
-                    progressBar.setVisibility(View.GONE);
-                    makePager();
-                }
-            }
-        };
-
-        handler.post(runnable);
+        makePager();
 
         return view;
     }

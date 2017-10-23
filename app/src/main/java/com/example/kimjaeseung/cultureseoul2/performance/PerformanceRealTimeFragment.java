@@ -27,8 +27,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 /**
  * Created by kimjaeseung on 2017. 7. 11..
  */
@@ -65,7 +63,7 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
 
         setHasOptionsMenu(true);
 
-        mGlobalApp = (GlobalApp) getApplicationContext();
+        mGlobalApp = GlobalApp.getGlobalApplicationContext();
 
         return view;
     }
@@ -124,7 +122,10 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query) { return false; }
+    public boolean onQueryTextSubmit(String query)
+    {
+        return false;
+    }
 
     /* 필터에서 텍스트 검색 처리 */
     @Override

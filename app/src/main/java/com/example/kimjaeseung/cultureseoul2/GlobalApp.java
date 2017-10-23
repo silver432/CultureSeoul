@@ -5,6 +5,7 @@ import android.app.Application;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEventOutWrapper;
 import com.example.kimjaeseung.cultureseoul2.network.CultureService;
+import com.example.kimjaeseung.cultureseoul2.utils.LoadDataCallback;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -20,12 +21,27 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by kimjaeseung on 2017. 7. 22..
  */
 
-public class GlobalApp extends Application {
+public class GlobalApp extends Application
+{
 
+    private static int loadCount = 0;
     private List<CultureEvent> mList;
 
-    /** JSON 파싱 */
-    public void loadData()
+    private static GlobalApp mInstance;
+
+    public static GlobalApp getGlobalApplicationContext()
+    {
+        if (mInstance == null)
+        {
+            throw new IllegalStateException("this application does not inherit GlobalApplication");
+        }
+        return mInstance;
+    }
+
+    /**
+     * JSON 파싱
+     */
+    public void loadData(final LoadDataCallback callback)
     {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
@@ -38,24 +54,35 @@ public class GlobalApp extends Application {
         Call<CultureEventOutWrapper> callCultureEvent = cultureService.getCultureEvents(
                 "74776b4f6873696c34364a6368704d", "json", "SearchConcertDetailService", 1, 800, ""
         );
-        callCultureEvent.enqueue(new Callback<CultureEventOutWrapper>() {
+        callCultureEvent.enqueue(new Callback<CultureEventOutWrapper>()
+        {
             @Override
-            public void onResponse(Call<CultureEventOutWrapper> call, Response<CultureEventOutWrapper> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(Call<CultureEventOutWrapper> call, Response<CultureEventOutWrapper> response)
+            {
+                if (response.isSuccessful())
+                {
                     // 성공
                     CultureEventOutWrapper result = response.body();
                     List<CultureEvent> list = result.getCultureEventWrapper().getCultureEventList();
                     setmList(list);
-                }
-                else
+                    callback.onSuccess();
+                } else
                 {
                     // 실패
                 }
             }
 
             @Override
-            public void onFailure(Call<CultureEventOutWrapper> call, Throwable t) {
-                loadData();
+            public void onFailure(Call<CultureEventOutWrapper> call, Throwable t)
+            {
+                if (loadCount == 0)
+                {
+                    loadData(callback);
+                    loadCount++;
+                } else
+                {
+                    callback.onFailure();
+                }
             }
         });
 
@@ -72,14 +99,17 @@ public class GlobalApp extends Application {
     }
 
     @Override
-    public void onCreate() {
+    public void onCreate()
+    {
         super.onCreate();
-        loadData();
+        mInstance = this;
 //        FirebaseApp.initializeApp(this);
     }
 
     @Override
-    public void onTerminate() {
+    public void onTerminate()
+    {
         super.onTerminate();
     }
+
 }

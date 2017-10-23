@@ -36,8 +36,6 @@ import java.util.Locale;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 /**
  * Created by heo04 on 2017-08-10.
  */
@@ -78,7 +76,7 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
 
         setHasOptionsMenu(true);
 
-        mGlobalApp = (GlobalApp) getApplicationContext();
+        mGlobalApp = GlobalApp.getGlobalApplicationContext();
 
         Calendar calendar = new GregorianCalendar();
         mYear = calendar.get(Calendar.YEAR);

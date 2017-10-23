@@ -29,8 +29,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 /**
  * Created by heo04 on 2017-08-09.
  */
@@ -73,7 +71,7 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
 
         setHasOptionsMenu(true);
 
-        mGlobalApp = (GlobalApp) getApplicationContext();
+        mGlobalApp = GlobalApp.getGlobalApplicationContext();
 
         mSpinner.setOnItemSelectedListener(this);
 
