@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.kimjaeseung.cultureseoul2.GlobalApp;
 import com.example.kimjaeseung.cultureseoul2.R;
 import com.example.kimjaeseung.cultureseoul2.community.ChatRoomData;
 import com.example.kimjaeseung.cultureseoul2.domain.CultureEvent;
@@ -50,7 +52,10 @@ import java.util.TreeMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import kr.go.seoul.culturalevents.CulturalEventTypeMini;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by kimjaeseung on 2017. 7. 11..
@@ -66,6 +71,9 @@ public class HomeFragment extends Fragment {
     private ChildEventListener mChildEventListener;
     private ValueEventListener mValueEventListener;
     private List<ChatRoomData> chatRoomDataList = new ArrayList<>();
+    private CultureEvent cultureEvent;
+    private List<CultureEvent> cultureEventList = new ArrayList<>();
+    GlobalApp mGlobalApp;
 
     @Bind(R.id.home_button_culturalevent)
     CulturalEventTypeMini culturalEventTypeMini;
@@ -87,6 +95,23 @@ public class HomeFragment extends Fragment {
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         culturalEventTypeMini.setOpenAPIKey(openApiKey);
+
+        mGlobalApp = (GlobalApp) getApplicationContext();
+        cultureEventList.clear();
+
+        final Handler handler = new Handler();
+
+        final Runnable runnable = new Runnable() {  // 0.5초마다 데이터 불러졌는지 확인
+            public void run() {
+                if (mGlobalApp.getmList() == null)
+                    handler.postDelayed(this, 300);
+                else
+                    cultureEventList.addAll(mGlobalApp.getmList());
+            }
+        };
+
+        handler.post(runnable);
+
         return view;
     }
 
@@ -100,8 +125,10 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mChildEventListener!=null) mDatabaseReference.removeEventListener(mChildEventListener);
-        if (mValueEventListener!=null) mDatabaseReference.removeEventListener(mValueEventListener);
+        if (mChildEventListener != null)
+            mDatabaseReference.removeEventListener(mChildEventListener);
+        if (mValueEventListener != null)
+            mDatabaseReference.removeEventListener(mValueEventListener);
     }
 
     private void initFirebase() {
@@ -165,36 +192,60 @@ public class HomeFragment extends Fragment {
                         .compareTo(((Map.Entry<String, Integer>) o1).getValue());
             }
         });
-        int sizeOfRank = a.length > 5 ? 5:a.length;
+        int sizeOfRank = a.length > 5 ? 5 : a.length;
         for (int i = 0; i < sizeOfRank; i++) {
-            ChatRoomData mCrd=null;
-            for (ChatRoomData crd:chatRoomDataList){
-                if (crd.getPerformanceCode().equals(((Map.Entry<String, Integer>) a[i]).getKey())){
-                    mCrd=crd;
+            ChatRoomData mCrd = null;
+            for (ChatRoomData crd : chatRoomDataList) {
+                if (crd.getPerformanceCode().equals(((Map.Entry<String, Integer>) a[i]).getKey())) {
+                    mCrd = crd;
                     break;
                 }
             }
             View view = layoutInflater.inflate(R.layout.home_rank, null, false);
-            TextView rankNum = (TextView)view.findViewById(R.id.tv_home_rank_num);
+            TextView rankNum = (TextView) view.findViewById(R.id.tv_home_rank_num);
             ImageView iv = (ImageView) view.findViewById(R.id.iv_home_rank_image);
             TextView rankName = (TextView) view.findViewById(R.id.tv_home_rank_perform_name);
             TextView rankContext = (TextView) view.findViewById(R.id.tv_home_rank_perform_context);
 
-            if (mCrd!=null){
-                rankNum.setText(String.valueOf(i+1));
+            if (mCrd != null) {
+                rankNum.setText(String.valueOf(i + 1));
                 Picasso.with(view.getContext())
                         .load(mCrd.getPerformanceImage())
                         .error(R.drawable.error_image)
                         .fit()
                         .into(iv);
-                rankContext.setText(mCrd.getPerformanceStartDate() + " ~ " + mCrd.getPerformanceEndDate() + "\n" + mCrd.getPerformanceGenre() + " / " + mCrd.getPerformanceLocation());
+                rankContext.setText(mCrd.getPerformanceStartDate() + " ~ " + mCrd.getPerformanceEndDate() + "\n\n" + mCrd.getPerformanceGenre() + " / " + mCrd.getPerformanceLocation());
                 rankName.setText(mCrd.getPerformanceName());
                 rankName.setSelected(true);
 
                 linearLayout.addView(view);
+
+                final ChatRoomData finalMCrd = mCrd;
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cultureEvent = findCulture(finalMCrd.getPerformanceCode());
+                        Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
+                        startToDetailActivity.putExtra("key", cultureEvent);
+                        startActivity(startToDetailActivity);
+
+                        getActivity().getIntent().putExtra("choose", "");
+                    }
+                });
+            }
+        }
+    }
+
+    CultureEvent findCulture(String code) {
+        Iterator<CultureEvent> cit = cultureEventList.iterator();
+
+        while (cit.hasNext()) {
+            cultureEvent = cit.next();
+            if (cultureEvent.getCultCode() == Integer.parseInt(code)) {
+                return cultureEvent;
             }
         }
 
+        return cultureEvent;
     }
-
 }

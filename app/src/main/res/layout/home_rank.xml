@@ -39,7 +39,8 @@
                 android:singleLine="true"
                 android:background="#E5E5E5"
                 android:gravity="center"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:textSize="12dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -59,7 +60,7 @@
                     android:background="@drawable/border_bottom"
                     android:gravity="center"
                     android:ellipsize="marquee"
-                    android:textSize="12dp"
+                    android:textSize="10dp"
                     android:textColor="#000000" />
 
                 <TextView
