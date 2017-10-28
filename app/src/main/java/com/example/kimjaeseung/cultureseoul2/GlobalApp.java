@@ -103,7 +103,6 @@ public class GlobalApp extends Application
     {
         super.onCreate();
         mInstance = this;
-//        FirebaseApp.initializeApp(this);
     }
 
     @Override

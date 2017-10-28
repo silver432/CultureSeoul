@@ -119,6 +119,7 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
         mSearchView.setOnQueryTextListener(this);
     }
 
+
     @Override
     public boolean onQueryTextSubmit(String query)
     {

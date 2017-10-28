@@ -63,9 +63,15 @@
 
     <Button
         android:id="@+id/btn_detail_reserve"
-        android:layout_width="match_parent"
+        android:text="예매하기"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
         android:layout_height="0dp"
         android:layout_weight="0.95"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/ic_detail_reserve"/>
 
 </LinearLayout>
