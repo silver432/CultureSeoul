@@ -103,13 +103,11 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
         getActivity().getIntent().putExtra("choose", "");
     }
 
-
     private void setData()
     {
         mAdapter.setItemList(mGlobalApp.getmList());
         mAdapter.notifyAdapter();
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)

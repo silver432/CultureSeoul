@@ -1,4 +1,4 @@
-package com.example.kimjaeseung.cultureseoul2.Splash;
+package com.example.kimjaeseung.cultureseoul2.load;
 
 import android.app.Activity;
 import android.content.Intent;
