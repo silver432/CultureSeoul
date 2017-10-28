@@ -249,7 +249,7 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
         } else if (mLocation.isEmpty()) {
             Toast.makeText(this, "장소를 선택해 주세요", Toast.LENGTH_SHORT).show();
             return false;
-        } else if (cultureEvent == null) {
+        } else if (mPerformance.isEmpty()) {
             Toast.makeText(this, "공연을 선택해 주세요", Toast.LENGTH_SHORT).show();
             return false;
         } else return true;
@@ -257,7 +257,7 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
 
     private void initStaticValue() {
         mYear = mMonth = mDay = mHour = mMinute = 0;
-        AM_PM = mLocation = mRoomName = mLocationName = "";
+        AM_PM = mLocation = mRoomName = mLocationName =mPerformance= "";
     }
 
     private String formatDay(int day) {

@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/main_bottomnavigation_home"
-        android:icon="@drawable/ic_home_white_24dp"
+        android:icon="@drawable/bottom_navigation_home"
         android:title="홈" />
 
     <item
@@ -13,7 +13,7 @@
 
     <item
         android:id="@+id/main_bottomnavigation_community"
-        android:icon="@drawable/ic_textsms_white_24dp"
+        android:icon="@drawable/bottom_navigation_community"
         android:title="커뮤니티" />
 
 </menu>
