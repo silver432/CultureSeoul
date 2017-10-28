@@ -194,6 +194,7 @@ public class HomeFragment extends Fragment {
                         .compareTo(((Map.Entry<String, Integer>) o1).getValue());
             }
         });
+        int rank = 0;
         int sizeOfRank = a.length > 5 ? 5 : a.length;
         for (int i = 0; i < sizeOfRank; i++) {
             ChatRoomData mCrd = null;
@@ -217,7 +218,7 @@ public class HomeFragment extends Fragment {
                 int compare = nowDate.compareTo(mCrd.getPerformanceEndDate());
 
                 if (compare != 1) {
-                    rankNum.setText(String.valueOf(i + 1));
+                    rankNum.setText(String.valueOf(rank + 1));
                     Picasso.with(view.getContext())
                             .load(mCrd.getPerformanceImage())
                             .error(R.drawable.error_image)
@@ -241,6 +242,8 @@ public class HomeFragment extends Fragment {
                             getActivity().getIntent().putExtra("choose", "");
                         }
                     });
+
+                    rank++;
                 } else {
                     continue;
                 }
