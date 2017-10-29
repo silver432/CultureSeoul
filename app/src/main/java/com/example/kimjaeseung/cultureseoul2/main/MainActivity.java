@@ -69,12 +69,10 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        Log.d(TAG,"onCreate");
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (mFirebaseUser == null) {
-            Toast.makeText(this, "로그인을 해주세요.", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
@@ -126,7 +124,6 @@ public class MainActivity extends AppCompatActivity{
                             LoginManager.getInstance().logOut();
                             Intent i = new Intent(MainActivity.this, LoginActivity.class);
                             startActivity(i);
-                            Log.d(TAG, "logout firebase");
                         }
 
                         mDrawerLayout.closeDrawers();
@@ -170,7 +167,6 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG,"onDestroy");
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:paddingTop="15sp"
-        android:paddingBottom="15sp"
+        android:paddingTop="12sp"
+        android:paddingBottom="12sp"
         android:layout_marginBottom="100dp" />
 
 
