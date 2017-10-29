@@ -217,7 +217,7 @@ public class HomeFragment extends Fragment {
                 String nowDate = dateFormat.format(date);
                 int compare = nowDate.compareTo(mCrd.getPerformanceEndDate());
 
-                if (compare != 1) {
+                if (compare <= 0) {
                     rankNum.setText(String.valueOf(rank + 1));
                     Picasso.with(view.getContext())
                             .load(mCrd.getPerformanceImage())
@@ -242,10 +242,7 @@ public class HomeFragment extends Fragment {
                             getActivity().getIntent().putExtra("choose", "");
                         }
                     });
-
                     rank++;
-                } else {
-                    continue;
                 }
             }
         }
