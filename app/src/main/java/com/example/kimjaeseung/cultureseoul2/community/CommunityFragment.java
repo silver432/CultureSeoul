@@ -69,7 +69,7 @@ public class CommunityFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
-                PAGE_SELECT=tab.getPosition();
+                PAGE_SELECT = tab.getPosition();
             }
 
             @Override

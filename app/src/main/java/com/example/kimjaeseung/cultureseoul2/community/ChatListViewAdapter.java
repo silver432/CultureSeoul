@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * Created by kimjaeseung on 2017. 9. 24..
  */
 
-public class ChatListViewAdapter extends BaseAdapter{
+public class ChatListViewAdapter extends BaseAdapter {
     private ArrayList<ChatListItem> chatListItems = new ArrayList<>();
 
     @Override
@@ -27,7 +27,7 @@ public class ChatListViewAdapter extends BaseAdapter{
 
     @Override
     public Object getItem(int position) {
-        return chatListItems.get(position) ;
+        return chatListItems.get(position);
     }
 
     @Override
@@ -45,14 +45,14 @@ public class ChatListViewAdapter extends BaseAdapter{
             convertView = inflater.inflate(R.layout.community_listview_item, parent, false);
         }
 
-        ImageView photoImageView = (ImageView) convertView.findViewById(R.id.iv_community_photo) ;
-        TextView nameTextView = (TextView) convertView.findViewById(R.id.tv_community_name) ;
+        ImageView photoImageView = (ImageView) convertView.findViewById(R.id.iv_community_photo);
+        TextView nameTextView = (TextView) convertView.findViewById(R.id.tv_community_name);
 
         ChatListItem chatListViewItem = chatListItems.get(position);
 
         Picasso.with(convertView.getContext()) // 공연 이미지
                 .load(chatListViewItem.getPhoto())
-                .error(R.drawable.bubble_50dp)
+                .error(R.drawable.smile_50dp)
                 .fit()
                 .into(photoImageView);
         nameTextView.setText(chatListViewItem.getName());
@@ -60,7 +60,7 @@ public class ChatListViewAdapter extends BaseAdapter{
         return convertView;
     }
 
-    public void addItem(String name,String photo) {
+    public void addItem(String name, String photo) {
         ChatListItem item = new ChatListItem();
         item.setName(name);
         item.setPhoto(photo);

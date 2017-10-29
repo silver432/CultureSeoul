@@ -90,7 +90,7 @@ public class CommunityDateFragment extends Fragment implements ChatRoomAdapter.C
         setHasOptionsMenu(true);
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setIndeterminate(true);
-        progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#3666A5"),android.graphics.PorterDuff.Mode.MULTIPLY);
+        progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#3666A5"), android.graphics.PorterDuff.Mode.MULTIPLY);
         return view;
     }
 
@@ -105,8 +105,10 @@ public class CommunityDateFragment extends Fragment implements ChatRoomAdapter.C
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mChildEventListener!=null)mDatabaseReference.removeEventListener(mChildEventListener);
-        if (mValueEventListener!=null) mDatabaseReference.removeEventListener(mValueEventListener);
+        if (mChildEventListener != null)
+            mDatabaseReference.removeEventListener(mChildEventListener);
+        if (mValueEventListener != null)
+            mDatabaseReference.removeEventListener(mValueEventListener);
     }
 
     private void initView() {
@@ -252,7 +254,7 @@ public class CommunityDateFragment extends Fragment implements ChatRoomAdapter.C
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                     getContext());
             alertDialogBuilder.setIcon(R.drawable.send_button)
-                    .setTitle(chatRoomData.getRoomName()+"채팅방에 입장하시겠습니까?")
+                    .setTitle(chatRoomData.getRoomName() + "채팅방에 입장하시겠습니까?")
                     .setPositiveButton("입장", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -275,7 +277,7 @@ public class CommunityDateFragment extends Fragment implements ChatRoomAdapter.C
     }
 
     private boolean isUserInChatRoom(ChatRoomData chatRoomdData, FirebaseUser mUser) {
-        for (ChatPeople c:chatRoomdData.getChatPeoples()){
+        for (ChatPeople c : chatRoomdData.getChatPeoples()) {
             if (c.getUid().equals(mUser.getUid())) return true;
         }
         return false;

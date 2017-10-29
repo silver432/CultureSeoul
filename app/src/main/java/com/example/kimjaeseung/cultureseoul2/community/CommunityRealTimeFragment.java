@@ -75,7 +75,7 @@ public class CommunityRealTimeFragment extends Fragment implements ChatRoomAdapt
 
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setIndeterminate(true);
-        progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#3666A5"),android.graphics.PorterDuff.Mode.MULTIPLY);
+        progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#3666A5"), android.graphics.PorterDuff.Mode.MULTIPLY);
 
         return view;
     }
@@ -90,8 +90,10 @@ public class CommunityRealTimeFragment extends Fragment implements ChatRoomAdapt
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mChildEventListener!=null) mDatabaseReference.removeEventListener(mChildEventListener);
-        if (mValueEventListener!=null) mDatabaseReference.removeEventListener(mValueEventListener);
+        if (mChildEventListener != null)
+            mDatabaseReference.removeEventListener(mChildEventListener);
+        if (mValueEventListener != null)
+            mDatabaseReference.removeEventListener(mValueEventListener);
     }
 
     @Override
@@ -132,7 +134,7 @@ public class CommunityRealTimeFragment extends Fragment implements ChatRoomAdapt
                 if (mCurSearch == null) {
                     childAdd(chatRoomData, dataSnapshot);
                 } else {
-                    if (chatRoomData.getRoomName().toLowerCase().contains(mCurSearch.toLowerCase())||chatRoomData.getPerformanceName().toLowerCase().contains(mCurSearch)) {
+                    if (chatRoomData.getRoomName().toLowerCase().contains(mCurSearch.toLowerCase()) || chatRoomData.getPerformanceName().toLowerCase().contains(mCurSearch)) {
                         childAdd(chatRoomData, dataSnapshot);
                     }
                 }
@@ -229,7 +231,7 @@ public class CommunityRealTimeFragment extends Fragment implements ChatRoomAdapt
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                     getContext());
             alertDialogBuilder.setIcon(R.drawable.send_button)
-                    .setTitle(chatRoomData.getRoomName()+"채팅방에 입장하시겠습니까?")
+                    .setTitle(chatRoomData.getRoomName() + "채팅방에 입장하시겠습니까?")
                     .setPositiveButton("입장", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -252,7 +254,7 @@ public class CommunityRealTimeFragment extends Fragment implements ChatRoomAdapt
     }
 
     private boolean isUserInChatRoom(ChatRoomData chatRoomdData, FirebaseUser mUser) {
-        for (ChatPeople c:chatRoomdData.getChatPeoples()){
+        for (ChatPeople c : chatRoomdData.getChatPeoples()) {
             if (c.getUid().equals(mUser.getUid())) return true;
         }
         return false;

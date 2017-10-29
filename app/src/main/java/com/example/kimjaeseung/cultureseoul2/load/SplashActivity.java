@@ -26,11 +26,9 @@ public class SplashActivity extends Activity {
 
         mDialogFragment = new DialogFragment();
 
-        mGlobalApp.loadData(new LoadDataCallback()
-        {
+        mGlobalApp.loadData(new LoadDataCallback() {
             @Override
-            public void onSuccess()
-            {
+            public void onSuccess() {
                 // 로그인페이지 이동
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
 
@@ -38,8 +36,7 @@ public class SplashActivity extends Activity {
             }
 
             @Override
-            public void onFailure()
-            {
+            public void onFailure() {
                 // 네트워크 연결 안돼있을 시 dialog 띄우고 앱 종료
                 mDialogFragment.show(getFragmentManager(), "dialog");
             }

@@ -83,7 +83,8 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (chatEditText!=null&&textWatcher!=null) chatEditText.removeTextChangedListener(textWatcher);
+        if (chatEditText != null && textWatcher != null)
+            chatEditText.removeTextChangedListener(textWatcher);
     }
 
     @Override
@@ -309,7 +310,8 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ChatA
         }
 
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (!TextUtils.isEmpty(chatEditText.getText())) chatButton.setBackgroundColor(Color.YELLOW);
+            if (!TextUtils.isEmpty(chatEditText.getText()))
+                chatButton.setBackgroundColor(Color.YELLOW);
             else chatButton.setBackgroundColor(Color.LTGRAY);
         }
     };

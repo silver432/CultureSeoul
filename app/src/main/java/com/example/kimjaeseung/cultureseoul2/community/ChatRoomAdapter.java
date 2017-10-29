@@ -84,7 +84,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
         chatRoomDataList.remove(position);
     }
 
-    public void removeItemList(){
+    public void removeItemList() {
         chatRoomDataList.clear();
     }
 
@@ -122,7 +122,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
                     .into(mPerformanceImage);
             mRoomName.setText(chatRoomData.getRoomName());
             mPerformanceName.setText(chatRoomData.getPerformanceName());
-            mRoomPeople.setText("참여인원: "+chatRoomData.getRoomPeople());
+            mRoomPeople.setText("참여인원: " + chatRoomData.getRoomPeople());
             mRoomDay.setText(chatRoomData.getRoomDay());
             mRoomday2.setText(calculateDay(chatRoomData.getRoomDay()));
             mRoomTime.setText(chatRoomData.getRoomTime());
@@ -160,8 +160,8 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
             }
         }
     }
-    public void setFilter(List<ChatRoomData> newList)
-    {
+
+    public void setFilter(List<ChatRoomData> newList) {
         chatRoomDataList = new ArrayList<>();
         chatRoomDataList.addAll(newList);
         notifyDataSetChanged();

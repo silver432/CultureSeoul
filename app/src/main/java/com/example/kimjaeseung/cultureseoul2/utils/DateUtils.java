@@ -8,10 +8,8 @@ import java.util.Date;
  * Created by heo04 on 2017-08-26.
  */
 
-public class DateUtils
-{
-    public static String dateToString(Date newDate)
-    {
+public class DateUtils {
+    public static String dateToString(Date newDate) {
         DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
         String tempDate = sdFormat.format(newDate);
         return tempDate;

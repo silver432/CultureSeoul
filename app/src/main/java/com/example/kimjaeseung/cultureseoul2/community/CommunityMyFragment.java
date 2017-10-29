@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
  * Created by kimjaeseung on 2017. 10. 4..
  */
 
-public class CommunityMyFragment extends Fragment implements ChatRoomAdapter.ChatRoomAdapterOnClickHandler{
+public class CommunityMyFragment extends Fragment implements ChatRoomAdapter.ChatRoomAdapterOnClickHandler {
     private static final String TAG = CommunityMyFragment.class.getSimpleName();
     private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference("room");
@@ -61,7 +61,7 @@ public class CommunityMyFragment extends Fragment implements ChatRoomAdapter.Cha
         ButterKnife.bind(this, view);
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setIndeterminate(true);
-        progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#3666A5"),android.graphics.PorterDuff.Mode.MULTIPLY);
+        progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#3666A5"), android.graphics.PorterDuff.Mode.MULTIPLY);
         return view;
     }
 
@@ -75,8 +75,10 @@ public class CommunityMyFragment extends Fragment implements ChatRoomAdapter.Cha
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mChildEventListener!=null) mDatabaseReference.removeEventListener(mChildEventListener);
-        if (mValueEventListener!=null) mDatabaseReference.removeEventListener(mValueEventListener);
+        if (mChildEventListener != null)
+            mDatabaseReference.removeEventListener(mChildEventListener);
+        if (mValueEventListener != null)
+            mDatabaseReference.removeEventListener(mValueEventListener);
     }
 
     private void initFirebase() {
@@ -91,7 +93,7 @@ public class CommunityMyFragment extends Fragment implements ChatRoomAdapter.Cha
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         ChatPeople chatPeople = dataSnapshot.getValue(ChatPeople.class);
-                        if (chatPeople.getUid().equals(mUser.getUid())){
+                        if (chatPeople.getUid().equals(mUser.getUid())) {
                             chatRoomDataList.add(chatRoomData);
                             mAdapter.addItem(chatRoomData);
                             mAdapter.notifyDataSetChanged();

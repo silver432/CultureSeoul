@@ -21,8 +21,7 @@ import static com.example.kimjaeseung.cultureseoul2.utils.DateUtils.dateToString
  * Created by heo04 on 2017-07-12.
  */
 
-public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.ViewHolder>
-{
+public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.ViewHolder> {
     private static final String TAG = PerformanceAdapter.class.getSimpleName();
 
     private List<CultureEvent> cultureEventList = new ArrayList<>();
@@ -32,13 +31,11 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
     private CultureEvent mCultureEvent;
     private int mPosition;
 
-    public interface PerformanceAdapterOnClickHandler
-    {
+    public interface PerformanceAdapterOnClickHandler {
         void onClick(CultureEvent cultureEvent);
     }
 
-    public PerformanceAdapter(Context context, PerformanceAdapterOnClickHandler handler, List<CultureEvent> cultureEventList)
-    {
+    public PerformanceAdapter(Context context, PerformanceAdapterOnClickHandler handler, List<CultureEvent> cultureEventList) {
         mContext = context;
         mPerformanceHandler = handler;
         this.cultureEventList = cultureEventList;
@@ -46,8 +43,7 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
 
     /* RecyclerView를 ViewHolder객체로 인스턴스화 */
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
-    {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.perform_list_item;
         LayoutInflater inflater = LayoutInflater.from(context); // itemview를 inflate
@@ -62,38 +58,32 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
 
     /* RecyclerView가 데이터 소스에서 가져온 정보를 뷰에 넣을 때 사용 */
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position)
-    {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bind(cultureEventList.get(position));
     }
 
     /* 데이터 소스의 아이템 개수를 반환 */
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return cultureEventList.size();
     }
 
-    public void setItemList(List<CultureEvent> list)
-    {
+    public void setItemList(List<CultureEvent> list) {
         cultureEventList.clear();
         cultureEventList.addAll(list);
     }
 
-    public void notifyAdapter()
-    {
+    public void notifyAdapter() {
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
-    {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView listItemImageView;
         TextView listItemTitleView;
         TextView listItemDateView;
 
 
-        public ViewHolder(final View itemView)
-        {
+        public ViewHolder(final View itemView) {
             super(itemView);
 
             listItemImageView = (ImageView) itemView.findViewById(R.id.iv_item_image);
@@ -104,13 +94,12 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
             itemView.setOnClickListener(this);  // 클릭 이벤트
         }
 
-        public void bind(CultureEvent cultureEvent)
-        {
+        public void bind(CultureEvent cultureEvent) {
             Picasso.with(itemView.getContext()) // 공연 이미지
-                .load(cultureEvent.getMainImg().toLowerCase())
-                .error(R.drawable.error_image)
-                .fit()
-                .into(listItemImageView);
+                    .load(cultureEvent.getMainImg().toLowerCase())
+                    .error(R.drawable.error_image)
+                    .fit()
+                    .into(listItemImageView);
 
             listItemTitleView.setText(cultureEvent.getTitle());    // 공연 제목
 
@@ -118,16 +107,15 @@ public class PerformanceAdapter extends RecyclerView.Adapter<PerformanceAdapter.
         }
 
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             int position = getAdapterPosition();
             mCultureEvent = cultureEventList.get(position);
             mPerformanceHandler.onClick(mCultureEvent);
         }
     }
+
     /* text 검색 filter */
-    public void setFilter(List<CultureEvent> newList)
-    {
+    public void setFilter(List<CultureEvent> newList) {
         cultureEventList = new ArrayList<>();
         cultureEventList.addAll(newList);
         notifyDataSetChanged();

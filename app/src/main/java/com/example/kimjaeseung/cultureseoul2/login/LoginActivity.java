@@ -43,7 +43,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
 
@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     //Firebase - Authentication
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
-    private static final int GOOGLE_SIGN_IN=1001;
+    private static final int GOOGLE_SIGN_IN = 1001;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
 
@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 Log.d(TAG, "token check : " + loginResult.getAccessToken());
                 handleFacebookAccessToken(loginResult.getAccessToken());
-                Intent i = new Intent(LoginActivity.this,MainActivity.class);
+                Intent i = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(i);
             }
 
@@ -97,13 +97,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
 
-        mAuthListener = new FirebaseAuth.AuthStateListener(){
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    Intent i = new Intent(LoginActivity.this,MainActivity.class);
+                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(i);
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
@@ -112,9 +112,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }
             }
         };
-
-
-
 
 
     }
@@ -136,7 +133,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
-    private void initFirebaseAuth(){
+    private void initFirebaseAuth() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -149,8 +146,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     @OnClick({R.id.login_button_google})
-    public void mOnClick(View view){
-        switch (view.getId()){
+    public void mOnClick(View view) {
+        switch (view.getId()) {
             case R.id.login_button_google:
                 signIn();
                 break;
@@ -196,7 +193,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent i = new Intent(LoginActivity.this,MainActivity.class);
+                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(i);
 //                            updateUI(user);
                         } else {
@@ -256,9 +253,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         long tempTime = System.currentTimeMillis();
         long intervalTime = tempTime - backPressedTime;
 
-        if( 0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime ){
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
             ActivityCompat.finishAffinity(this);
-        }else{
+        } else {
             backPressedTime = tempTime;
             Toast.makeText(getApplicationContext(), "한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT).show();
         }

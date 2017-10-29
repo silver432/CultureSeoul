@@ -23,30 +23,30 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by heo04 on 2017-08-09.
  */
 
-public class PerformanceFragment extends Fragment
-{
+public class PerformanceFragment extends Fragment {
     private final static String TAG = "PerformanceFragment";
 
-    public PerformanceFragment() {}
+    public PerformanceFragment() {
+    }
 
-    public static Fragment getInstance()
-    {
+    public static Fragment getInstance() {
         PerformanceFragment performanceFragment = new PerformanceFragment();
         return performanceFragment;
     }
 
     static int PageFlag = 0;
 
-    @Bind(R.id.tl_view_pager) TabLayout tabLayout;
-    @Bind(R.id.vp_view_pager) ViewPager viewPager;
+    @Bind(R.id.tl_view_pager)
+    TabLayout tabLayout;
+    @Bind(R.id.vp_view_pager)
+    ViewPager viewPager;
     GlobalApp mGlobalApp;
 
     private static int PAGE_NUMBER = 3;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //setHasOptionsMenu(true);
@@ -62,8 +62,7 @@ public class PerformanceFragment extends Fragment
         return view;
     }
 
-    public void makePager()
-    {
+    public void makePager() {
         tabLayout.addTab(tabLayout.newTab().setText("실시간"));
         tabLayout.addTab(tabLayout.newTab().setText("장르별"));
         tabLayout.addTab(tabLayout.newTab().setText("날짜별"));
@@ -75,48 +74,40 @@ public class PerformanceFragment extends Fragment
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         if (PageFlag == 1) {
-            viewPager.setCurrentItem( 1 );
+            viewPager.setCurrentItem(1);
             PageFlag = 0;
         }
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener()
-        {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab)
-            {
+            public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab)
-            {
+            public void onTabUnselected(TabLayout.Tab tab) {
 
             }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab)
-            {
+            public void onTabReselected(TabLayout.Tab tab) {
 
             }
         });
     }
 
     /* ViewPager Adapter */
-    private class PagerAdapter extends FragmentStatePagerAdapter
-    {
+    private class PagerAdapter extends FragmentStatePagerAdapter {
         private int tabCount;
 
-        public PagerAdapter(FragmentManager fm, int tabCount)
-        {
+        public PagerAdapter(FragmentManager fm, int tabCount) {
             super(fm);
             this.tabCount = tabCount;
         }
 
         @Override
-        public Fragment getItem(int position)
-        {
-            switch(position)
-            {
+        public Fragment getItem(int position) {
+            switch (position) {
                 case 0:
                     return new PerformanceRealTimeFragment();
                 case 1:
@@ -129,8 +120,7 @@ public class PerformanceFragment extends Fragment
         }
 
         @Override
-        public int getCount()
-        {
+        public int getCount() {
             return PAGE_NUMBER;
         }
     }

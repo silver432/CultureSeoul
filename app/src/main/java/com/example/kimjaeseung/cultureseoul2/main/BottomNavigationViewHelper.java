@@ -12,19 +12,15 @@ import java.lang.reflect.Field;
  */
 
 /* BottomNavigationView 항목 네개 이상이 때 shift모드 제거 */
-public class BottomNavigationViewHelper
-{
-    public static void disableShiftMode(BottomNavigationView view)
-    {
+public class BottomNavigationViewHelper {
+    public static void disableShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
-        try
-        {
+        try {
             Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
             shiftingMode.setAccessible(true);
             shiftingMode.setBoolean(menuView, false);
             shiftingMode.setAccessible(false);
-            for (int i = 0; i < menuView.getChildCount(); i++)
-            {
+            for (int i = 0; i < menuView.getChildCount(); i++) {
                 BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
                 //noinspection RestrictedApi
                 item.setShiftingMode(false);
@@ -32,11 +28,9 @@ public class BottomNavigationViewHelper
                 //noinspection RestrictedApi
                 item.setChecked(item.getItemData().isChecked());
             }
-        } catch (NoSuchFieldException e)
-        {
+        } catch (NoSuchFieldException e) {
             Log.e("BNVHelper", "Unable to get shift mode field", e);
-        } catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             Log.e("BNVHelper", "Unable to change value of shift mode", e);
         }
     }

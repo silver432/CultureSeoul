@@ -33,6 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
 import static com.example.kimjaeseung.cultureseoul2.utils.DateUtils.dateToString;
 
 import java.util.Calendar;
@@ -97,8 +98,8 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
         super.onResume();
         mRoomNameEditText.setText(mRoomName);
         tvLocation.setText(mLocationName);
-        if (mYear!=0)tvDay.setText(mYear + "-" + formatDay(mMonth) + "-" + formatDay(mDay));
-        if (!AM_PM.equals(""))tvTime.setText(AM_PM + " " + mHour + ":" + formatDay(mMinute));
+        if (mYear != 0) tvDay.setText(mYear + "-" + formatDay(mMonth) + "-" + formatDay(mDay));
+        if (!AM_PM.equals("")) tvTime.setText(AM_PM + " " + mHour + ":" + formatDay(mMinute));
         tvPerformance.setText(mPerformance);
     }
 
@@ -119,7 +120,7 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
         }
     }
 
-    @OnClick({R.id.tv_community_add_location,R.id.tv_community_add_time,R.id.tv_community_add_day,R.id.tv_community_add_performance,R.id.tv_community_add_performance_image, R.id.tv_community_add_time_image, R.id.tv_community_add_day_image, R.id.community_btn_chatroomcreate, R.id.tv_community_add_location_image})
+    @OnClick({R.id.tv_community_add_location, R.id.tv_community_add_time, R.id.tv_community_add_day, R.id.tv_community_add_performance, R.id.tv_community_add_performance_image, R.id.tv_community_add_time_image, R.id.tv_community_add_day_image, R.id.community_btn_chatroomcreate, R.id.tv_community_add_location_image})
     public void mOnClick(View v) {
         switch (v.getId()) {
             case R.id.community_btn_chatroomcreate:
@@ -162,14 +163,14 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
                 mYear = calendar.get(Calendar.YEAR);
                 mMonth = calendar.get(Calendar.MONTH);
                 mDay = calendar.get(Calendar.DAY_OF_MONTH);
-                new DatePickerDialog(AddChatRoomActivity.this, R.style.DatePicker,mDateSetListener, mYear, mMonth, mDay).show();
+                new DatePickerDialog(AddChatRoomActivity.this, R.style.DatePicker, mDateSetListener, mYear, mMonth, mDay).show();
                 break;
             case R.id.tv_community_add_time:
             case R.id.tv_community_add_time_image:
                 Calendar calendar1 = new GregorianCalendar();
                 mHour = calendar1.get(Calendar.HOUR_OF_DAY);
                 mMinute = calendar1.get(Calendar.MINUTE);
-                new TimePickerDialog(AddChatRoomActivity.this,R.style.DatePicker, mTimeSetListener, mHour, mMinute, false).show();
+                new TimePickerDialog(AddChatRoomActivity.this, R.style.DatePicker, mTimeSetListener, mHour, mMinute, false).show();
                 break;
             case R.id.tv_community_add_performance:
             case R.id.tv_community_add_performance_image:
@@ -257,7 +258,7 @@ public class AddChatRoomActivity extends FragmentActivity implements OnConnectio
 
     private void initStaticValue() {
         mYear = mMonth = mDay = mHour = mMinute = 0;
-        AM_PM = mLocation = mRoomName = mLocationName =mPerformance= "";
+        AM_PM = mLocation = mRoomName = mLocationName = mPerformance = "";
     }
 
     private String formatDay(int day) {
