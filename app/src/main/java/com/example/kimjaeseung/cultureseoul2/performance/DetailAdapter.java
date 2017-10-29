@@ -15,35 +15,29 @@ import java.util.ArrayList;
  * Created by heo04 on 2017-07-23.
  */
 
-public class DetailAdapter extends BaseAdapter
-{
+public class DetailAdapter extends BaseAdapter {
     private ArrayList<DetailViewItem> mDetailItems = new ArrayList<>();
 
     @Override
-    public int getCount()
-    {
+    public int getCount() {
         return mDetailItems.size();
     }
 
     @Override
-    public DetailViewItem getItem(int position)
-    {
+    public DetailViewItem getItem(int position) {
         return mDetailItems.get(position);
     }
 
     @Override
-    public long getItemId(int position)
-    {
+    public long getItemId(int position) {
         return 0;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
-    {
+    public View getView(int position, View convertView, ViewGroup parent) {
         Context context = parent.getContext();
 
-        if (convertView == null)
-        {
+        if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.detail_list_item, parent, false);
         }
@@ -59,8 +53,7 @@ public class DetailAdapter extends BaseAdapter
         return convertView;
     }
 
-    public void addItem(String type, String content)
-    {
+    public void addItem(String type, String content) {
 
         DetailViewItem mDetailItem = new DetailViewItem();
 

@@ -33,7 +33,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:background="@color/performTab"
-            android:src="@drawable/ic_location_on_white_48dp" />
+            android:src="@drawable/add_chatroom_location" />
 
         <LinearLayout
             android:layout_width="200dp"
@@ -42,15 +42,15 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:background="@color/chat_room"
+                android:layout_height="30dp"
+                android:background="#E5E5E5"
                 android:gravity="center"
                 android:text="모임장소" />
 
             <TextView
                 android:id="@+id/tv_community_add_location"
                 android:layout_width="match_parent"
-                android:layout_height="59dp"
+                android:layout_height="49dp"
                 android:gravity="center" />
 
             <TextView
@@ -63,7 +63,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
@@ -72,7 +72,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:background="@color/performTab"
-            android:src="@drawable/ic_today_white_48dp" />
+            android:src="@drawable/add_chatroom_date" />
 
         <LinearLayout
             android:layout_width="200dp"
@@ -81,15 +81,15 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:background="@color/chat_room"
+                android:layout_height="30dp"
+                android:background="#E5E5E5"
                 android:gravity="center"
                 android:text="날짜선택" />
 
             <TextView
                 android:id="@+id/tv_community_add_day"
                 android:layout_width="match_parent"
-                android:layout_height="59dp"
+                android:layout_height="49dp"
                 android:gravity="center" />
 
             <TextView
@@ -103,7 +103,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -111,7 +111,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:background="@color/performTab"
-            android:src="@drawable/ic_av_timer_white_48dp" />
+            android:src="@drawable/add_chatroom_time" />
 
         <LinearLayout
             android:layout_width="200dp"
@@ -120,15 +120,15 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:background="@color/chat_room"
+                android:layout_height="30dp"
+                android:background="#E5E5E5"
                 android:gravity="center"
                 android:text="시간선택" />
 
             <TextView
                 android:id="@+id/tv_community_add_time"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="49dp"
                 android:gravity="center" />
 
             <TextView
@@ -142,7 +142,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -150,7 +150,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:background="@color/performTab"
-            android:src="@drawable/add_performance" />
+            android:src="@drawable/add_chatroom_performance" />
 
         <LinearLayout
             android:layout_width="200dp"
@@ -159,15 +159,16 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:background="@color/chat_room"
+                android:layout_height="30dp"
+                android:background="#E5E5E5"
                 android:gravity="center"
                 android:text="공연선택" />
 
             <TextView
                 android:id="@+id/tv_community_add_performance"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:maxLines="2"
+                android:layout_height="49dp"
                 android:gravity="center" />
 
             <TextView
@@ -183,7 +184,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/ic_check_white_48dp"
         app:civ_fill_color="@color/chat_room" />
 

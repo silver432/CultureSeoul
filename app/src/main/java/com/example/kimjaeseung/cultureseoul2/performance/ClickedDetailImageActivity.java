@@ -15,9 +15,9 @@ import butterknife.ButterKnife;
  * Created by heo04 on 2017-10-23.
  */
 
-public class ClickedDetailImageActivity extends AppCompatActivity
-{
-    @Bind(R.id.iv_detail_image_clicked) ImageView mClickedImage;
+public class ClickedDetailImageActivity extends AppCompatActivity {
+    @Bind(R.id.iv_detail_image_clicked)
+    ImageView mClickedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

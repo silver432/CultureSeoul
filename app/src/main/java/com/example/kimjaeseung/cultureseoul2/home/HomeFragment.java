@@ -40,10 +40,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -192,6 +194,7 @@ public class HomeFragment extends Fragment {
                         .compareTo(((Map.Entry<String, Integer>) o1).getValue());
             }
         });
+        int rank = 0;
         int sizeOfRank = a.length > 5 ? 5 : a.length;
         for (int i = 0; i < sizeOfRank; i++) {
             ChatRoomData mCrd = null;
@@ -208,30 +211,42 @@ public class HomeFragment extends Fragment {
             TextView rankContext = (TextView) view.findViewById(R.id.tv_home_rank_perform_context);
 
             if (mCrd != null) {
-                rankNum.setText(String.valueOf(i + 1));
-                Picasso.with(view.getContext())
-                        .load(mCrd.getPerformanceImage())
-                        .error(R.drawable.error_image)
-                        .fit()
-                        .into(iv);
-                rankContext.setText(mCrd.getPerformanceStartDate() + " ~ " + mCrd.getPerformanceEndDate() + "\n\n" + mCrd.getPerformanceGenre() + " / " + mCrd.getPerformanceLocation());
-                rankName.setText(mCrd.getPerformanceName());
-                rankName.setSelected(true);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                long now = System.currentTimeMillis();
+                Date date = new Date(now);
+                String nowDate = dateFormat.format(date);
+                int compare = nowDate.compareTo(mCrd.getPerformanceEndDate());
 
-                linearLayout.addView(view);
+                if (compare != 1) {
+                    rankNum.setText(String.valueOf(rank + 1));
+                    Picasso.with(view.getContext())
+                            .load(mCrd.getPerformanceImage())
+                            .error(R.drawable.error_image)
+                            .fit()
+                            .into(iv);
+                    rankContext.setText(mCrd.getPerformanceStartDate() + " ~ " + mCrd.getPerformanceEndDate() + "\n\n" + mCrd.getPerformanceGenre() + " / " + mCrd.getPerformanceLocation());
+                    rankName.setText(mCrd.getPerformanceName());
+                    rankName.setSelected(true);
 
-                final ChatRoomData finalMCrd = mCrd;
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        cultureEvent = findCulture(finalMCrd.getPerformanceCode());
-                        Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
-                        startToDetailActivity.putExtra("key", cultureEvent);
-                        startActivity(startToDetailActivity);
+                    linearLayout.addView(view);
 
-                        getActivity().getIntent().putExtra("choose", "");
-                    }
-                });
+                    final ChatRoomData finalMCrd = mCrd;
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            cultureEvent = findCulture(finalMCrd.getPerformanceCode());
+                            Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
+                            startToDetailActivity.putExtra("key", cultureEvent);
+                            startActivity(startToDetailActivity);
+
+                            getActivity().getIntent().putExtra("choose", "");
+                        }
+                    });
+
+                    rank++;
+                } else {
+                    continue;
+                }
             }
         }
     }

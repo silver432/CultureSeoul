@@ -33,8 +33,8 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="70dp"
+                    android:layout_height="39dp"
                     android:layout_gravity="center"
                     android:src="@drawable/title_image_moondeuk" />
             </android.support.v7.widget.Toolbar>
@@ -55,8 +55,8 @@
             android:layout_height="wrap_content"
             android:background="?android:attr/windowBackground"
             app:itemBackground="@color/titlebackground"
-            app:itemIconTint="@color/white"
-            app:itemTextColor="@color/white"
+            app:itemIconTint="@drawable/bottom_navigation_tab"
+            app:itemTextColor="@drawable/bottom_navigation_tab"
             app:layout_anchor="@id/main_fragment_container"
             app:layout_anchorGravity="bottom"
             app:layout_behavior=""

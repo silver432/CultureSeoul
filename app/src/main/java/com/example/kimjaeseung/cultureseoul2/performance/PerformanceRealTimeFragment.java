@@ -31,8 +31,7 @@ import butterknife.ButterKnife;
  * Created by kimjaeseung on 2017. 7. 11..
  */
 
-public class PerformanceRealTimeFragment extends Fragment implements PerformanceAdapter.PerformanceAdapterOnClickHandler, SearchView.OnQueryTextListener
-{
+public class PerformanceRealTimeFragment extends Fragment implements PerformanceAdapter.PerformanceAdapterOnClickHandler, SearchView.OnQueryTextListener {
     private final static String TAG = "PRTF";
     private PerformanceAdapter mAdapter;
 
@@ -43,20 +42,17 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
     SearchView mSearchView;
     MenuItem mMenuItem;
 
-    public PerformanceRealTimeFragment()
-    {
+    public PerformanceRealTimeFragment() {
     }
 
-    public static Fragment getInstance()
-    {
+    public static Fragment getInstance() {
         PerformanceRealTimeFragment performanceRealTimeFragment = new PerformanceRealTimeFragment();
         return performanceRealTimeFragment;
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_performance_realtime, container, false);
 
         ButterKnife.bind(this, view);
@@ -69,8 +65,7 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
-    {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -84,18 +79,15 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
     }
 
     @Override
-    public void onClick(CultureEvent cultureEvent)
-    {
+    public void onClick(CultureEvent cultureEvent) {
         //채팅방추가를 위해 intent 넘어옴
         String choose = getActivity().getIntent().getStringExtra("choose");
-        if (choose != null && choose.equals(AddChatRoomActivity.class.getSimpleName()))
-        {
+        if (choose != null && choose.equals(AddChatRoomActivity.class.getSimpleName())) {
             Intent intent = new Intent(getActivity(), AddChatRoomActivity.class);
             intent.putExtra("key", cultureEvent);
             startActivity(intent);
 
-        } else
-        {
+        } else {
             Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
             startToDetailActivity.putExtra("key", cultureEvent);
             startActivity(startToDetailActivity);
@@ -103,15 +95,13 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
         getActivity().getIntent().putExtra("choose", "");
     }
 
-    private void setData()
-    {
+    private void setData() {
         mAdapter.setItemList(mGlobalApp.getmList());
         mAdapter.notifyAdapter();
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_performance, menu);
         mMenuItem = menu.findItem(R.id.item_search);
@@ -119,20 +109,18 @@ public class PerformanceRealTimeFragment extends Fragment implements Performance
         mSearchView.setOnQueryTextListener(this);
     }
 
+
     @Override
-    public boolean onQueryTextSubmit(String query)
-    {
+    public boolean onQueryTextSubmit(String query) {
         return false;
     }
 
     /* 필터에서 텍스트 검색 처리 */
     @Override
-    public boolean onQueryTextChange(String newText)
-    {
+    public boolean onQueryTextChange(String newText) {
         newText = newText.toLowerCase();
         List<CultureEvent> newList = new ArrayList<>();
-        for (CultureEvent cultureEvent : mCultureEventLIst)
-        {
+        for (CultureEvent cultureEvent : mCultureEventLIst) {
             String name = cultureEvent.getTitle().toLowerCase();
             if (name.contains(newText))
                 newList.add(cultureEvent);

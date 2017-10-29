@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by kimjaeseung on 2017. 9. 24..
  */
 
-public class ChatPeople implements Serializable{
+public class ChatPeople implements Serializable {
     private String uid;
     private String name;
     private String email;

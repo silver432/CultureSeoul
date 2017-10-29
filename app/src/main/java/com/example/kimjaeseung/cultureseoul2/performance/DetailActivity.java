@@ -24,17 +24,20 @@ import static com.example.kimjaeseung.cultureseoul2.utils.DateUtils.dateToString
  * Created by heo04 on 2017-07-22.
  */
 
-public class DetailActivity extends AppCompatActivity
-{
-    @Bind(R.id.btn_detail_back) Button mButtonBack;
-    @Bind(R.id.tv_detail_title) TextView mDetailTitle;
-    @Bind(R.id.iv_detail_image) ImageView mDetailImage;
-    @Bind(R.id.lv_detail) ListView mDetailLIst;
-    @Bind(R.id.btn_detail_reserve) Button mButtonReserve;
+public class DetailActivity extends AppCompatActivity {
+    @Bind(R.id.btn_detail_back)
+    Button mButtonBack;
+    @Bind(R.id.tv_detail_title)
+    TextView mDetailTitle;
+    @Bind(R.id.iv_detail_image)
+    ImageView mDetailImage;
+    @Bind(R.id.lv_detail)
+    ListView mDetailLIst;
+    @Bind(R.id.btn_detail_reserve)
+    Button mButtonReserve;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
@@ -42,8 +45,7 @@ public class DetailActivity extends AppCompatActivity
         Intent intent = getIntent();
         final CultureEvent cultureEvent = (CultureEvent) intent.getSerializableExtra("key");
 
-        mButtonBack.setOnClickListener(new View.OnClickListener()
-        {
+        mButtonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -60,8 +62,7 @@ public class DetailActivity extends AppCompatActivity
                 .error(R.drawable.error_image)
                 .into(mDetailImage);
 
-        mDetailImage.setOnClickListener(new View.OnClickListener()
-        {
+        mDetailImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {   // 클릭하면 원본 크기 이미지로
                 Intent intent = new Intent(DetailActivity.this, ClickedDetailImageActivity.class);
@@ -75,7 +76,7 @@ public class DetailActivity extends AppCompatActivity
         mDetailLIst.setAdapter(mDetailAdapter);
         mDetailLIst.setDivider(null);
 
-        mDetailAdapter.addItem("기간 : " , dateToString(cultureEvent.getStartDate()) + " ~ " + dateToString(cultureEvent.getEndDate()));
+        mDetailAdapter.addItem("기간 : ", dateToString(cultureEvent.getStartDate()) + " ~ " + dateToString(cultureEvent.getEndDate()));
         mDetailAdapter.addItem("시간 : ", cultureEvent.getTime());
         mDetailAdapter.addItem("장소 : ", cultureEvent.getPlace());
         mDetailAdapter.addItem("이용대상 : ", cultureEvent.getUseTrgt());
@@ -83,13 +84,12 @@ public class DetailActivity extends AppCompatActivity
         mDetailAdapter.addItem("주최 : ", cultureEvent.getSponsor());
         mDetailAdapter.addItem("문의 : ", cultureEvent.getInquiry());
 
-        mButtonReserve.setOnClickListener(new View.OnClickListener()
-        {
+        mButtonReserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 String homeURL = cultureEvent.getOrgLink();
-                if(homeURL.charAt(0) == ' ')
+                if (homeURL.charAt(0) == ' ')
                     homeURL = homeURL.substring(1);
                 intent.setData(Uri.parse(homeURL));
                 startActivity(intent);

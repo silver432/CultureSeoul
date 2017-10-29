@@ -6,8 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.Date;
 
-public class CultureEvent implements Serializable
-{
+public class CultureEvent implements Serializable {
 
     @SerializedName("CULTCODE")
     private long cultCode;
@@ -58,12 +57,10 @@ public class CultureEvent implements Serializable
     @SerializedName("GCODE")
     private String gCode;
 
-    public CultureEvent()
-    {
+    public CultureEvent() {
     }
 
-    public CultureEvent(long cultCode, long subjCode, String codeName, String title, Date startDate, Date endDate, String time, String place, String orgLink, String mainImg, String homePage, String useTrgt, String useFee, String sponsor, String inquiry, String support, String etcDesc, String ageLimit, String isFree, String ticket, String program)
-    {
+    public CultureEvent(long cultCode, long subjCode, String codeName, String title, Date startDate, Date endDate, String time, String place, String orgLink, String mainImg, String homePage, String useTrgt, String useFee, String sponsor, String inquiry, String support, String etcDesc, String ageLimit, String isFree, String ticket, String program) {
         this.cultCode = cultCode;
         this.subjCode = subjCode;
         this.codeName = codeName;
@@ -87,208 +84,175 @@ public class CultureEvent implements Serializable
         this.program = program;
     }
 
-    public long getCultCode()
-    {
+    public long getCultCode() {
         return cultCode;
     }
 
-    public void setCultCode(long cultCode)
-    {
+    public void setCultCode(long cultCode) {
         this.cultCode = cultCode;
     }
 
-    public long getSubjCode()
-    {
+    public long getSubjCode() {
         return subjCode;
     }
 
-    public void setSubjCode(long subjCode)
-    {
+    public void setSubjCode(long subjCode) {
         this.subjCode = subjCode;
     }
 
-    public String getCodeName()
-    {
+    public String getCodeName() {
         return codeName;
     }
 
-    public void setCodeName(String codeName)
-    {
+    public void setCodeName(String codeName) {
         this.codeName = codeName;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         title = title.replaceAll("&#39;", "\'");
         title = title.replaceAll("&quot;", "\"");
         return title;
     }
 
-    public void setTitle(String title)
-    {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public Date getStartDate() { return startDate; }
+    public Date getStartDate() {
+        return startDate;
+    }
 
-    public void setStartDate(Date startDate) { this.startDate = startDate; }
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
-    public Date getEndDate() { return endDate; }
+    public Date getEndDate() {
+        return endDate;
+    }
 
-    public void setEndDate(Date endDate)
-    {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    public String getTime()
-    {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(String time)
-    {
+    public void setTime(String time) {
         this.time = time;
     }
 
-    public String getPlace()
-    {
+    public String getPlace() {
         return place;
     }
 
-    public void setPlace(String place)
-    {
+    public void setPlace(String place) {
         this.place = place;
     }
 
-    public String getOrgLink()
-    {
+    public String getOrgLink() {
         return orgLink;
     }
 
-    public void setOrgLink(String orgLink)
-    {
+    public void setOrgLink(String orgLink) {
         this.orgLink = orgLink;
     }
 
-    public String getMainImg()
-    {
+    public String getMainImg() {
         return mainImg;
     }
 
-    public void setMainImg(String mainImg)
-    {
+    public void setMainImg(String mainImg) {
         this.mainImg = mainImg;
     }
 
-    public String getHomePage()
-    {
+    public String getHomePage() {
         return homePage;
     }
 
-    public void setHomePage(String homePage)
-    {
+    public void setHomePage(String homePage) {
         this.homePage = homePage;
     }
 
-    public String getUseTrgt()
-    {
+    public String getUseTrgt() {
         return useTrgt;
     }
 
-    public void setUseTrgt(String useTrgt)
-    {
+    public void setUseTrgt(String useTrgt) {
         this.useTrgt = useTrgt;
     }
 
-    public String getUseFee()
-    {
+    public String getUseFee() {
         useFee = useFee.replaceAll("&#39;", "\'");
         useFee = useFee.replaceAll("&quot;", "\"");
         return useFee;
     }
 
-    public void setUseFee(String useFee)
-    {
+    public void setUseFee(String useFee) {
         this.useFee = useFee;
     }
 
-    public String getSponsor()
-    {
+    public String getSponsor() {
         return sponsor;
     }
 
-    public void setSponsor(String sponsor)
-    {
+    public void setSponsor(String sponsor) {
         this.sponsor = sponsor;
     }
 
-    public String getInquiry()
-    {
+    public String getInquiry() {
         return inquiry;
     }
 
-    public void setInquiry(String inquiry)
-    {
+    public void setInquiry(String inquiry) {
         this.inquiry = inquiry;
     }
 
-    public String getSupport()
-    {
+    public String getSupport() {
         return support;
     }
 
-    public void setSupport(String support)
-    {
+    public void setSupport(String support) {
         this.support = support;
     }
 
-    public String getEtcDesc()
-    {
+    public String getEtcDesc() {
         return etcDesc;
     }
 
-    public void setEtcDesc(String etcDesc)
-    {
+    public void setEtcDesc(String etcDesc) {
         this.etcDesc = etcDesc;
     }
 
-    public String getAgeLimit()
-    {
+    public String getAgeLimit() {
         return ageLimit;
     }
 
-    public void setAgeLimit(String ageLimit)
-    {
+    public void setAgeLimit(String ageLimit) {
         this.ageLimit = ageLimit;
     }
 
-    public String getIsFree()
-    {
+    public String getIsFree() {
         return isFree;
     }
 
-    public void setIsFree(String isFree)
-    {
+    public void setIsFree(String isFree) {
         this.isFree = isFree;
     }
 
-    public String getTicket()
-    {
+    public String getTicket() {
         return ticket;
     }
 
-    public void setTicket(String ticket)
-    {
+    public void setTicket(String ticket) {
         this.ticket = ticket;
     }
 
-    public String getProgram()
-    {
+    public String getProgram() {
         return program;
     }
 
-    public void setProgram(String program)
-    {
+    public void setProgram(String program) {
         this.program = program;
     }
 }

@@ -5,8 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class CultureEventWrapper
-{
+public class CultureEventWrapper {
 
     @SerializedName("list_total_count")
     private int totalCount;
@@ -18,44 +17,36 @@ public class CultureEventWrapper
     private List<CultureEvent> cultureEventList;
 
 
-    public CultureEventWrapper()
-    {
+    public CultureEventWrapper() {
     }
 
-    public CultureEventWrapper(int totalCount, CultureResult cultureResult, List<CultureEvent> cultureEventList)
-    {
+    public CultureEventWrapper(int totalCount, CultureResult cultureResult, List<CultureEvent> cultureEventList) {
         this.totalCount = totalCount;
         this.cultureResult = cultureResult;
         this.cultureEventList = cultureEventList;
     }
 
-    public int getTotalCount()
-    {
+    public int getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(int totalCount)
-    {
+    public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
     }
 
-    public CultureResult getCultureResult()
-    {
+    public CultureResult getCultureResult() {
         return cultureResult;
     }
 
-    public void setCultureResult(CultureResult cultureResult)
-    {
+    public void setCultureResult(CultureResult cultureResult) {
         this.cultureResult = cultureResult;
     }
 
-    public List<CultureEvent> getCultureEventList()
-    {
+    public List<CultureEvent> getCultureEventList() {
         return cultureEventList;
     }
 
-    public void setCultureEventList(List<CultureEvent> cultureEventList)
-    {
+    public void setCultureEventList(List<CultureEvent> cultureEventList) {
         this.cultureEventList = cultureEventList;
     }
 }

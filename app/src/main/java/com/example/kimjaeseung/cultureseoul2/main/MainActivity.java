@@ -41,7 +41,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
 
@@ -61,7 +61,8 @@ public class MainActivity extends AppCompatActivity{
     private Toolbar toolbar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
-    @Bind(R.id.main_bottomnavigation) BottomNavigationView bottomNavigationView;
+    @Bind(R.id.main_bottomnavigation)
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,15 +79,14 @@ public class MainActivity extends AppCompatActivity{
             startActivity(intent);
             finish();
 
-        }else{
+        } else {
             mName = mFirebaseUser.getDisplayName();
             mEmail = mFirebaseUser.getEmail();
-            if(mFirebaseUser.getPhotoUrl() != null) {
+            if (mFirebaseUser.getPhotoUrl() != null) {
                 mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
             }
 
         }
-
 
 
         toolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -111,15 +111,14 @@ public class MainActivity extends AppCompatActivity{
         actionBar.setDisplayHomeAsUpEnabled(true);
 
 
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_profile);
         navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener(){
+                new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         item.setChecked(true);
                         int id = item.getItemId();
-                        if(id == R.id.menu_nav_signout){
+                        if (id == R.id.menu_nav_signout) {
                             FirebaseAuth.getInstance().signOut();
                             LoginManager.getInstance().logOut();
                             Intent i = new Intent(MainActivity.this, LoginActivity.class);
@@ -146,27 +145,27 @@ public class MainActivity extends AppCompatActivity{
 
 //        bottomNavigationView.setBackgroundResource(R.color.titlebackground);
 
-        CoordinatorLayout.LayoutParams layoutParams=(CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        selectPage=getIntent().getStringExtra("select_page");
-        if (selectPage!=null){
+        selectPage = getIntent().getStringExtra("select_page");
+        if (selectPage != null) {
             if (selectPage.equals(CommunityFragment.class.getSimpleName())) {
                 bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_community);
-            }else if(selectPage.equals(PerformanceRealTimeFragment.class.getSimpleName())){
+            } else if (selectPage.equals(PerformanceRealTimeFragment.class.getSimpleName())) {
                 bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_performance);
             }
-        }else {
+        } else {
             bottomNavigationView.setSelectedItemId(R.id.main_bottomnavigation_home);
         }
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy");
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -190,15 +189,14 @@ public class MainActivity extends AppCompatActivity{
 
     };
 
-    private void switchFragment(Fragment fragment){
-        FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
+    private void switchFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_fragment_container, fragment);
         transaction.commit();
     }
 
 
     //toolbar 관련
-
 
 
     @Override
@@ -223,7 +221,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(actionBarDrawerToggle.onOptionsItemSelected(item)){
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
 
@@ -235,20 +233,20 @@ public class MainActivity extends AppCompatActivity{
     //뒤로 가기 2번 종료
     @Override
     public void onBackPressed() {
-        if (selectPage!=null&&selectPage.equals(PerformanceRealTimeFragment.class.getSimpleName())){
+        if (selectPage != null && selectPage.equals(PerformanceRealTimeFragment.class.getSimpleName())) {
             Intent intent = new Intent(MainActivity.this, AddChatRoomActivity.class);
             intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
 
-            selectPage=null;
+            selectPage = null;
             return;
         }
         long tempTime = System.currentTimeMillis();
         long intervalTime = tempTime - backPressedTime;
 
-        if( 0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime ){
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
             ActivityCompat.finishAffinity(this);
-        }else{
+        } else {
             backPressedTime = tempTime;
             Toast.makeText(getApplicationContext(), "한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT).show();
         }

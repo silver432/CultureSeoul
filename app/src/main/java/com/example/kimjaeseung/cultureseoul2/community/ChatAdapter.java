@@ -76,13 +76,13 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        switch (holder.getItemViewType()){
+        switch (holder.getItemViewType()) {
             case CHAT_MY:
-                MyViewHolder myViewHolder = (MyViewHolder)holder;
+                MyViewHolder myViewHolder = (MyViewHolder) holder;
                 myViewHolder.bind(chatDataList.get(position));
                 break;
             case CHAT_OTHER:
-                OtherViewHolder otherViewHolder = (OtherViewHolder)holder;
+                OtherViewHolder otherViewHolder = (OtherViewHolder) holder;
                 otherViewHolder.bind(chatDataList.get(position));
                 break;
         }

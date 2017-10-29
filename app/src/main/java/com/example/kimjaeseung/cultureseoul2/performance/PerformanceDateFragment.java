@@ -40,13 +40,14 @@ import butterknife.ButterKnife;
  * Created by heo04 on 2017-08-10.
  */
 
-public class PerformanceDateFragment extends Fragment implements PerformanceAdapter.PerformanceAdapterOnClickHandler, SearchView.OnQueryTextListener
-{
+public class PerformanceDateFragment extends Fragment implements PerformanceAdapter.PerformanceAdapterOnClickHandler, SearchView.OnQueryTextListener {
     private final static String TAG = "PDF";
     private PerformanceAdapter mAdapter;
 
-    @Bind(R.id.performance_rv_date) RecyclerView mPerformanceList;
-    @Bind(R.id.performance_btn_date) Button mButton;
+    @Bind(R.id.performance_rv_date)
+    RecyclerView mPerformanceList;
+    @Bind(R.id.performance_btn_date)
+    Button mButton;
     private int mYear = 0, mMonth = 0, mDay = 0;
     private String mCurDate;
 
@@ -55,21 +56,18 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
     MenuItem mMenuItem;
     SearchView mSearchView;
 
-    public PerformanceDateFragment()
-    {
+    public PerformanceDateFragment() {
 
     }
 
-    public static Fragment getInstance()
-    {
+    public static Fragment getInstance() {
         PerformanceDateFragment performanceDateFragment = new PerformanceDateFragment();
         return performanceDateFragment;
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_performance_date, container, false);
 
         ButterKnife.bind(this, view);
@@ -86,22 +84,20 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
         mButton.setOnClickListener(new View.OnClickListener()   // 기간 선택
         {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 new DatePickerDialog(getActivity(), R.style.DatePicker, mDateSetListener, mYear, mMonth - 1, mDay).show();
 
             }
         });
 
-        mCurDate= String.valueOf(mYear + "-" + mMonth + "-" + mDay);
+        mCurDate = String.valueOf(mYear + "-" + mMonth + "-" + mDay);
         mButton.setText(mCurDate);
 
         return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
-    {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -117,18 +113,15 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
 
 
     @Override
-    public void onClick(CultureEvent cultureEvent)
-    {
+    public void onClick(CultureEvent cultureEvent) {
         //채팅방추가를 위해 intent 넘어옴
         String choose = getActivity().getIntent().getStringExtra("choose");
-        if (choose != null && choose.equals(AddChatRoomActivity.class.getSimpleName()))
-        {
+        if (choose != null && choose.equals(AddChatRoomActivity.class.getSimpleName())) {
             Intent intent = new Intent(getActivity(), AddChatRoomActivity.class);
             intent.putExtra("key", cultureEvent);
             startActivity(intent);
 
-        } else
-        {
+        } else {
             Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
             startToDetailActivity.putExtra("key", cultureEvent);
             startActivity(startToDetailActivity);
@@ -144,10 +137,10 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
             mMonth = month + 1;
             mDay = dayOfMonth;
 
-            mCurDate= String.valueOf(mYear + "-" + mMonth + "-" + mDay);
+            mCurDate = String.valueOf(mYear + "-" + mMonth + "-" + mDay);
             mButton.setText(mCurDate);
 
-            if(mMenuItem != null)
+            if (mMenuItem != null)
                 mMenuItem.collapseActionView(); // 클릭하면 검색창 없어지게
 
             divisionDate();
@@ -155,30 +148,24 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
     };
 
 
-    private void setData()
-    {
+    private void setData() {
         mAdapter.setItemList(mGlobalApp.getmList());
         mAdapter.notifyAdapter();
         divisionDate();
     }
 
-    public void divisionDate()
-    {
+    public void divisionDate() {
         List<CultureEvent> newList = new ArrayList<>();
 
-        for (CultureEvent cultureEvent :mCultureEventLIst)
-        {
+        for (CultureEvent cultureEvent : mCultureEventLIst) {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
 
             Date startDate = cultureEvent.getStartDate();
             Date endDate = cultureEvent.getEndDate();
             Date selectedDate = null;
-            try
-            {
+            try {
                 selectedDate = formatter.parse(mCurDate);
-            }
-            catch (ParseException e)
-            {
+            } catch (ParseException e) {
                 Log.e(TAG, "Date parsing error", e);
             }
 
@@ -191,8 +178,7 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_performance, menu);
         mMenuItem = menu.findItem(R.id.item_search);
@@ -201,30 +187,24 @@ public class PerformanceDateFragment extends Fragment implements PerformanceAdap
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query)
-    {
+    public boolean onQueryTextSubmit(String query) {
         return false;
     }
 
     @Override
-    public boolean onQueryTextChange(String newText)
-    {
+    public boolean onQueryTextChange(String newText) {
         newText = newText.toLowerCase();
         List<CultureEvent> newList = new ArrayList<>();
 
-        for (CultureEvent cultureEvent :mCultureEventLIst)
-        {
+        for (CultureEvent cultureEvent : mCultureEventLIst) {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
 
             Date startDate = cultureEvent.getStartDate();
             Date endDate = cultureEvent.getEndDate();
             Date selectedDate = null;
-            try
-            {
+            try {
                 selectedDate = formatter.parse(mCurDate);
-            }
-            catch (ParseException e)
-            {
+            } catch (ParseException e) {
                 Log.e(TAG, "Date parsing error", e);
             }
 

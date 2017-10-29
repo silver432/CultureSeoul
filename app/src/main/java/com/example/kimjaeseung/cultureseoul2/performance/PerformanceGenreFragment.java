@@ -33,13 +33,14 @@ import butterknife.ButterKnife;
  * Created by heo04 on 2017-08-09.
  */
 
-public class PerformanceGenreFragment extends Fragment implements PerformanceAdapter.PerformanceAdapterOnClickHandler, SearchView.OnQueryTextListener, AdapterView.OnItemSelectedListener
-{
+public class PerformanceGenreFragment extends Fragment implements PerformanceAdapter.PerformanceAdapterOnClickHandler, SearchView.OnQueryTextListener, AdapterView.OnItemSelectedListener {
     private final static String TAG = "PGF";
     private PerformanceAdapter mAdapter;
 
-    @Bind(R.id.performance_rv_genre)  RecyclerView mPerformanceList;
-    @Bind(R.id.performance_spn_genre) Spinner mSpinner;
+    @Bind(R.id.performance_rv_genre)
+    RecyclerView mPerformanceList;
+    @Bind(R.id.performance_spn_genre)
+    Spinner mSpinner;
 
     List<CultureEvent> mCultureEventLIst = new ArrayList<>();
     String[] mGenreStr;
@@ -50,21 +51,18 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
     MenuItem mMenuItem;
     SearchView mSearchView;
 
-    public PerformanceGenreFragment()
-    {
+    public PerformanceGenreFragment() {
 
     }
 
-    public static Fragment getInstance()
-    {
+    public static Fragment getInstance() {
         PerformanceGenreFragment performanceGenreFragment = new PerformanceGenreFragment();
         return performanceGenreFragment;
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_performance_genre, container, false);
 
         ButterKnife.bind(this, view);
@@ -91,8 +89,7 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
-    {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -109,17 +106,14 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
     }
 
     @Override
-    public void onClick(CultureEvent cultureEvent)
-    {
+    public void onClick(CultureEvent cultureEvent) {
         String choose = getActivity().getIntent().getStringExtra("choose");
-        if (choose != null && choose.equals(AddChatRoomActivity.class.getSimpleName()))
-        {
+        if (choose != null && choose.equals(AddChatRoomActivity.class.getSimpleName())) {
             Intent intent = new Intent(getActivity(), AddChatRoomActivity.class);
             intent.putExtra("key", cultureEvent);
             startActivity(intent);
 
-        } else
-        {
+        } else {
             Intent startToDetailActivity = new Intent(getActivity(), DetailActivity.class);
             startToDetailActivity.putExtra("key", cultureEvent);
             startActivity(startToDetailActivity);
@@ -127,8 +121,7 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
         getActivity().getIntent().putExtra("choose", "");
     }
 
-    private void setData()
-    {
+    private void setData() {
         mAdapter.setItemList(mGlobalApp.getmList());
         mAdapter.notifyAdapter();
         divisionGenre();
@@ -136,12 +129,10 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
 
 
     /* 장르 구분 */
-    public void divisionGenre()
-    {
+    public void divisionGenre() {
         List<CultureEvent> newList = new ArrayList<>();
 
-        for (CultureEvent cultureEvent :mCultureEventLIst)
-        {
+        for (CultureEvent cultureEvent : mCultureEventLIst) {
             String genre = cultureEvent.getCodeName();
             if (genre.contains(mGenreTitle))
                 newList.add(cultureEvent);
@@ -154,8 +145,7 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
 
     /* 스피너 선택 이벤트*/
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-    {
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (mGenreCount == 0) {
             if (mGenreTitle == "")
                 mGenreTitle = "콘서트";    // default 장르 값
@@ -166,20 +156,18 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
         mGenreCount = 0;
         divisionGenre();
 
-        if(mMenuItem != null)
+        if (mMenuItem != null)
             mMenuItem.collapseActionView(); // 클릭하면 검색창 없어지게
 
     }
 
     /* 스피너 선택 이벤트 */
     @Override
-    public void onNothingSelected(AdapterView<?> parent)
-    {
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 
-    public static void setmGenreTitle(int TagID, String setGenre)
-    {
+    public static void setmGenreTitle(int TagID, String setGenre) {
         mGenreTitle = setGenre;
         GenreCategory = TagID;
         mGenreCount = 1;
@@ -187,8 +175,7 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
 
     /* Searchview 생성 */
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_performance, menu);
         mMenuItem = menu.findItem(R.id.item_search);
@@ -197,19 +184,16 @@ public class PerformanceGenreFragment extends Fragment implements PerformanceAda
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query)
-    {
+    public boolean onQueryTextSubmit(String query) {
         return false;
     }
 
     /* 필터에서 텍스트 검색 처리 */
     @Override
-    public boolean onQueryTextChange(String newText)
-    {
+    public boolean onQueryTextChange(String newText) {
         newText = newText.toLowerCase();
         List<CultureEvent> newList = new ArrayList<>();
-        for (CultureEvent cultureEvent : mCultureEventLIst)
-        {
+        for (CultureEvent cultureEvent : mCultureEventLIst) {
             String name = cultureEvent.getTitle().toLowerCase();
             String genre = cultureEvent.getCodeName();
             if (name.contains(newText) && genre.contains(mGenreTitle))
