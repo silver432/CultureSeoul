@@ -231,7 +231,8 @@ public class CommunityRealTimeFragment extends Fragment implements ChatRoomAdapt
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                     getContext());
             alertDialogBuilder.setIcon(R.drawable.send_button)
-                    .setTitle(chatRoomData.getRoomName() + "채팅방에 입장하시겠습니까?")
+                    .setTitle("채팅방 입장")
+                    .setMessage(chatRoomData.getRoomName()+" 채팅방에 입장하시겠습니까?")
                     .setPositiveButton("입장", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
